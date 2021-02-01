@@ -33,7 +33,17 @@ resource "azurerm_kubernetes_cluster" "k8s" {
         network_plugin = "kubenet"
     }
 
+    role_based_access_control {
+        enabled = true
+    }
+
+    addon_profile {
+        kube_dashboard {
+            enabled = true
+        }
+    }
+
     tags = {
-        Environment = "Development"
+        Environment = "Demo"
     }
 }

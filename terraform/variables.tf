@@ -1,5 +1,9 @@
-variable "client_id" {}
-variable "client_secret" {}
+variable "client_id" {
+    description = "Azure Kubernetes Service Cluster service principal"
+}
+variable "client_secret" {
+    description = "Azure Kubernetes Service Cluster password"
+}
 
 variable "agent_count" {
     default = 3
