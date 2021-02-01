@@ -21,4 +21,4 @@ libraries.vavr = 'io.vavr:vavr:0.10.3'
 libraries.junit = 'org.junit.jupiter:junit-jupiter-api:5.7.0'
 
 // Apache Commons
-libraries.commons_lang = 'org.apache.commons:commons-lang3:3.7'
+libraries.commons_lang = 'org.apache.commons:commons-lang3:3.11'

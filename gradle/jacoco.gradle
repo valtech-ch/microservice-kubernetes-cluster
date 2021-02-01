@@ -71,14 +71,6 @@ jacoco {
   toolVersion = "0.8.6"
 }
 
-// Workaround to support build cache. Applying the Jacoco plugin prevents test tasks from being cached. 
-// See https://github.com/gradle/gradle/issues/5269
-tasks.withType(Test) {
-  extensions.configure(JacocoTaskExtension) {
-    it.append = false
-  }
-}
-
 jacocoTestReport.dependsOn check
 check.finalizedBy "jacocoTestReport"
 jacocoTestReport.finalizedBy jacocoTestCoverageVerification

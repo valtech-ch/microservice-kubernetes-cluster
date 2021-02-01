@@ -8,3 +8,5 @@
  */
 
 rootProject.name = 'microservice-kubernetes-cluster'
+
+include ':sample'

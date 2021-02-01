@@ -13,6 +13,7 @@ targetCompatibility = 11
 
 description = 'Valtech Kubernetes Microservice Cluster'
 version = '1.0.0-SNAPSHOT'
+group = 'ch.valtech.kubernetes.microservice.cluster'
 
 apply from: 'gradle/dependencies.gradle'
 
@@ -27,4 +28,6 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply from: "$rootDir/gradle/codeStyle.gradle"
+    version = rootProject.version
+    group = rootProject.group
 }
