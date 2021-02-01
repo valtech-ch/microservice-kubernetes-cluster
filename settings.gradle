@@ -10,3 +10,5 @@
 rootProject.name = 'microservice-kubernetes-cluster'
 
 include ':sample'
+
+include ':persistence'
