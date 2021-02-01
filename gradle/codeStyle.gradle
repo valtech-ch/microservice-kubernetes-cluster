@@ -1,0 +1,11 @@
+apply plugin: 'checkstyle'
+
+def configDir = new File(buildscript.sourceFile.parentFile.parentFile, 'docs')
+
+ext.checkstyleConfigDir = "$configDir/checkstyle"
+
+checkstyle {
+    toolVersion = '8.29'
+    config = resources.text.fromFile("$checkstyleConfigDir/google_checks.xml")
+    ignoreFailures = false
+}
