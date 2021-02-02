@@ -2,6 +2,15 @@ provider "azurerm" {
   features {}
 }
 
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "vtch-kubernetes-blueprint"
+    storage_account_name = "vtchk8sblueprinttfst"
+    container_name       = "vtchk8sblueprinttfct"
+    key                  = "terraform.tfstate"
+  }
+}
+
 resource "azurerm_role_assignment" "role_acrpull" {
   scope                            = azurerm_container_registry.acr.id
   role_definition_name             = "AcrPull"
