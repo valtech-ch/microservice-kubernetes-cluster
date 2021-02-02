@@ -1,0 +1,77 @@
+apply plugin: 'jacoco' // see https://docs.gradle.org/current/userguide/jacoco_plugin.html
+
+// --- GRADLE TASKS ---
+// jacoco offers two tasks
+// - jacocoTestCoverageVerification -- validates the rules
+// - jacocoTestReport -- creates an HTML and XML report in the build folder under reports/coverage
+//
+// --- CUSTOMIZE ---
+// You may overwrite the default properties by adding the particular property to the ext namespace in your build file, before applying this file
+// Example:
+// ```
+//
+// ext {
+//   jacocoEnabled = false
+//   minimumCoveragePerFile = 0.4
+//   filesExcludedFromCoverage = ["ch/valtech/microservice/kubernetes/cluster/Endpoint.java"]
+// }
+//
+// ```
+
+ext {
+  if (!project.hasProperty("jacocoEnabled")) {
+    jacocoEnabled = true
+  }
+  if (!project.hasProperty("minimumCoveragePerFile")) {
+    minimumCoveragePerFile = 0.4
+  }
+  if (!project.hasProperty("filesExcludedFromCoverage")) {
+    filesExcludedFromCoverage = []
+  }
+  // --
+  filesForCoverage = getListOfChangedFiles()
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      enabled = jacocoEnabled
+      element = 'SOURCEFILE'
+      includes = filesForCoverage
+      excludes = filesExcludedFromCoverage
+
+      limit {
+        counter = 'LINE'
+        minimum = minimumCoveragePerFile
+      }
+    }
+  }
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    xml.destination file("${buildDir}/reports/coverage/coverage.xml")
+    csv.enabled false
+    html.destination file("${buildDir}/reports/coverage")
+  }
+}
+
+def getListOfChangedFiles() {
+  new ByteArrayOutputStream().withStream { os ->
+    def result = exec {
+      commandLine 'sh', "${rootProject.projectDir}/scripts/listChangedFiles.sh"
+      standardOutput = os
+    }
+    ext.filesForCoverage = os.toString().tokenize()
+  }
+}
+
+jacoco {
+  toolVersion = "0.8.6"
+}
+
+jacocoTestReport.dependsOn check
+check.finalizedBy "jacocoTestReport"
+jacocoTestReport.finalizedBy jacocoTestCoverageVerification
+jacocoTestCoverageVerification.mustRunAfter jacocoTestReport

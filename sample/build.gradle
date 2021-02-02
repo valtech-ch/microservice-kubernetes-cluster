@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+      jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${versions.spring_boot}")
+    }
+}
+
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    jcenter()
+}
+
+project.description = 'Sample'
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+
+apply plugin: 'org.springframework.boot'
+
+springBoot {
+    buildInfo()
+}
+
+dependencies {
+    implementation libraries.vavr
+    testImplementation libraries.junit
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+tasks.named('test') {
+    // Use junit platform for unit tests.
+    useJUnitPlatform()
+}
