@@ -4,18 +4,9 @@ buildscript {
     }
 }
 
-plugins {
-    id 'java-library'
-}
-
-sourceCompatibility = 11
-targetCompatibility = 11
-
 description = 'Valtech Kubernetes Microservice Cluster'
 version = '1.0.0-SNAPSHOT'
 group = 'ch.valtech.kubernetes.microservice.cluster'
-
-apply from: 'gradle/dependencies.gradle'
 
 allprojects {
     repositories {
@@ -24,10 +15,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
-    apply from: "$rootDir/gradle/codeStyle.gradle"
     version = rootProject.version
     group = rootProject.group
 }

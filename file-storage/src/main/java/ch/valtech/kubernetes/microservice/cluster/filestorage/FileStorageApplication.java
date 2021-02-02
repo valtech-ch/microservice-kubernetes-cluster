@@ -1,13 +1,13 @@
-package com.valtech.persistence;
+package ch.valtech.kubernetes.microservice.cluster.filestorage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PersistenceApplication {
+public class FileStorageApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PersistenceApplication.class, args);
+		SpringApplication.run(FileStorageApplication.class, args);
 	}
 
 }

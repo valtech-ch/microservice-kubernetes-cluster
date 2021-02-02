@@ -1,49 +1,64 @@
-resource "azurerm_resource_group" "k8s" {
-  name = var.resource_group_name
-  location = var.location
+resource "azurerm_role_assignment" "role_acrpull" {
+  scope                            = azurerm_container_registry.acr.id
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_kubernetes_cluster.k8s.kubelet_identity.0.object_id
+  skip_service_principal_aad_check = true
+}
+
+resource "azurerm_container_registry" "acr" {
+  name                = var.container_registry_name
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  sku                 = "Basic"
+  admin_enabled       = true
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-    name                = var.cluster_name
-    location            = azurerm_resource_group.k8s.location
-    resource_group_name = azurerm_resource_group.k8s.name
-    dns_prefix          = var.dns_prefix
+  name                = var.cluster_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  dns_prefix          = var.dns_prefix
 
-    linux_profile {
-        admin_username = "ubuntu"
-
-        ssh_key {
-            key_data = file(var.ssh_public_key)
-        }
+  linux_profile {
+    admin_username = var.admin_username
+    ssh_key {
+      key_data = "${trimspace(tls_private_key.ssh_key.public_key_openssh)} ${var.admin_username}@azure.com"
     }
+  }
 
-    default_node_pool {
-        name            = "agentpool"
-        node_count      = var.agent_count
-        vm_size         = "Standard_D2_v2"
-    }
+  default_node_pool {
+    name            = "agentpool"
+    node_count      = var.agent_count
+    vm_size         = "Standard_D2_v2"
+  }
 
-    service_principal {
-        client_id     = var.client_id
-        client_secret = var.client_secret
-    }
+  service_principal {
+    client_id     = var.client_id
+    client_secret = var.client_secret
+  }
 
-    network_profile {
-        load_balancer_sku = "Standard"
-        network_plugin = "kubenet"
-    }
+  network_profile {
+    load_balancer_sku = "Standard"
+    network_plugin = "kubenet"
+  }
 
-    role_based_access_control {
-        enabled = true
-    }
+  role_based_access_control {
+    enabled = true
+  }
 
-    addon_profile {
-        kube_dashboard {
-            enabled = true
-        }
+  addon_profile {
+    kube_dashboard {
+      enabled = true
     }
+  }
 
-    tags = {
-        Environment = "Demo"
-    }
+  tags = {
+    Environment = "Demo"
+  }
+  depends_on = [tls_private_key.ssh_key]
+}
+
+resource "tls_private_key" "ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }

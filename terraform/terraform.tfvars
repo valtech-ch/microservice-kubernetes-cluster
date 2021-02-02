@@ -1,2 +1,3 @@
-client_id     = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-client_secret = "********-****-****-****-************"
+client_id      = "********-****-****-****-************"
+client_secret  = "********-****-****-****-************"
+admin_username = "********"
