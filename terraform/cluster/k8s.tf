@@ -1,3 +1,16 @@
+provider "azurerm" {
+  features {}
+}
+
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "vtch-kubernetes-blueprint"
+    storage_account_name = "vtchk8sblueprinttfst"
+    container_name       = "vtchk8sblueprinttfct"
+    key                  = "terraform.tfstate"
+  }
+}
+
 resource "azurerm_role_assignment" "role_acrpull" {
   scope                            = azurerm_container_registry.acr.id
   role_definition_name             = "AcrPull"
@@ -15,8 +28,8 @@ resource "azurerm_container_registry" "acr" {
 
 resource "azurerm_kubernetes_cluster" "k8s" {
   name                = var.cluster_name
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   dns_prefix          = var.dns_prefix
 
   linux_profile {
@@ -26,15 +39,14 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     }
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   default_node_pool {
     name            = "agentpool"
     node_count      = var.agent_count
     vm_size         = "Standard_D2_v2"
-  }
-
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
   }
 
   network_profile {
