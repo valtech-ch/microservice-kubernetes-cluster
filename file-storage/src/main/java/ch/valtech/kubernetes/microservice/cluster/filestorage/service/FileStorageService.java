@@ -1,8 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class FileStorageService {
+public interface FileStorageService {
 
+  void saveFile(MultipartFile file);
 }
