@@ -63,7 +63,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
       enabled = true
     }
     http_application_routing {
-      enabled = true
+      enabled = false
     }
   }
 
