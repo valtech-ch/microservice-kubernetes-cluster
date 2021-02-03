@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.google.cloud.tools.jib' version '2.7.1'
 	id 'java'
 	id 'java-library'
 	id 'eclipse'
@@ -24,6 +25,16 @@ repositories {
 
 springBoot {
 	buildInfo()
+}
+
+jib {
+	to {
+		image = "${docker_registry}/microservice-kubernetes-cluster/file-storage"
+		auth {
+			username = "${docker_registry_username}"
+			password = "${docker_registry_password}"
+		}
+	}
 }
 
 dependencies {
