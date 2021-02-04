@@ -12,7 +12,7 @@ public interface FileStorageService {
   List<FileArtifact> loadAll();
 
   Resource loadAsResource(String filename);
-  //get one, list all, delete one, delete all
+
   void deleteByFilename(String filename);
 
   void deleteAll();
