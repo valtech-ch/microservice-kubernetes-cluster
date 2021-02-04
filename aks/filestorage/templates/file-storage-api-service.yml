@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: file-storage-api
+  namespace: default
+  labels:
+    name: file-storage-api
+    app: file-storage
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    component: file-storage-api
