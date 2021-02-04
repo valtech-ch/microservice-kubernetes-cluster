@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: file-storage-api-deployment
+  namespace: default
   labels:
     app: file-storage
     component: file-storage-api
@@ -17,28 +18,15 @@ spec:
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
-      serviceAccountName: file-storage-api-sa
       containers:
         - name: file-storage-api
-          image: microservice-kubernetes-cluster/file-storage
+          image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
           imagePullPolicy: Always
           env:
             - name: UPLOAD_PATH
               value: /tmp/uploads
           ports:
-            - containerPort: 3000
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 2
+            - containerPort: 8080
           resources:
             limits:
               cpu: 100m

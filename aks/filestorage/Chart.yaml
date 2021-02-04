@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cluster
-description: Base Kubernetes Cluster Setup
+description: File Storage
 
 type: application
 

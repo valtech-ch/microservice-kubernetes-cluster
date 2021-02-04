@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: file-storage-api
+  namespace: default
   labels:
     name: file-storage-api
     app: file-storage
@@ -10,7 +11,7 @@ spec:
   ports:
     - name: http
       port: 80
-      targetPort: 3000
+      targetPort: 8080
       protocol: TCP
   selector:
     component: file-storage-api
