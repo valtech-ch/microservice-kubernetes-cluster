@@ -32,27 +32,10 @@ public class PersistenceServiceTest {
   @Mock
   private MessageRepository messageRepository;
   
-  private User user;
-  
-  private MessageMapper fileMapper;
   
   @BeforeEach
   public void setUp() {
     persistenceService = new PersistenceService(messageRepository, auditingRepository);
-  }
-  
-  @Test
-  public void shouldGetFileForUserByKey() {
-    //given
-    user = new User("email.com");
-    MessageDTO file = MessageDTO.builder().key("some-key").message("some").build();
-    
-    Optional<MessageDTO> fileDTO = persistenceService.getMessageByKeyForUser(user, "some-key");
-    MessageDTO fileDTO1 = MessageDTO.builder().key(file.getKey()).message(file.getMessage()).build();
-    
-    assertTrue(fileDTO.isPresent());
-    assertEquals(fileDTO1, fileDTO.get());
-    
   }
   
   @Test

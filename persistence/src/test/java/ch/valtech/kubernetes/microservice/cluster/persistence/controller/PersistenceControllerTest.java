@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest(value = PersistenceController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @AutoConfigureMockMvc()
 @SpringBootTest
 public class PersistenceControllerTest {
@@ -37,26 +36,9 @@ public class PersistenceControllerTest {
   @Autowired
   MockMvc mockMvc;
   
-  @MockBean
-  private PersistenceService persistenceService;
-  
-  @MockBean
-  private PersistenceController persistenceController;
-  
-  
-  @Test
-  @SneakyThrows
-  public void shouldGetMessageForUserAndKey() {
-    //da se trgne
-//    given(persistenceController.getMessageForUserByKey(anyString(), anyString())).willReturn(ResponseEntity.of(Optional.of(MessageDTO.builder().key("A34B9").build())));
-    mockMvc.perform(get("/api/v1/{user}/message/{key}", "emacom", "A34B9"))
-        .andExpect(status().isOk());
-  }
-  
   @Test
   @SneakyThrows
   public void shouldPostNewMessage() {
-//    given(persistenceController.getMessageForUserByKey(anyString(), anyString())).willReturn(ResponseEntity.of(Optional.of(MessageDTO.builder().key("A34B9").build())));
     AuditingRequestDTO request = AuditingRequestDTO.builder()
         .email("email1.com")
         .key("Ab456")

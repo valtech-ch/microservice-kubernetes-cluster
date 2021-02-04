@@ -20,13 +20,6 @@ public class PersistenceController {
     
   }
   
-  @GetMapping("/{user}/message/{key}")
-  public ResponseEntity<MessageDTO> getMessageForUserByKey(@PathVariable(name = "user") String userEmail, @PathVariable(name = "key") String key) {
-    User user = new User(userEmail);
-    Optional<MessageDTO> message = persistenceService.getMessageByKeyForUser(user, key);
-    return ResponseEntity.of(message);
-  }
-  
   @PostMapping("/message")
   public ResponseEntity<MessageDTO> saveNewMessage(@RequestBody AuditingRequestDTO requestDTO) {
     MessageDTO newMessage = persistenceService.saveNewMessage(requestDTO);

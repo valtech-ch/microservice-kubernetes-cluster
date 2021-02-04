@@ -11,6 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface AuditingRepository extends JpaRepository<Auditing, Long> {
-  
 
 }
