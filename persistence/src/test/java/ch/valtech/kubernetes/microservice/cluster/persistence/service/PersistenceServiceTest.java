@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith({SpringExtension.class})
@@ -46,6 +47,7 @@ public class PersistenceServiceTest {
     auditing.setMessage(new Message("Ab456", "some message"));
     
     given(auditingRepository.save(auditing)).willReturn(auditing);
+    given(messageRepository.findByKeyId(anyString())).willReturn(Optional.of(new Message("Ab456", "some message")));
     
     MessageDTO message =
         persistenceService.saveNewMessage(AuditingRequestDTO
