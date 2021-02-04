@@ -4,7 +4,7 @@ metadata:
   name: monitoring-cert
   namespace: istio-system
 spec:
-  secretName: ingress-cert
+  secretName: monitoring-cert
   commonName: vtch-aks-demo-monitoring.duckdns.org
   issuerRef:
     name: letsencrypt
