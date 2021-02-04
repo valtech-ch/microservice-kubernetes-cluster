@@ -4,9 +4,15 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "2.2.4"
+    id 'com.palantir.git-version' version '0.12.3'
+}
+
 description = 'Valtech Kubernetes Microservice Cluster'
 version = '1.0.0-SNAPSHOT'
 group = 'ch.valtech.kubernetes.microservice.cluster'
+ext.gitHash = gitVersion()
 
 allprojects {
     repositories {
@@ -17,4 +23,5 @@ allprojects {
 subprojects {
     version = rootProject.version
     group = rootProject.group
+    gitHash = rootProject.ext.gitHash
 }
