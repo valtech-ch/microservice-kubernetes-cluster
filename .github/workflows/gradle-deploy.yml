@@ -17,4 +17,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build and Deploy to Docker Registry
-        run: ./gradlew build jib -Pdocker_registry=$DOCKER_REGISTRY -Pdocker_registry_username=$DOCKER_USERNAME -Pdocker_registry_password=$DOCKER_PASSWORD
+        run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.USERNAME }} -Pdocker_registry_password=${{ secrets.PASSWORD }}
