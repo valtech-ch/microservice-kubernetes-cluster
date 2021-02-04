@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Uploading file</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h1>Uploading file</h1>
+
+<form action="/api/file" method="post" enctype="multipart/form-data">
+  <label>Enter file</label>
+  <input type="file" name="file">
+  <button type="submit">Upload</button>
+</form>
+
+<br />
+<br />
+
+<h1>Current files</h1>
+<ul id="list-files">
+</ul>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+    $.get( "/api/files", function( data ) {
+      $.each( data, function (item, value){
+        $( "#list-files" ).append( '<li><a href="/api/file/' + value.filename + '" target="_blank">' + value.filename + '</a><button data-filename="'+ value.filename +'">Delete</button></li>');
+      });
+    });
+
+    $(document).on('click', "#list-files li button", function () {
+      var fileName = $(this).attr('data-filename');
+      $.ajax({
+        url: '/api/file/' + fileName,
+        type: 'DELETE'
+      })
+    })
+  });
+
+</script>
+</html>

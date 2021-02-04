@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 1MB
+upload.path: /tmp/internal/kubernetes/uploads/
+---
+spring:
+  config:
+    activate:
+      on-profile: cloud
+      on-cloud-platform: kubernetes
+#/etc/config/upload/path need to be mounted with the value of the directory
+    import: configtree:/etc/config

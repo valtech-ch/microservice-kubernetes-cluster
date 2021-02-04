@@ -1,8 +1,19 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
-import org.springframework.stereotype.Service;
+import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
+import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class FileStorageService {
+public interface FileStorageService {
 
+  String saveFile(MultipartFile file);
+
+  List<FileArtifact> loadAll();
+
+  Resource loadAsResource(String filename);
+
+  void deleteByFilename(String filename);
+
+  void deleteAll();
 }

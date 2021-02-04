@@ -1,11 +1,14 @@
 plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.google.cloud.tools.jib' version '2.7.1'
     id 'java'
     id 'java-library'
     id 'eclipse'
     id 'idea'
 }
+
+apply plugin: "com.gorylenko.gradle-git-properties"
 
 project.description = 'Persistence'
 
@@ -22,8 +25,26 @@ repositories {
     jcenter()
 }
 
+gitProperties {
+    keys = ['git.branch','git.commit.id','git.commit.time','git.commit.id.full']
+}
+
 springBoot {
     buildInfo()
+}
+
+jib {
+    from {
+        image = 'adoptopenjdk/openjdk11:alpine-jre'
+    }
+    to {
+        image = "${docker_registry}/microservice-kubernetes-cluster/persistence"
+        auth {
+            username = "${docker_registry_username}"
+            password = "${docker_registry_password}"
+        }
+        tags = ["${gitHash}", 'latest']
+    }
 }
 
 dependencies {

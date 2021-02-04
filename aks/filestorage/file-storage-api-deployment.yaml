@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-storage-api-deployment
+  labels:
+    app: file-storage
+    component: file-storage-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: file-storage-api
+  template:
+    metadata:
+      labels:
+        component: file-storage-api
+      annotations:
+        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    spec:
+      serviceAccountName: file-storage-api-sa
+      containers:
+        - name: file-storage-api
+          image: microservice-kubernetes-cluster/file-storage
+          imagePullPolicy: Always
+          env:
+            - name: UPLOAD_PATH
+              value: /tmp/uploads
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 2
+          resources:
+            limits:
+              cpu: 100m
+              memory: 120M
+            requests:
+              cpu: 100m
+              memory: 120M
