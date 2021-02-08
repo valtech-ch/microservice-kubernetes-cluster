@@ -20,14 +20,23 @@ spec:
           image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
           imagePullPolicy: Always
           env:
-            - name: UPLOAD_PATH
-              value: /etc/file-storage/uploads
+            - name: SPRING_PROFILES_ACTIVE
+              value: "cloud"
           ports:
             - containerPort: 80
           volumeMounts:
+            - name: application-config
+              mountPath: "/etc/config"
+              readOnly: true
             - name: file-storage-pv
               mountPath: /etc/file-storage/uploads
       volumes:
         - name: file-storage-pv
           persistentVolumeClaim:
             claimName: file-storage-pvc
+        - name: application-config
+          configMap:
+            name: spring-app-config
+            items:
+              - key: application.yml
+                path: application.yml
