@@ -19,6 +19,9 @@ spec:
         - name: file-storage
           image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
           imagePullPolicy: Always
+          env:
+            - name: UPLOAD_PATH
+              value: /etc/file-storage/uploads
           ports:
             - containerPort: 80
           volumeMounts:
