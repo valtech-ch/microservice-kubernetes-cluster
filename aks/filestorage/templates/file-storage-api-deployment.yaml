@@ -21,3 +21,10 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: file-storage-pv
+              mountPath: /etc/file-storage/uploads
+      volumes:
+        - name: file-storage-pv
+          persistentVolumeClaim:
+            claimName: file-storage-pvc
