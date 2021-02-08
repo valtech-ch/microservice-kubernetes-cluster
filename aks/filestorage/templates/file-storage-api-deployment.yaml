@@ -39,6 +39,3 @@ spec:
         - name: application-config
           configMap:
             name: file-storage-config
-            items:
-              - key: application.yml
-                path: application.yml

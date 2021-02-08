@@ -6,5 +6,4 @@ metadata:
   name: file-storage-config
   namespace: default
 data:
-  application.yml: |-
-    upload.path: /etc/file-storage/uploads/
+  uploadPath: /etc/file-storage/uploads/
