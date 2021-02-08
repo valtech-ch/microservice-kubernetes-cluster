@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: file-storage
+  name: file-storage-cloud-config
+  namespace: default
+data:
+  storageAccountName: vtchk8sblueprinttfst
+  storageContainerName: fileStorage

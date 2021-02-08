@@ -13,6 +13,11 @@ spring:
       on-profile: dev
 hostname: http://localhost:8080
 uploadPath: /tmp/internal/kubernetes/uploads/
+storageAccountName: vtchk8sblueprinttfst
+storageContainerName: fileStorage
+secret:
+  storageAccountKey: secret
+  storageConnection: secret
 ---
 spring:
   config:

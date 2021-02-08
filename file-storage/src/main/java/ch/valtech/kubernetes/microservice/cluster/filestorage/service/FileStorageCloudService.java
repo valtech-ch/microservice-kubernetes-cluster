@@ -22,10 +22,10 @@ public class FileStorageCloudService implements FileStorageService {
   private final BlobContainerClient containerClient;
 
   public FileStorageCloudService(
-      @Value("${secret.storageAccountName}") String accountName,
+      @Value("${storageAccountName}") String accountName,
       @Value("${secret.storageAccountKey}") String accountKey,
       @Value("${secret.storageConnection}") String connection,
-      @Value("${secret.storageContainerName}") String containerName) {
+      @Value("${storageContainerName}") String containerName) {
     StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
     
     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
