@@ -7,4 +7,4 @@ metadata:
   namespace: default
 data:
   application.yml: |-
-    upload.path: /etc/filestorage
+    upload.path: /etc/file-storage/uploads
