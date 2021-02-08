@@ -10,6 +10,8 @@ spec:
   selector:
     matchLabels:
       app: file-storage
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -21,7 +23,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "cloud"
+              value: "prod"
           ports:
             - containerPort: 80
           volumeMounts:
@@ -29,7 +31,7 @@ spec:
               mountPath: "/etc/config"
               readOnly: true
             - name: file-storage-pv
-              mountPath: /etc/file-storage/uploads
+              mountPath: "/etc/file-storage/uploads"
       volumes:
         - name: file-storage-pv
           persistentVolumeClaim:
