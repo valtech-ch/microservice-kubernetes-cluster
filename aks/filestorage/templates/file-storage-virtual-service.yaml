@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: file-storage
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - file-storage-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            port:
+              number: 8080
+            host: file-storage

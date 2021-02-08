@@ -1,36 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: file-storage-api-deployment
+  name: file-storage
   namespace: default
   labels:
     app: file-storage
-    component: file-storage-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: file-storage-api
+      app: file-storage
   template:
     metadata:
       labels:
-        component: file-storage-api
-      annotations:
-        sidecar.istio.io/rewriteAppHTTPProbers: "true"
+        app: file-storage
     spec:
       containers:
-        - name: file-storage-api
+        - name: file-storage
           image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
           imagePullPolicy: Always
           env:
-            - name: UPLOAD_PATH
-              value: /tmp/uploads
+            - name: SPRING_PROFILES_ACTIVE
+              value: "cloud"
           ports:
-            - containerPort: 8080
-          resources:
-            limits:
-              cpu: 100m
-              memory: 120M
-            requests:
-              cpu: 100m
-              memory: 120M
+            - containerPort: 80
+          volumeMounts:
+            - name: application-config
+              mountPath: "/etc/config"
+              readOnly: true
+            - name: file-storage-pv
+              mountPath: /etc/file-storage/uploads
+      volumes:
+        - name: file-storage-pv
+          persistentVolumeClaim:
+            claimName: file-storage-pvc
+        - name: application-config
+          configMap:
+            name: file-storage-config
+            items:
+              - key: application.yml
+                path: application.yml
