@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Profile("!cloud")
+@Slf4j
 @Service
 public class FileStorageLocalService implements FileStorageService {
 
@@ -30,6 +31,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public String saveFile(MultipartFile file) {
+    log.info(String.format("Adding a new file to path: %s", path));
     if (file.isEmpty()) {
       throw new FileStorageException("File should not be empty");
     }
@@ -41,6 +43,7 @@ public class FileStorageLocalService implements FileStorageService {
       Files.createDirectories(Paths.get(path));
       Files.copy(inputStream, Paths.get(path + fileName),
           StandardCopyOption.REPLACE_EXISTING);
+      log.info(String.format("File %s added successfully", fileName));
     } catch (IOException e) {
       String message = String.format("Failed to store file %s", file.getName());
       throw new FileStorageException(message, e);
@@ -51,6 +54,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public List<FileArtifact> loadAll() {
+    log.info(String.format("Loading all files in: %s", path));
     try {
       return Files.walk(Paths.get(path))
           .filter(Files::isRegularFile)
@@ -63,6 +67,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public Resource loadAsResource(String fileName) {
+    log.info(String.format("Loading file %s from: %s", fileName, path));
     try {
       Path filePath = Paths.get(path).resolve(fileName).normalize();
       Resource resource = new UrlResource(filePath.toUri());
@@ -78,6 +83,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
+    log.info(String.format("Deleting file %s from: %s", filename, path));
     try {
       Files.deleteIfExists(Paths.get(path).resolve(filename).normalize());
     } catch (IOException ex) {
