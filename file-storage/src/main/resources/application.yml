@@ -16,5 +16,5 @@ upload.path: /tmp/internal/kubernetes/uploads/
 spring:
   config:
     activate:
-      on-profile: cloud
+      on-profile: prod
     import: configtree:/etc/config/
