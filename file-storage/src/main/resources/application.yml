@@ -17,4 +17,4 @@ spring:
   config:
     activate:
       on-profile: cloud
-    import: configtree:/etc/config
+    import: configtree:/etc/config/

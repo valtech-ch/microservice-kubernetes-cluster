@@ -36,7 +36,7 @@ spec:
             claimName: file-storage-pvc
         - name: application-config
           configMap:
-            name: spring-app-config
+            name: file-storage-config
             items:
               - key: application.yml
                 path: application.yml
