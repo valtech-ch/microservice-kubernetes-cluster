@@ -28,7 +28,9 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: application-config
-              mountPath: "/etc/config"
+              mountPath: "/etc/config/"
+            - name: application-cloud-secrets
+              mountPath: "/etc/config/cloud/secret/"
               readOnly: true
             - name: file-storage-pv
               mountPath: "/etc/file-storage/uploads"
@@ -39,3 +41,6 @@ spec:
         - name: application-config
           configMap:
             name: file-storage-config
+        - name: application-cloud-secrets
+          secret:
+            secretName: file-storage-cloud-secret

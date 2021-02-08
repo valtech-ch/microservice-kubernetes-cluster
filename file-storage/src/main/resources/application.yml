@@ -18,3 +18,9 @@ spring:
     activate:
       on-profile: prod
     import: configtree:/etc/config/
+---
+spring:
+  config:
+    activate:
+      on-profile: cloud
+    import: configtree:/etc/config/cloud/

@@ -25,9 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 public class FileStorageLocalService implements FileStorageService {
-
-  @Value("${uploadPath}")
-  private String path;
+  
+  private final String path;
+  
+  public FileStorageLocalService(@Value("${uploadPath}") String path) {
+    this.path = path;
+  }
 
   @Override
   public String saveFile(MultipartFile file) {
