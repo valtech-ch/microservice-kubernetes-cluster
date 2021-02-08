@@ -12,7 +12,7 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "*"
+        - "vtch-aks-demo.duckdns.org"
       tls:
         httpsRedirect: true # sends 301 redirect for http requests
     - port:
@@ -23,4 +23,4 @@ spec:
         mode: SIMPLE
         credentialName: main-cert # must be the same as secret
       hosts:
-        - "*"
+        - "vtch-aks-demo.duckdns.org"

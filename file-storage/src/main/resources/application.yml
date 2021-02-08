@@ -11,6 +11,7 @@ spring:
   config:
     activate:
       on-profile: dev
+hostname: http://localhost:8080
 uploadPath: /tmp/internal/kubernetes/uploads/
 ---
 spring:

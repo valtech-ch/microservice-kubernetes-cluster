@@ -5,6 +5,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import java.net.URL;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,11 @@ public class FileStorageCloudService implements FileStorageService {
   public String saveFile(MultipartFile file) {
     return "not-implemented";
   }
+  
+  @Override
+  public URL getResourceUrl(String filename) {
+    return null;
+  }
 
   @Override
   public List<FileArtifact> loadAll() {
@@ -52,11 +58,10 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
-
   }
 
   @Override
   public void deleteAll() {
-
   }
+  
 }

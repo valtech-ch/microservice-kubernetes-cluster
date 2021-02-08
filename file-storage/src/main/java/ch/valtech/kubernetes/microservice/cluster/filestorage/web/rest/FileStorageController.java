@@ -2,9 +2,9 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
-import java.net.URI;
+import java.net.URL;
 import java.util.List;
-import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 /**
  * REST controller for managing Files.
@@ -39,12 +38,13 @@ public class FileStorageController {
    *
    * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
    */
+  @SneakyThrows
   @PostMapping(value = "/file", consumes = {"multipart/form-data"})
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
-    fileStorageService.saveFile(file); // todo return id save to persistence -> later on
-    return ResponseEntity.ok().build();
-//    return ResponseEntity.created(URI.create("endpoint url for getting")).build();// todo location header
+    String fileName = fileStorageService.saveFile(file); // todo return id save to persistence -> later on
+    URL resourceUrl = fileStorageService.getResourceUrl(fileName);
+    return ResponseEntity.created(resourceUrl.toURI()).build();
   }
 
   /**
