@@ -34,8 +34,8 @@ public class FileStorageLocalService implements FileStorageService {
   private final String path;
   
   public FileStorageLocalService(
-      @Value("${hostname}") String hostname,
-      @Value("${uploadPath}") String path) {
+      @Value("${application.hostname}") String hostname,
+      @Value("${application.upload.path}") String path) {
     this.hostname = hostname;
     this.path = path;
   }

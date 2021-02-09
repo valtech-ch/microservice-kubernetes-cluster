@@ -6,5 +6,11 @@ metadata:
   name: file-storage-cloud-config
   namespace: default
 data:
-  storageAccountName: vtchk8sblueprinttfst
-  storageContainerName: fileStorage
+  application-cloud.yml: |-
+    application:
+      cloud:
+        storage:
+          account.name: vtchk8sblueprinttfst
+          container.name: fileStorage
+          account.key: ${STORAGE_ACCOUNT_KEY}
+          connection: ${STORAGE_CONNECTION}
