@@ -6,4 +6,7 @@ metadata:
   name: file-storage-config
   namespace: default
 data:
-  uploadPath: /etc/file-storage/uploads/
+  application-prod.yml: |-
+    application:
+      hostname: http://vtch-aks-demo.duckdns.org
+      upload.path: /etc/file-storage/uploads/

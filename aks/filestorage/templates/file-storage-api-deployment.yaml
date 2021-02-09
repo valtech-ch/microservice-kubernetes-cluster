@@ -24,12 +24,23 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
+            - name: STORAGE_ACCOUNT_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: STORAGE_ACCOUNT_KEY
+                  name: file-storage-cloud-secret
+            - name: STORAGE_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  key: STORAGE_CONNECTION
+                  name: file-storage-cloud-secret
           ports:
             - containerPort: 80
           volumeMounts:
             - name: application-config
-              mountPath: "/etc/config"
-              readOnly: true
+              mountPath: "/etc/config/"
+            - name: application-cloud-config
+              mountPath: "/etc/config/cloud/"
             - name: file-storage-pv
               mountPath: "/etc/file-storage/uploads"
       volumes:
@@ -39,3 +50,12 @@ spec:
         - name: application-config
           configMap:
             name: file-storage-config
+            items:
+              - key: application-prod.yml
+                path: application-prod.yml
+        - name: application-cloud-config
+          configMap:
+            name: file-storage-cloud-config
+            items:
+              - key: application-cloud.yml
+                path: application-cloud.yml

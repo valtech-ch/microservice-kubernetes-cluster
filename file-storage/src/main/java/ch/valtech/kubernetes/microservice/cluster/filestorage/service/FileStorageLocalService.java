@@ -1,17 +1,21 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
+import static java.lang.String.format;
+
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +29,16 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 public class FileStorageLocalService implements FileStorageService {
-
-  @Value("${uploadPath}")
-  private String path;
+  
+  private final String hostname;
+  private final String path;
+  
+  public FileStorageLocalService(
+      @Value("${application.hostname}") String hostname,
+      @Value("${application.upload.path}") String path) {
+    this.hostname = hostname;
+    this.path = path;
+  }
 
   @Override
   public String saveFile(MultipartFile file) {
@@ -36,25 +47,32 @@ public class FileStorageLocalService implements FileStorageService {
       throw new FileStorageException("File should not be empty");
     }
 
-    try {
-      String fileName = file.getOriginalFilename();
-      InputStream inputStream = file.getInputStream();
+    String fileName = file.getOriginalFilename();
+    try (InputStream inputStream = file.getInputStream()) {
 
       Files.createDirectories(Paths.get(path));
       Files.copy(inputStream, Paths.get(path + fileName),
           StandardCopyOption.REPLACE_EXISTING);
-      log.info(String.format("File %s added successfully", fileName));
+      log.info("File {} added successfully", fileName);
     } catch (IOException e) {
       String message = String.format("Failed to store file %s", file.getName());
       throw new FileStorageException(message, e);
     }
-
-    return "url";
+    return fileName;
   }
-
+  
+  @Override
+  @SneakyThrows
+  public URL getResourceUrl(String filename) {
+    if (!Files.exists(Paths.get(path).resolve(filename).normalize())) {
+      throw new FileStorageException(format("File %s not found", filename));
+    }
+    return new URL(hostname + format("/api/file/%s", filename));
+  }
+  
   @Override
   public List<FileArtifact> loadAll() {
-    log.info(String.format("Loading all files in: %s", path));
+    log.info("Loading all files in: {}", path);
     try {
       return Files.walk(Paths.get(path))
           .filter(Files::isRegularFile)
@@ -67,7 +85,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public Resource loadAsResource(String fileName) {
-    log.info(String.format("Loading file %s from: %s", fileName, path));
+    log.info("Loading file {} from: {}", fileName, path);
     try {
       Path filePath = Paths.get(path).resolve(fileName).normalize();
       Resource resource = new UrlResource(filePath.toUri());
@@ -83,7 +101,7 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
-    log.info(String.format("Deleting file %s from: %s", filename, path));
+    log.info("Deleting file {} from: {}", filename, path);
     try {
       Files.deleteIfExists(Paths.get(path).resolve(filename).normalize());
     } catch (IOException ex) {

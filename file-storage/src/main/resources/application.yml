@@ -11,10 +11,24 @@ spring:
   config:
     activate:
       on-profile: dev
-uploadPath: /tmp/internal/kubernetes/uploads/
+application:
+  hostname: http://localhost:8080
+  upload.path: /tmp/internal/kubernetes/uploads/
+  cloud:
+    storage:
+      account.name: vtchk8sblueprinttfst
+      container.name: fileStorage
+      account.key: secret
+      connection: secret
 ---
 spring:
   config:
     activate:
       on-profile: prod
-    import: configtree:/etc/config/
+    import: file:/etc/config/application-prod.yml
+---
+spring:
+  config:
+    activate:
+      on-profile: cloud
+    import: file:/etc/config/cloud/application-cloud.yml
