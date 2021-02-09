@@ -11,6 +11,6 @@ data:
       cloud:
         storage:
           account.name: vtchk8sblueprinttfst
-          container.name: fileStorage
+          container.name: filestorage
           account.key: ${STORAGE_ACCOUNT_KEY}
           connection: ${STORAGE_CONNECTION}

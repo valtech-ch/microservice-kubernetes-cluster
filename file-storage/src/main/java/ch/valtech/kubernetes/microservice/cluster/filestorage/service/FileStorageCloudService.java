@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -16,10 +17,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -27,11 +28,13 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Profile("dev")
+@Profile("cloud")
 @Service
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
-  
+
+  public static final String TMP_STORAGE_DOWNLOAD = "/tmp/file-storage/cloud/downloads/";
+
   private BlobContainerClient containerClient;
 
   public FileStorageCloudService(
@@ -51,6 +54,9 @@ public class FileStorageCloudService implements FileStorageService {
     } catch (BlobStorageException error) {
       if (error.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
         log.warn("Can't create container. It already exists");
+        containerClient = blobServiceClient.getBlobContainerClient(containerName);
+      } else {
+        throw error;
       }
     }
   }
@@ -74,12 +80,21 @@ public class FileStorageCloudService implements FileStorageService {
   
   @Override
   public URL getResourceUrl(String filename) {
-    return null;
+    try {
+      BlobClient blobClient = containerClient.getBlobClient(filename);
+      if (blobClient.exists()){
+        return new URL(blobClient.getBlobUrl());
+      } else {
+        throw new FileStorageException("File not found " + filename);
+      }
+    } catch (MalformedURLException ex) {
+      throw new FileStorageException("Could not get resource URL");
+    }
   }
 
   @Override
   public List<FileArtifact> loadAll() {
-    //todo should return even folders - check structure
+    log.info("Loading all files in cloud");
     return containerClient.listBlobs().stream()
         .map(blobItem -> FileArtifact.builder().filename(blobItem.getName()).build())
         .collect(Collectors.toList());
@@ -88,12 +103,14 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
-    String path = "/tmp/cloud/downloads/";
     try {
-      BlobClient blobClient = containerClient.getBlobClient(filename); //todo move to class
-      Files.createDirectories(Paths.get(path));
-      blobClient.downloadToFile(path + filename);
-      Path filePath = Paths.get(path).resolve(filename).normalize();
+      BlobClient blobClient = containerClient.getBlobClient(filename);
+      //persist to tmp directory
+      Files.createDirectories(Paths.get(TMP_STORAGE_DOWNLOAD));
+      FileUtils.cleanDirectory(new File(TMP_STORAGE_DOWNLOAD));
+      blobClient.downloadToFile(TMP_STORAGE_DOWNLOAD + filename);
+
+      Path filePath = Paths.get(TMP_STORAGE_DOWNLOAD).resolve(filename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
       if(resource.exists()) {
         return resource;
@@ -107,12 +124,25 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
-    containerClient.getBlobClient(filename).delete(); //todo to be checked
+    log.info("Deleting file {} from cloud", filename);
+    try {
+      containerClient.getBlobClient(filename).delete();
+    } catch (BlobStorageException ex) {
+      if (ex.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
+        throw new FileStorageException("File not found " + filename, ex);
+      } else {
+        throw ex;
+      }
+    }
   }
 
   @Override
   public void deleteAll() {
-    containerClient.delete();
+    try {
+      containerClient.delete();
+    } catch (BlobStorageException ex) {
+      throw new FileStorageException("Exception while deleting files");
+    }
   }
   
 }
