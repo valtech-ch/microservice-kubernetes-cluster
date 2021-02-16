@@ -8,6 +8,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -33,9 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
 
-  public static final String TMP_STORAGE_DOWNLOAD = "/tmp/file-storage/cloud/downloads/";
-
-  private BlobContainerClient containerClient;
+  private final BlobContainerClient containerClient;
 
   public FileStorageCloudService(
       @Value("${application.cloud.storage.account.name}") String accountName,
@@ -49,12 +49,13 @@ public class FileStorageCloudService implements FileStorageService {
         .credential(credential)
         .buildClient();
 
+    containerClient = blobServiceClient.getBlobContainerClient(containerName);
+
     try {
-      containerClient = blobServiceClient.createBlobContainer(containerName);
+      containerClient.create();
     } catch (BlobStorageException error) {
       if (error.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
         log.warn("Can't create container. It already exists");
-        containerClient = blobServiceClient.getBlobContainerClient(containerName);
       } else {
         throw error;
       }
@@ -103,22 +104,11 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
-    try {
-      BlobClient blobClient = containerClient.getBlobClient(filename);
-      //persist to tmp directory
-      Files.createDirectories(Paths.get(TMP_STORAGE_DOWNLOAD));
-      FileUtils.cleanDirectory(new File(TMP_STORAGE_DOWNLOAD));
-      blobClient.downloadToFile(TMP_STORAGE_DOWNLOAD + filename);
-
-      Path filePath = Paths.get(TMP_STORAGE_DOWNLOAD).resolve(filename).normalize();
-      Resource resource = new UrlResource(filePath.toUri());
-      if(resource.exists()) {
-        return resource;
-      } else {
-        throw new FileStorageException("File not found " + filename);
-      }
-    } catch (IOException ex) {
-      throw new FileStorageException("File not found " + filename, ex);
+    BlobClient blobClient = containerClient.getBlobClient(filename);
+    if (blobClient.exists()) {
+      return new InputStreamResource(blobClient.openInputStream());
+    } else {
+      throw new FileStorageException("File not found " + filename);
     }
   }
 
