@@ -1,0 +1,61 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.google.cloud.tools.jib' version '2.7.1'
+    id 'java'
+}
+
+apply plugin: "com.gorylenko.gradle-git-properties"
+
+project.description = 'filestorage'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+gitProperties {
+    keys = ['git.branch','git.commit.id','git.commit.time','git.commit.id.full']
+}
+
+springBoot {
+    buildInfo()
+}
+
+jib {
+    from {
+        image = 'adoptopenjdk/openjdk11:alpine-jre'
+    }
+    to {
+        image = "${docker_registry}/microservice-kubernetes-cluster/authentication"
+        auth {
+            username = "${docker_registry_username}"
+            password = "${docker_registry_password}"
+        }
+        tags = ["${gitHash}", 'latest']
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
