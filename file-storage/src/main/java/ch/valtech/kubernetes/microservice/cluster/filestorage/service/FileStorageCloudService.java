@@ -35,6 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
 
+  public static final String TMP_STORAGE_DOWNLOAD = "/tmp/file-storage/cloud/downloads/";
+
   private final BlobContainerClient containerClient;
 
   public FileStorageCloudService(
@@ -104,11 +106,22 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
-    BlobClient blobClient = containerClient.getBlobClient(filename);
-    if (blobClient.exists()) {
-      return new InputStreamResource(blobClient.openInputStream());
-    } else {
-      throw new FileStorageException("File not found " + filename);
+    try {
+      BlobClient blobClient = containerClient.getBlobClient(filename);
+      //persist to tmp directory
+      Files.createDirectories(Paths.get(TMP_STORAGE_DOWNLOAD));
+      FileUtils.cleanDirectory(new File(TMP_STORAGE_DOWNLOAD));
+      blobClient.downloadToFile(TMP_STORAGE_DOWNLOAD + filename);
+
+      Path filePath = Paths.get(TMP_STORAGE_DOWNLOAD).resolve(filename).normalize();
+      Resource resource = new UrlResource(filePath.toUri());
+      if(resource.exists()) {
+        return resource;
+      } else {
+        throw new FileStorageException("File not found " + filename);
+      }
+    } catch (IOException ex) {
+      throw new FileStorageException("File not found " + filename, ex);
     }
   }
 
