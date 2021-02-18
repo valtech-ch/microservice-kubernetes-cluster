@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +61,10 @@ public class FileStorageController {
   @ResponseBody public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
     Resource file = fileStorageService.loadAsResource(filename);
+    String downloadFilename = file.getFilename() != null ? file.getFilename()
+        : StringUtils.substringBetween(file.getDescription(), "[", "]");
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-        "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        "attachment; filename=\"" + downloadFilename + "\"").body(file);
   }
 
   @DeleteMapping("/file/{filename}")

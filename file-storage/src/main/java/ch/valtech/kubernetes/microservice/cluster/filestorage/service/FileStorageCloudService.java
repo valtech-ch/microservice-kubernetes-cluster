@@ -8,25 +8,18 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,8 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
-
-  public static final String TMP_STORAGE_DOWNLOAD = "/tmp/file-storage/cloud/downloads/";
 
   private final BlobContainerClient containerClient;
 
@@ -106,22 +97,11 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
-    try {
-      BlobClient blobClient = containerClient.getBlobClient(filename);
-      //persist to tmp directory
-      Files.createDirectories(Paths.get(TMP_STORAGE_DOWNLOAD));
-      FileUtils.cleanDirectory(new File(TMP_STORAGE_DOWNLOAD));
-      blobClient.downloadToFile(TMP_STORAGE_DOWNLOAD + filename);
-
-      Path filePath = Paths.get(TMP_STORAGE_DOWNLOAD).resolve(filename).normalize();
-      Resource resource = new UrlResource(filePath.toUri());
-      if(resource.exists()) {
-        return resource;
-      } else {
-        throw new FileStorageException("File not found " + filename);
-      }
-    } catch (IOException ex) {
-      throw new FileStorageException("File not found " + filename, ex);
+    BlobClient blobClient = containerClient.getBlobClient(filename);
+    if (blobClient.exists()) {
+      return new InputStreamResource(blobClient.openInputStream(), filename);
+    } else {
+      throw new FileStorageException("File not found " + filename);
     }
   }
 
