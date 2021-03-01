@@ -40,7 +40,7 @@ public class FileStorageController {
    * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
    */
   @SneakyThrows
-  @PostMapping(value = "/file", consumes = {"multipart/form-data"})
+  @PostMapping(value = "/files", consumes = {"multipart/form-data"})
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
     String fileName = fileStorageService.saveFile(file); // todo return id save to persistence -> later on
@@ -57,7 +57,7 @@ public class FileStorageController {
     return ResponseEntity.ok(fileStorageService.loadAll());
   }
 
-  @GetMapping("/file/{filename}")
+  @GetMapping("/files/{filename}")
   @ResponseBody public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
     Resource file = fileStorageService.loadAsResource(filename);
@@ -67,7 +67,7 @@ public class FileStorageController {
         "attachment; filename=\"" + downloadFilename + "\"").body(file);
   }
 
-  @DeleteMapping("/file/{filename}")
+  @DeleteMapping("/files/{filename}")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
     fileStorageService.deleteByFilename(filename);
     return ResponseEntity.noContent().build();

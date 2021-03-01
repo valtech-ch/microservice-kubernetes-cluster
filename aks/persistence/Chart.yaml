@@ -1,9 +1,7 @@
 apiVersion: v2
-name: cluster
-description: Persistence Api
+name: persistence
+description: Persistence API
 
 type: application
 
 version: 0.1.0
-
-appVersion: "1.16.0"

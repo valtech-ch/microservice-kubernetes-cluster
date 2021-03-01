@@ -1,9 +1,7 @@
 apiVersion: v2
-name: cluster
-description: File Storage
+name: filestorage
+description: File Storage API
 
 type: application
 
 version: 0.1.0
-
-appVersion: "1.16.0"

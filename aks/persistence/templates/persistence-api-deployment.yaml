@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: persistence-api
-          image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/persistence:latest
-          imagePullPolicy: Always
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8081
           env:
