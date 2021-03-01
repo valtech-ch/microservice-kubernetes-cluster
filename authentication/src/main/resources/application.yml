@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+server:
+  port: 8090
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+application:
+  jwt:
+    secret: secret
+    issuer: "microservice-kubernetes-cluster-auth"

@@ -20,7 +20,7 @@ public class PersistenceController {
     
   }
   
-  @PostMapping("/message")
+  @PostMapping("/messages")
   public ResponseEntity<MessageDTO> saveNewMessage(@RequestBody AuditingRequestDTO requestDTO) {
     MessageDTO newMessage = persistenceService.saveNewMessage(requestDTO);
     

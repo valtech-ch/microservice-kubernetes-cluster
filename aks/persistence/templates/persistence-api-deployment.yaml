@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persistence-api
+  namespace: default
+  labels:
+    app: persistence-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: persistence-api
+  template:
+    metadata:
+      labels:
+        app: persistence-api
+    spec:
+      containers:
+        - name: persistence-api
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: password
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mariadb-cm
+                  key: database-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: persistence-service
+  labels:
+    app: persistence-service
+spec:
+  selector:
+    app: persistence-api
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081

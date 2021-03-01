@@ -60,7 +60,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   addon_profile {
     kube_dashboard {
-      enabled = true
+      enabled = false
     }
   }
 
@@ -68,6 +68,32 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     Environment = "Demo"
   }
   depends_on = [tls_private_key.ssh_key]
+}
+
+
+resource "azurerm_mariadb_server" "mariadb_server" {
+  name                = "mariadb-svr"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
+  sku_name = "B_Gen5_1"
+
+  storage_mb                   = 51200
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+
+  administrator_login          = var.mariadb_username
+  administrator_login_password = var.mariadb_password
+  version                      = "10.3"
+  ssl_enforcement_enabled      = true
+}
+
+resource "azurerm_mariadb_database" "mariadb" {
+  name                = "mariadb_database"
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_mariadb_server.mariadb_server.name
+  charset             = "utf8"
+  collation           = "utf8_general_ci"
 }
 
 resource "tls_private_key" "ssh_key" {

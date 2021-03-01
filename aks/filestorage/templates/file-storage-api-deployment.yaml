@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: file-storage
-          image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
-          imagePullPolicy: Always
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
@@ -36,6 +36,18 @@ spec:
                   name: file-storage-cloud-secret
           ports:
             - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 2
           volumeMounts:
             - name: application-config
               mountPath: "/etc/config/"

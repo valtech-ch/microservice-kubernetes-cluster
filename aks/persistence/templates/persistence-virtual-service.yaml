@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: persistence
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - persistence-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /api/v1/messages
+      route:
+        - destination:
+            port:
+              number: 8081
+            host: persistence

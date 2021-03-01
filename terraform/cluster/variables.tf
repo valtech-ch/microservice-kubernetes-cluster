@@ -28,3 +28,11 @@ variable "container_registry_name" {
   description = "Container Registry Name"
   default     = "vtchk8sblueprintrg"
 }
+
+variable "mariadb_username" {
+  description = "Maria DB username login credential"
+}
+
+variable "mariadb_password" {
+  description = "Maria DB password login credential"
+}

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: filestorage
-description: File Storage API
+name: persistence
+description: Persistence API
 
 type: application
 

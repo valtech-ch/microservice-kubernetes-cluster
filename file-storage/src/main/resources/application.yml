@@ -17,7 +17,7 @@ application:
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst
-      container.name: fileStorage
+      container.name: filestorage
       account.key: secret
       connection: secret
 ---

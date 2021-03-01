@@ -42,23 +42,23 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public String saveFile(MultipartFile file) {
-    log.info(String.format("Adding a new file to path: %s", path));
+    log.info("Adding a new file to path: {}", path);
     if (file.isEmpty()) {
       throw new FileStorageException("File should not be empty");
     }
 
-    String fileName = file.getOriginalFilename();
+    String filename = file.getOriginalFilename();
     try (InputStream inputStream = file.getInputStream()) {
 
       Files.createDirectories(Paths.get(path));
-      Files.copy(inputStream, Paths.get(path + fileName),
+      Files.copy(inputStream, Paths.get(path + filename),
           StandardCopyOption.REPLACE_EXISTING);
-      log.info("File {} added successfully", fileName);
+      log.info("File {} added successfully", filename);
     } catch (IOException e) {
       String message = String.format("Failed to store file %s", file.getName());
       throw new FileStorageException(message, e);
     }
-    return fileName;
+    return filename;
   }
   
   @Override
@@ -84,18 +84,18 @@ public class FileStorageLocalService implements FileStorageService {
   }
 
   @Override
-  public Resource loadAsResource(String fileName) {
-    log.info("Loading file {} from: {}", fileName, path);
+  public Resource loadAsResource(String filename) {
+    log.info("Loading file {} from: {}", filename, path);
     try {
-      Path filePath = Paths.get(path).resolve(fileName).normalize();
+      Path filePath = Paths.get(path).resolve(filename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
       if(resource.exists()) {
         return resource;
       } else {
-        throw new FileStorageException("File not found " + fileName);
+        throw new FileStorageException("File not found " + filename);
       }
     } catch (MalformedURLException ex) {
-      throw new FileStorageException("File not found " + fileName, ex);
+      throw new FileStorageException("File not found " + filename, ex);
     }
   }
 
