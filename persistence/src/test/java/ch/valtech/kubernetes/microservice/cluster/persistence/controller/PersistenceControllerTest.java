@@ -46,7 +46,7 @@ public class PersistenceControllerTest {
         .key("Ab456")
         .messageValue("some message")
         .build();
-    mockMvc.perform(post("/api/v1/message")
+    mockMvc.perform(post("/api/v1/messages")
         .content(convertObjectToJsonBytes(request))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
