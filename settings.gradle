@@ -11,5 +11,5 @@ rootProject.name = 'microservice-kubernetes-cluster'
 
 include ':persistence'
 include ':file-storage'
-include 'authentication'
+include ':authentication'
 
