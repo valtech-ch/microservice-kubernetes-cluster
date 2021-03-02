@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '2.7.1'
+    id "org.flywaydb.flyway" version "7.5.4"
     id 'java'
     id 'java-library'
     id 'eclipse'
@@ -47,11 +48,21 @@ jib {
     }
 }
 
+flyway {
+    url = 'jdbc:mariadb://localhost:3306/messaging'
+    user = 'root'
+    password = 'root'
+    schemas = ['microservice-kubernetes-cluster']
+}
+
+flywayMigrate.dependsOn classes
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     compileOnly 'org.projectlombok:lombok'
+    compile "org.flywaydb:flyway-core:7.5.4"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'

@@ -8,6 +8,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.dto.MessageDTO;
 import ch.valtech.kubernetes.microservice.cluster.persistence.exception.PersistenceException;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.MessageRepository;
+import ch.valtech.kubernetes.microservice.cluster.persistence.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,10 +21,14 @@ public class PersistenceService {
   
   private final MessageRepository messageRepository;
   private final AuditingRepository auditingRepository;
-  
-  public PersistenceService(MessageRepository messageRepository, AuditingRepository auditingRepository) {
+  private final UserRepository userRepository;
+
+  public PersistenceService(MessageRepository messageRepository,
+      AuditingRepository auditingRepository,
+      UserRepository userRepository) {
     this.messageRepository = messageRepository;
     this.auditingRepository = auditingRepository;
+    this.userRepository = userRepository;
   }
   
   private Message getMessageByKey(String key) {
@@ -45,11 +50,15 @@ public class PersistenceService {
   
   private void addAuditRecord(AuditingRequestDTO requestDTO) {
     Auditing auditing = new Auditing();
-    auditing.setUser(new User(requestDTO.getEmail()));
+    auditing.setUser(getOrCreateUser(requestDTO.getEmail()));
     auditing.setMessage(new Message(requestDTO.getKey(), requestDTO.getMessageValue()));
     auditing.setModificationDate(LocalDate.now());
     
     auditingRepository.saveAndFlush(auditing);
   }
- 
+
+  private User getOrCreateUser(String email) {
+    return userRepository.findByEmail(email).orElse(new User(email));
+  }
+
 }
