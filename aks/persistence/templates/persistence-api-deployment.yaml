@@ -41,6 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: default
   name: persistence-service
   labels:
     app: persistence-service
