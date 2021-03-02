@@ -5,6 +5,7 @@ networks:
 
 volumes:
   filestorage:
+  persistence:
 
 services:
   filestorage:
@@ -19,3 +20,27 @@ services:
      - 8080:8080
     volumes:
       - filestorage:/etc/file-storage/uploads
+
+  persistence:
+    image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/persistence:latest
+    container_name: persistence
+    networks:
+      - services
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/messaging
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+     - 8081:8081
+
+  mariadb:
+    image: library/mariadb:10.5
+    networks:
+      - services
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=messaging
+    restart: always
+    volumes:
+      - persistence:/var/lib/mysql
