@@ -7,7 +7,7 @@ spec:
   hosts:
     - "*"
   gateways:
-    - file-storage-gateway
+    - application-gateway
   http:
     - match:
         - uri:

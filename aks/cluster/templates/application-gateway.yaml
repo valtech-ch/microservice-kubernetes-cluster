@@ -1,14 +1,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: persistence-gateway
+  name: application-gateway
   namespace: default
 spec:
   selector:
     istio: ingressgateway # use istio default ingress gateway
   servers:
     - port:
-        number: 81
+        number: 80
         name: http
         protocol: HTTP
       hosts:
