@@ -1,0 +1,21 @@
+version: '3.8'
+networks:
+  services:
+    name: cluster
+
+volumes:
+  filestorage:
+
+services:
+  filestorage:
+    image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage:latest
+    container_name: filestorage
+    networks:
+      - services
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - APPLICATION_UPLOAD_PATH=/etc/file-storage/uploads/
+    ports:
+     - 8080:8080
+    volumes:
+      - filestorage:/etc/file-storage/uploads
