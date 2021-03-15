@@ -8,7 +8,8 @@ spring:
   config:
     activate:
       on-profile: dev
-application:
-  jwt:
-    secret: secret
-    issuer: "microservice-kubernetes-cluster-auth"
+jwt:
+  clientId: kubernetes-cluster
+  client-secret: secret
+  accessTokenValiditySeconds: 1200
+  refreshTokenValiditySeconds: 12000

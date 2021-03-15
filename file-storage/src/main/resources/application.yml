@@ -11,6 +11,16 @@ spring:
   config:
     activate:
       on-profile: dev
+security:
+  oauth2:
+    client:
+      clientId: kubernetes-cluster
+      clientSecret: secret
+    resource:
+      token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
+    basic:
+      enabled: false
 application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
