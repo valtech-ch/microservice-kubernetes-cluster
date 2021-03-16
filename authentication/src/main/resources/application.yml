@@ -3,13 +3,16 @@ spring:
     active: dev
 server:
   port: 8090
+application:
+  hostname: http://localhost:8090
+  jwt:
+    client:
+      id: kubernetes-cluster
+      secret: secret
+    access.token.validity: 1200
+    refresh.token.validity: 12000
 ---
 spring:
   config:
     activate:
       on-profile: dev
-jwt:
-  clientId: kubernetes-cluster
-  client-secret: secret
-  accessTokenValiditySeconds: 1200
-  refreshTokenValiditySeconds: 12000

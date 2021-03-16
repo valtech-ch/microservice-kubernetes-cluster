@@ -28,8 +28,8 @@ application:
     storage:
       account.name: vtchk8sblueprinttfst
       container.name: filestorage
-      account.key: secret
-      connection: secret
+      account.key: 0r+mVj+YX8R4IC0boWZdWwhtbP83O9AcrEb1kWUjkw9D/RLg9scf27Ag64IYTVymgt5GNTV5SIyg2Nc3UnBfpg==
+      connection: DefaultEndpointsProtocol=https;AccountName=vtchk8sblueprinttfst;AccountKey=0r+mVj+YX8R4IC0boWZdWwhtbP83O9AcrEb1kWUjkw9D/RLg9scf27Ag64IYTVymgt5GNTV5SIyg2Nc3UnBfpg==;EndpointSuffix=core.windows.net
 ---
 spring:
   config:
