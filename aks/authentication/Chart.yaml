@@ -1,7 +1,9 @@
 apiVersion: v2
 name: authentication
-description: Authentication service
+description: Authentication API
 
 type: application
 
 version: 0.1.0
+
+appVersion: "1.16.0"
