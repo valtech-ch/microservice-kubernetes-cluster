@@ -52,7 +52,7 @@ spec:
             - name: application-config
               mountPath: "/etc/config/"
       volumes:
-      - name: application-config
+        - name: application-config
           configMap:
             name: authentication-config
             items:
