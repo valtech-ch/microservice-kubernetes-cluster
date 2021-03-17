@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 @Configuration
+@EnableConfigurationProperties
 @EnableAuthorizationServer
 public class AuthenticationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
@@ -43,11 +44,11 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
 
   public AuthenticationServerConfiguration(AuthenticationManager authenticationManager,
       PasswordEncoder passwordEncoder,
-      @Value("${jwt.client.id:kubernetes-cluster}") String clientId,
-      @Value("${jwt.client.secret:secret}") String clientSecret,
-      @Value("${jwt.authorizedGrantTypes:password,authorization_code,refresh_token}") String[] authorizedGrantTypes,
-      @Value("${jwt.access.token.validity:43200}") int accessTokenValiditySeconds,
-      @Value("${jwt.refresh.token.validity:2592000}") int refreshTokenValiditySeconds,
+      @Value("${application.jwt.client.id}") String clientId,
+      @Value("${application.jwt.client.secret}") String clientSecret,
+      @Value("${application.jwt.authorizedGrantTypes:password,authorization_code,refresh_token}") String[] authorizedGrantTypes,
+      @Value("${application.jwt.access.token.validity}") int accessTokenValiditySeconds,
+      @Value("${application.jwt.refresh.token.validity}") int refreshTokenValiditySeconds,
       @Value("${application.hostname}") String hostname,
       @Value("${application.signing.key}") String signingKey) {
     this.authenticationManager = authenticationManager;
