@@ -48,22 +48,14 @@ jib {
     }
 }
 
-flyway {
-    url = 'jdbc:mariadb://localhost:3306/messaging'
-    user = 'root'
-    password = 'root'
-    schemas = ['microservice-kubernetes-cluster']
-}
-
-flywayMigrate.dependsOn classes
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    implementation "org.flywaydb:flyway-core:7.5.4"
     compileOnly 'org.projectlombok:lombok'
-    compile "org.flywaydb:flyway-core:7.5.4"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'com.h2database:h2:1.4.200'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
