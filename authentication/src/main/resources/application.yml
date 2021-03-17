@@ -6,6 +6,12 @@ server:
 application:
   hostname: http://localhost:8090
   signing.key: microservice-kubernetes-cluster-auth
+  user:
+    username: user
+    password: user
+  admin:
+    username: admin
+    password: admin
   jwt:
     client:
       id: kubernetes-cluster

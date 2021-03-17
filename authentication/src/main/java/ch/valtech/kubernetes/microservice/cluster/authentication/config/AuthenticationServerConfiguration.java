@@ -27,8 +27,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
 
   private final PasswordEncoder passwordEncoder;
 
-  private final UserDetailsService userService;
-
   private String clientId;
 
   private String clientSecret;
@@ -45,7 +43,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
 
   public AuthenticationServerConfiguration(AuthenticationManager authenticationManager,
       PasswordEncoder passwordEncoder,
-      UserDetailsService userService,
       @Value("${jwt.client.id:kubernetes-cluster}") String clientId,
       @Value("${jwt.client.secret:secret}") String clientSecret,
       @Value("${jwt.authorizedGrantTypes:password,authorization_code,refresh_token}") String[] authorizedGrantTypes,
@@ -55,7 +52,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
       @Value("${application.signing.key}") String signingKey) {
     this.authenticationManager = authenticationManager;
     this.passwordEncoder = passwordEncoder;
-    this.userService = userService;
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.authorizedGrantTypes = authorizedGrantTypes;
@@ -82,7 +78,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     chain.setTokenEnhancers(List.of(tokenEnhancer(), accessTokenConverter()));
     endpoints
         .accessTokenConverter(accessTokenConverter())
-        .userDetailsService(userService)
         .authenticationManager(authenticationManager)
         .tokenEnhancer(chain);
   }

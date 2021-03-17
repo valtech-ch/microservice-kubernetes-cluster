@@ -34,6 +34,21 @@ spec:
                 secretKeyRef:
                   name: authentication-secret
                   key: client-secret
+            - name: APPLICATION_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: signing-key
+            - name: APPLICATION_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: user-password
+            - name: APPLICATION_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: admin-password
           ports:
             - containerPort: 80
 #          livenessProbe:
