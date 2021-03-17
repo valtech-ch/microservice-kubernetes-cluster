@@ -19,8 +19,6 @@ spec:
         - name: persistence-api
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - containerPort: 8081
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
