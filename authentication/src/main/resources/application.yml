@@ -3,6 +3,11 @@ spring:
     active: dev
 server:
   port: 8090
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 application:
   hostname: http://localhost:8090
   signing.key: microservice-kubernetes-cluster-auth
