@@ -6,18 +6,18 @@ CREATE TABLE user (
 
 /* message table */
 CREATE TABLE message (
-    keyId VARCHAR(100) NOT NULL,
+    key_id VARCHAR(100) NOT NULL,
     value VARCHAR(250),
-    PRIMARY KEY (keyId)
+    PRIMARY KEY (key_id)
 );
 
 /* auditing table */
 CREATE TABLE auditing (
-    id SERIAL,
-    modificationDate DATE,
-    user VARCHAR(100),
-    message VARCHAR(100),
+    id BIGINT AUTO_INCREMENT,
+    modification_date DATE,
+    user_email VARCHAR(100),
+    message_key_id VARCHAR(100),
     PRIMARY KEY (id),
-    CONSTRAINT fk_auditing_user foreign key (user) references user (email) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT fk_auditing_message foreign key (message) references message (keyId) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT fk_auditing_user foreign key (user_email) references user (email) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT fk_auditing_message foreign key (message_key_id) references message (key_id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );

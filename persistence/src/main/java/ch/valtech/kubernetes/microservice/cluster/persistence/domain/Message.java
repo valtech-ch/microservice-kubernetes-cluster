@@ -21,7 +21,7 @@ import lombok.ToString;
 public class Message {
 
   @Id
-  @Column(name = "keyId")
+  @Column(name = "key_id")
   private String keyId;
 
   @Column(name = "value")
