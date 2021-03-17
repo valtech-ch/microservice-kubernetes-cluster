@@ -5,6 +5,7 @@ server:
   port: 8090
 application:
   hostname: http://localhost:8090
+  signing.key: microservice-kubernetes-cluster-auth
   jwt:
     client:
       id: kubernetes-cluster

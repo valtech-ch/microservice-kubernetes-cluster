@@ -9,6 +9,7 @@ data:
   application-prod.yml: |-
     application:
       hostname: http://vtch-aks-demo.duckdns.org
+      signing.key: microservice-kubernetes-cluster-auth
       jwt:
         client:
           id: ${CLIENT_ID}

@@ -41,6 +41,8 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
 
   private String hostname;
 
+  private String signingKey;
+
   public AuthenticationServerConfiguration(AuthenticationManager authenticationManager,
       PasswordEncoder passwordEncoder,
       UserDetailsService userService,
@@ -49,7 +51,8 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
       @Value("${jwt.authorizedGrantTypes:password,authorization_code,refresh_token}") String[] authorizedGrantTypes,
       @Value("${jwt.access.token.validity:43200}") int accessTokenValiditySeconds,
       @Value("${jwt.refresh.token.validity:2592000}") int refreshTokenValiditySeconds,
-      @Value("${application.hostname}") String hostname) {
+      @Value("${application.hostname}") String hostname,
+      @Value("${application.signing.key}") String signingKey) {
     this.authenticationManager = authenticationManager;
     this.passwordEncoder = passwordEncoder;
     this.userService = userService;
@@ -59,6 +62,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
     this.hostname = hostname;
+    this.signingKey = signingKey;
   }
 
   @Override
@@ -69,8 +73,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
         .accessTokenValiditySeconds(accessTokenValiditySeconds)
         .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
         .authorizedGrantTypes(authorizedGrantTypes)
-        .scopes("read", "write")
-        .resourceIds("api");
+        .scopes("read", "write");
   }
 
   @Override
@@ -92,7 +95,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
   @Bean
   JwtAccessTokenConverter accessTokenConverter() {
     JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-    converter.setSigningKey("microservice-kubernetes-cluster-auth");
+    converter.setSigningKey(signingKey);
     return converter;
   }
 
