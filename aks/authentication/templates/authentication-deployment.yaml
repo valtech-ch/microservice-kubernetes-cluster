@@ -49,8 +49,6 @@ spec:
                 secretKeyRef:
                   name: authentication-secret
                   key: admin-password
-          ports:
-            - containerPort: 80
 #          livenessProbe:
 #            httpGet:
 #              path: /

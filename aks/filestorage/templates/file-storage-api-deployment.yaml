@@ -34,8 +34,6 @@ spec:
                 secretKeyRef:
                   key: STORAGE_CONNECTION
                   name: file-storage-cloud-secret
-          ports:
-            - containerPort: 80
           livenessProbe:
             httpGet:
               path: /
