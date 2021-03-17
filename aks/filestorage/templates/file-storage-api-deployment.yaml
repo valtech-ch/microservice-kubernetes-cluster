@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
+              value: "cloud"
             - name: STORAGE_ACCOUNT_KEY
               valueFrom:
                 secretKeyRef:
@@ -49,22 +49,22 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 2
           volumeMounts:
-            - name: application-config
-              mountPath: "/etc/config/"
+#            - name: application-config
+#              mountPath: "/etc/config/"
             - name: application-cloud-config
               mountPath: "/etc/config/cloud/"
-            - name: file-storage-pv
-              mountPath: "/etc/file-storage/uploads"
+#            - name: file-storage-pv
+#              mountPath: "/etc/file-storage/uploads"
       volumes:
-        - name: file-storage-pv
-          persistentVolumeClaim:
-            claimName: file-storage-pvc
-        - name: application-config
-          configMap:
-            name: file-storage-config
-            items:
-              - key: application-prod.yml
-                path: application-prod.yml
+#        - name: file-storage-pv
+#          persistentVolumeClaim:
+#            claimName: file-storage-pvc
+#        - name: application-config
+#          configMap:
+#            name: file-storage-config
+#            items:
+#              - key: application-prod.yml
+#                path: application-prod.yml
         - name: application-cloud-config
           configMap:
             name: file-storage-cloud-config

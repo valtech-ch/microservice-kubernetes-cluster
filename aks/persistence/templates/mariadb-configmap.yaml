@@ -4,4 +4,4 @@ metadata:
   name: mariadb-cm
   namespace: default
 data:
-  database-url: jdbc:mariadb://mariadb-svr.mariadb.database.azure.com:3306/messaging;
+  database-url: jdbc:mariadb://mariadb-svr.mariadb.database.azure.com:3306/messaging?useSSL=true

@@ -3,12 +3,17 @@ spring:
     active: dev
 server:
   port: 8090
+application:
+  hostname: http://localhost:8090
+  signing.key: microservice-kubernetes-cluster-auth
+  jwt:
+    client:
+      id: kubernetes-cluster
+      secret: secret
+    access.token.validity: 1200
+    refresh.token.validity: 12000
 ---
 spring:
   config:
     activate:
       on-profile: dev
-application:
-  jwt:
-    secret: secret
-    issuer: "microservice-kubernetes-cluster-auth"

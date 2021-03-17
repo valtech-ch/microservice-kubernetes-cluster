@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication
+  namespace: default
+  labels:
+    app: authentication
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: authentication
+    spec:
+      containers:
+        - name: authentication
+          image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/authentication:latest
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: APPLICATION_JWT_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: client-id
+            - name: APPLICATION_JWT_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: client-secret
+          ports:
+            - containerPort: 80
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: 8080
+#            initialDelaySeconds: 15
+#            periodSeconds: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: 8080
+#            initialDelaySeconds: 10
+#            periodSeconds: 2
+          volumeMounts:
+            - name: application-config
+              mountPath: "/etc/config/"
+      volumes:
+        - name: application-config
+          configMap:
+            name: authentication-config
+            items:
+              - key: application-prod.yml
+                path: application-prod.yml

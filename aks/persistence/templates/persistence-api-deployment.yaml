@@ -45,6 +45,7 @@ metadata:
   name: persistence-service
   labels:
     app: persistence-service
+    service: persistence-service
 spec:
   selector:
     app: persistence-api
