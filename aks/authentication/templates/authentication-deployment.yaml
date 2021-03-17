@@ -24,27 +24,27 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
-            - name: APPLICATION_JWT_CLIENT_ID
+            - name: CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: authentication-secret
                   key: client-id
-            - name: APPLICATION_JWT_CLIENT_SECRET
+            - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: authentication-secret
                   key: client-secret
-            - name: APPLICATION_SIGNING_KEY
+            - name: SIGNING_KEY
               valueFrom:
                 secretKeyRef:
                   name: authentication-secret
                   key: signing-key
-            - name: APPLICATION_USER_PASSWORD
+            - name: USER_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: authentication-secret
                   key: user-password
-            - name: APPLICATION_ADMIN_PASSWORD
+            - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: authentication-secret
