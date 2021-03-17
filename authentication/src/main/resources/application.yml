@@ -22,4 +22,5 @@ application:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
+    import: file:/etc/config/application-cloud.yml
