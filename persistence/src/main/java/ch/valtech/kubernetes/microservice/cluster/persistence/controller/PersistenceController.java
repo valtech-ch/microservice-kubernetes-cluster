@@ -12,18 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 public class PersistenceController {
-  
+
   private final PersistenceService persistenceService;
-  
+
   public PersistenceController(PersistenceService persistenceService) {
     this.persistenceService = persistenceService;
-    
   }
-  
+
   @PostMapping("/messages")
   public ResponseEntity<MessageDTO> saveNewMessage(@RequestBody AuditingRequestDTO requestDTO) {
     MessageDTO newMessage = persistenceService.saveNewMessage(requestDTO);
-    
     return ResponseEntity.ok(newMessage);
   }
+
 }

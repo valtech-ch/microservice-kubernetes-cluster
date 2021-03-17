@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MessageRepository extends CrudRepository<Message, String> {
-  
+
   Optional<Message> findByKeyId(@Param("key") String key);
-  
+
 }
