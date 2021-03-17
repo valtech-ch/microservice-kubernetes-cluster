@@ -7,13 +7,11 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingReques
 import ch.valtech.kubernetes.microservice.cluster.persistence.dto.MessageDTO;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.MessageRepository;
-import org.junit.jupiter.api.BeforeAll;
+import ch.valtech.kubernetes.microservice.cluster.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -32,11 +30,13 @@ public class PersistenceServiceTest {
   private AuditingRepository auditingRepository;
   @Mock
   private MessageRepository messageRepository;
+  @Mock
+  private UserRepository userRepository;
   
   
   @BeforeEach
   public void setUp() {
-    persistenceService = new PersistenceService(messageRepository, auditingRepository);
+    persistenceService = new PersistenceService(messageRepository, auditingRepository, userRepository);
   }
   
   @Test
