@@ -22,6 +22,8 @@ spec:
           ports:
             - containerPort: 8081
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
