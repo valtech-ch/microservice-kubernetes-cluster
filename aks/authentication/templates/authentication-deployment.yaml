@@ -50,18 +50,18 @@ spec:
                 secretKeyRef:
                   name: authentication-secret
                   key: admin-password
-#          livenessProbe:
-#            httpGet:
-#              path: /auth
-#              port: 8080
-#            initialDelaySeconds: 15
-#            periodSeconds: 5
-#          readinessProbe:
-#            httpGet:
-#              path: /auth
-#              port: 8080
-#            initialDelaySeconds: 10
-#            periodSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /auth/actuator/health/liveness
+              port: 8090
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /auth/actuator/health/readiness
+              port: 8090
+            initialDelaySeconds: 15
+            periodSeconds: 2
           volumeMounts:
             - name: application-config
               mountPath: "/etc/config/"
