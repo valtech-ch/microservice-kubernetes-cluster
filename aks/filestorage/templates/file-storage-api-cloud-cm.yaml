@@ -7,6 +7,16 @@ metadata:
   namespace: default
 data:
   application-cloud.yml: |-
+    security:
+      oauth2:
+        client:
+          clientId: ${CLIENT_ID}
+          clientSecret: ${CLIENT_SECRET}
+        resource:
+          token-info-uri: http://10.244.2.86:8090/auth/oauth/check_token
+          preferTokenInfo: true
+        basic:
+          enabled: false
     application:
       swaggerApiPrefix: /filestorage/
       cloud:
