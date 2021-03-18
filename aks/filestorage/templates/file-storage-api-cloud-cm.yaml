@@ -8,6 +8,7 @@ metadata:
 data:
   application-cloud.yml: |-
     application:
+      swaggerApiPrefix: /filestorage/
       cloud:
         storage:
           account.name: vtchk8sblueprinttfst

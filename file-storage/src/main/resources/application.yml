@@ -26,6 +26,7 @@ security:
 application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
+  swaggerApiPrefix: /
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst
