@@ -6,11 +6,6 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 1MB
----
-spring:
-  config:
-    activate:
-      on-profile: dev
 security:
   oauth2:
     client:
@@ -21,6 +16,11 @@ security:
       preferTokenInfo: true
     basic:
       enabled: false
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/

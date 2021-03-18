@@ -8,7 +8,7 @@ metadata:
 data:
   application-prod.yml: |-
     application:
-      hostname: http://vtch-aks-demo.duckdns.org
+      hostname: https://vtch-aks-demo.duckdns.org
       signing.key: ${SIGNING_KEY}
       user:
         username: user
