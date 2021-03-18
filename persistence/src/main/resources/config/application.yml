@@ -22,8 +22,6 @@ spring:
       enabled: true
   flyway:
     locations: classpath:db/migration/h2
-application:
-  swaggerApiPrefix: /
 ---
 spring:
   config:
@@ -36,5 +34,6 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
     locations: classpath:db/migration/mariadb
-application:
-  swaggerApiPrefix: /persistence/
+server:
+  servlet:
+    context-path: /persistence

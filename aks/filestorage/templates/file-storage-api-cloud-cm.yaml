@@ -7,8 +7,10 @@ metadata:
   namespace: default
 data:
   application-cloud.yml: |-
+    server:
+      servlet:
+        context-path: /filestorage
     application:
-      swaggerApiPrefix: /filestorage/
       cloud:
         storage:
           account.name: vtchk8sblueprinttfst
