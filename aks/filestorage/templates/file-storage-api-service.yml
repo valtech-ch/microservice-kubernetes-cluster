@@ -8,7 +8,7 @@ metadata:
     service: file-storage
     annotations:
       prometheus.io/scrape: 'true'
-      prometheus.io/path: 'filestorage/actuator/prometheus'
+      prometheus.io/path: '/filestorage/actuator/prometheus'
       prometheus.io/port: '8080'
 spec:
   ports:

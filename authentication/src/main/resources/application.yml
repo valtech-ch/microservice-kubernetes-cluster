@@ -3,6 +3,11 @@ spring:
     active: dev
 server:
   port: 8090
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring:
   config:
@@ -29,10 +34,3 @@ spring:
     activate:
       on-profile: prod
     import: file:/etc/config/application-prod.yml
-
----
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"

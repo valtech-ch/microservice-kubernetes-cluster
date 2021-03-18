@@ -9,6 +9,11 @@ spring:
 server:
   servlet:
     context-path: /lukas
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring:
   config:
@@ -45,10 +50,3 @@ spring:
     activate:
       on-profile: cloud
     import: file:/etc/config/cloud/application-cloud.yml
-
----
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
