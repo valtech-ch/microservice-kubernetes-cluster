@@ -38,6 +38,18 @@ spec:
                 configMapKeyRef:
                   name: mariadb-cm
                   key: database-url
+          livenessProbe:
+            httpGet:
+              path: /persistence/actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /persistence/actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 2
 ---
 apiVersion: v1
 kind: Service
@@ -47,6 +59,10 @@ metadata:
   labels:
     app: persistence-service
     service: persistence-service
+    annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/path: '/persistence/actuator/prometheus'
+      prometheus.io/port: '8081'
 spec:
   selector:
     app: persistence-api

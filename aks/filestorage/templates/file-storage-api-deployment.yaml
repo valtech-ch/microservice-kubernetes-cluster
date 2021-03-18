@@ -35,15 +35,25 @@ spec:
                 secretKeyRef:
                   key: STORAGE_CONNECTION
                   name: file-storage-cloud-secret
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: client-id
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: client-secret
           livenessProbe:
             httpGet:
-              path: /filestorage
+              path: /filestorage/actuator/health/liveness
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 5
           readinessProbe:
             httpGet:
-              path: /filestorage
+              path: /filestorage/actuator/health/readiness
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 2
