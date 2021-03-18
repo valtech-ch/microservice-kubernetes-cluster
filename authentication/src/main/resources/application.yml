@@ -11,6 +11,7 @@ spring:
 application:
   hostname: http://localhost:8090
   signing.key: microservice-kubernetes-cluster-auth
+  swaggerApiPrefix: /
   user:
     username: user
     password: user
