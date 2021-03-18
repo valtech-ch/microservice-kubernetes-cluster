@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,13 +14,19 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SpringFoxConfig {
 
+  private final String swaggerApiPrefix;
+
+  public SpringFoxConfig(@Value("${application.swaggerApiPrefix}") String swaggerApiPrefix) {
+    this.swaggerApiPrefix = swaggerApiPrefix;
+  }
+
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2)
         .pathProvider(new DefaultPathProvider() {
           @Override
           public String getOperationPath(String operationPath) {
-            UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath("/filestorage/");
+            UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath(swaggerApiPrefix);
             return Paths.removeAdjacentForwardSlashes(uriComponentsBuilder.path(operationPath).build().toString());
           }
         })
