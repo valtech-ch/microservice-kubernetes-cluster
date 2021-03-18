@@ -23,7 +23,7 @@ repositories {
 }
 
 gitProperties {
-    keys = ['git.branch','git.commit.id','git.commit.time','git.commit.id.full']
+    keys = ['git.branch', 'git.commit.id', 'git.commit.time', 'git.commit.id.full']
 }
 
 springBoot {
@@ -50,7 +50,8 @@ dependencies {
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.13.RELEASE'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
-
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compile'io.micrometer:micrometer-registry-prometheus:latest.release'
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'

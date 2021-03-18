@@ -29,3 +29,10 @@ spring:
     activate:
       on-profile: prod
     import: file:/etc/config/application-prod.yml
+
+---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

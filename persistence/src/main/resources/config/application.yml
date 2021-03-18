@@ -34,3 +34,10 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
     locations: classpath:db/migration/mariadb
+
+---
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
