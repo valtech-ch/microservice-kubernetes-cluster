@@ -10,6 +10,7 @@ data:
     application:
       hostname: https://vtch-aks-demo.duckdns.org
       signing.key: ${SIGNING_KEY}
+      swaggerApiPrefix: /auth/
       user:
         username: user
         password: ${USER_PASSWORD}
