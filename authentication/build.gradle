@@ -3,6 +3,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '2.7.1'
     id 'java'
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
 }
 
 apply plugin: "com.gorylenko.gradle-git-properties"
