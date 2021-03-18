@@ -3,6 +3,11 @@ spring:
     active: dev
 server:
   port: 8090
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 ---
 spring:
   config:

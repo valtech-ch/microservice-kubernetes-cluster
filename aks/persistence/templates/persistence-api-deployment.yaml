@@ -59,6 +59,10 @@ metadata:
   labels:
     app: persistence-service
     service: persistence-service
+    annotations:
+      prometheus.io/scrape: 'true'
+      prometheus.io/path: '/persistence/actuator/prometheus'
+      prometheus.io/port: '8081'
 spec:
   selector:
     app: persistence-api
