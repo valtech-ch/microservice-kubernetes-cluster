@@ -7,6 +7,9 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
+    server:
+      servlet:
+        context-path: /auth
     application:
       hostname: https://vtch-aks-demo.duckdns.org
       signing.key: ${SIGNING_KEY}

@@ -7,6 +7,9 @@ metadata:
   namespace: default
 data:
   application-cloud.yml: |-
+    server:
+      servlet:
+        context-path: /filestorage
     application:
       cloud:
         storage:

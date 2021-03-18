@@ -34,6 +34,9 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
     locations: classpath:db/migration/mariadb
+server:
+  servlet:
+    context-path: /persistence
 
 ---
 management:
