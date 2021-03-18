@@ -37,13 +37,13 @@ spec:
                   name: file-storage-cloud-secret
           livenessProbe:
             httpGet:
-              path: /
+              path: /filestorage
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 5
           readinessProbe:
             httpGet:
-              path: /
+              path: /filestorage
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 2
