@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: prometheus-cert
+  namespace: istio-system
+spec:
+  secretName: prometheus-cert
+  commonName: vtch-aks-demo-prometheus.duckdns.org
+  issuerRef:
+    name: letsencrypt
+  dnsNames:
+    - vtch-aks-demo-prometheus.duckdns.org
