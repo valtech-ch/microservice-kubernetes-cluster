@@ -12,22 +12,22 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-    @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId(null);
-    }
+  @Override
+  public void configure(ResourceServerSecurityConfigurer resources) {
+    resources.resourceId(null);
+  }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .antMatcher("/api/**")
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/files/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-                .antMatchers(HttpMethod.POST, "/api/files/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/**").authenticated()
-                .anyRequest().authenticated();
-    }
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .antMatcher("/api/**")
+        .authorizeRequests()
+        .antMatchers(HttpMethod.GET, "/api/files/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+        .antMatchers(HttpMethod.POST, "/api/files/**").hasAuthority("ROLE_ADMIN")
+        .antMatchers("/api/**").authenticated()
+        .anyRequest().authenticated();
+  }
 
 }

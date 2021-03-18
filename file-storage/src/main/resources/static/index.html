@@ -8,7 +8,7 @@
 <body>
 <h1>Uploading file</h1>
 
-<form action="/api/files" method="post" enctype="multipart/form-data">
+<form action="api/files" method="post" enctype="multipart/form-data">
   <label>Enter file</label>
   <input type="file" name="file">
   <button type="submit">Upload</button>
@@ -28,16 +28,16 @@
 
   $(document).ready(function(){
 
-    $.get( "/api/files", function( data ) {
+    $.get( "api/files", function( data ) {
       $.each( data, function (item, value){
-        $( "#list-files" ).append( '<li><a href="/api/files/' + value.filename + '" target="_blank">' + value.filename + '</a><button data-filename="'+ value.filename +'">Delete</button></li>');
+        $( "#list-files" ).append( '<li><a href="api/files/' + value.filename + '" target="_blank">' + value.filename + '</a><button data-filename="'+ value.filename +'">Delete</button></li>');
       });
     });
 
     $(document).on('click', "#list-files li button", function () {
       var fileName = $(this).attr('data-filename');
       $.ajax({
-        url: '/api/files/' + fileName,
+        url: 'api/files/' + fileName,
         type: 'DELETE'
       })
     })
