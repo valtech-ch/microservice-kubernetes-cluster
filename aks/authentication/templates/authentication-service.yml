@@ -6,6 +6,10 @@ metadata:
   labels:
     app: authentication
     service: authentication
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/actuator/prometheus'
+    prometheus.io/port: '8080'
 spec:
   ports:
     - name: http
