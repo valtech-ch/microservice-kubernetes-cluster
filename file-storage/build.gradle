@@ -26,7 +26,7 @@ repositories {
 }
 
 gitProperties {
-	keys = ['git.branch','git.commit.id','git.commit.time','git.commit.id.full']
+	keys = ['git.branch', 'git.commit.id', 'git.commit.time', 'git.commit.id.full']
 }
 
 springBoot {
