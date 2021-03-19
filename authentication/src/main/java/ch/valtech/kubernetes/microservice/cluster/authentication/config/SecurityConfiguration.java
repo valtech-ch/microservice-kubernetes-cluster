@@ -40,7 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(WebSecurity web) throws Exception {
-    web.ignoring().antMatchers("/actuator/health/*");
+    web.ignoring()
+        .antMatchers("/actuator/health/*")
+        .antMatchers("/actuator/prometheus");
   }
 
   @Bean
