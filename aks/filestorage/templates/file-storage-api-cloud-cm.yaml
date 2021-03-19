@@ -16,7 +16,7 @@ data:
           clientId: ${CLIENT_ID}
           clientSecret: ${CLIENT_SECRET}
         resource:
-          token-info-uri: http://10.244.2.86:8090/auth/oauth/check_token
+          token-info-uri: http://authentication.default.svc.cluster.local:8080/auth/oauth/check_token
           preferTokenInfo: true
         basic:
           enabled: false
