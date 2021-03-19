@@ -27,6 +27,16 @@ spring:
       enabled: true
   flyway:
     locations: classpath:db/migration/h2
+security:
+  oauth2:
+    client:
+      clientId: kubernetes-cluster
+      clientSecret: secret
+    resource:
+      token-info-uri: http://localhost:8090/oauth/check_token
+      preferTokenInfo: true
+    basic:
+      enabled: false
 ---
 spring:
   config:
