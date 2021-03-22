@@ -23,7 +23,4 @@ jobs:
       env:
         CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
     - name: SonarQube Scan
-      uses: kitabisa/sonarqube-action@v1.1.0
-      with:
-        host: ${{ secrets.SONARQUBE_HOST }}
-        login: ${{ secrets.SONARQUBE_TOKEN }}
+      run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
