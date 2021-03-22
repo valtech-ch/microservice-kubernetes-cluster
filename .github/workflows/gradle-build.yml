@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    environment: Demo
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -19,3 +20,5 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        CI_PASSWORD: ${{ secrets.CI_PASSWORD }}

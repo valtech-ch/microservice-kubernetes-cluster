@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: argocd-cert
+  namespace: istio-system
+spec:
+  secretName: argocd-cert
+  commonName: vtch-aks-demo-argocd.duckdns.org
+  issuerRef:
+    name: letsencrypt
+  dnsNames:
+    - vtch-aks-demo-argocd.duckdns.org

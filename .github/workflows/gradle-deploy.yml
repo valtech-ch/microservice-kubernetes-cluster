@@ -18,3 +18,5 @@ jobs:
         run: chmod +x gradlew
       - name: Build and Deploy to Docker Registry
         run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_registry_password=${{ secrets.DOCKER_PASSWORD }}
+        env:
+          CI_PASSWORD: ${{ secrets.CI_PASSWORD }}

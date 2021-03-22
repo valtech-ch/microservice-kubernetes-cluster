@@ -9,6 +9,24 @@
 
 rootProject.name = 'microservice-kubernetes-cluster'
 
+ext.isCiServer = System.getenv().containsKey("CI")
+ext.ciPassword = System.getenv().get("CI_PASSWORD")
+
+buildCache {
+    local {
+        enabled = !isCiServer
+    }
+    remote(HttpBuildCache) {
+        url = 'https://vtch-aks-demo-argocd.duckdns.org/gradle/cache/'
+        allowUntrustedServer = true
+        push = isCiServer
+        credentials {
+            username = 'github'
+            password = ciPassword
+        }
+    }
+}
+
 include ':persistence'
 include ':file-storage'
 include ':authentication'
