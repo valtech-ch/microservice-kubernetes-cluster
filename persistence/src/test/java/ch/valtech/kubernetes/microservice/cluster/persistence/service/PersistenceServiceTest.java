@@ -58,6 +58,6 @@ public class PersistenceServiceTest {
             .build());
     
     assertNotNull(message);
-    assertEquals(message.getKey(), "Ab456");
+    assertEquals("Ab456", message.getKey());
   }
 }

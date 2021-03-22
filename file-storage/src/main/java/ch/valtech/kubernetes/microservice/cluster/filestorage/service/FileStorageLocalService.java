@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -31,18 +32,18 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileStorageLocalService implements FileStorageService {
   
   private final String hostname;
-  private final String path;
+  private final String uploadPath;
   
   public FileStorageLocalService(
       @Value("${application.hostname}") String hostname,
-      @Value("${application.upload.path}") String path) {
+      @Value("${application.upload.path}") String uploadPath) {
     this.hostname = hostname;
-    this.path = path;
+    this.uploadPath = uploadPath;
   }
 
   @Override
   public String saveFile(MultipartFile file) {
-    log.info("Adding a new file to path: {}", path);
+    log.info("Adding a new file to path: {}", uploadPath);
     if (file.isEmpty()) {
       throw new FileStorageException("File should not be empty");
     }
@@ -50,8 +51,8 @@ public class FileStorageLocalService implements FileStorageService {
     String filename = file.getOriginalFilename();
     try (InputStream inputStream = file.getInputStream()) {
 
-      Files.createDirectories(Paths.get(path));
-      Files.copy(inputStream, Paths.get(path + filename),
+      Files.createDirectories(Paths.get(uploadPath));
+      Files.copy(inputStream, Paths.get(uploadPath + filename),
           StandardCopyOption.REPLACE_EXISTING);
       log.info("File {} added successfully", filename);
     } catch (IOException e) {
@@ -64,7 +65,7 @@ public class FileStorageLocalService implements FileStorageService {
   @Override
   @SneakyThrows
   public URL getResourceUrl(String filename) {
-    if (!Files.exists(Paths.get(path).resolve(filename).normalize())) {
+    if (!Files.exists(Paths.get(uploadPath).resolve(filename).normalize())) {
       throw new FileStorageException(format("File %s not found", filename));
     }
     return new URL(hostname + format("/api/file/%s", filename));
@@ -72,10 +73,9 @@ public class FileStorageLocalService implements FileStorageService {
   
   @Override
   public List<FileArtifact> loadAll() {
-    log.info("Loading all files in: {}", path);
-    try {
-      return Files.walk(Paths.get(path))
-          .filter(Files::isRegularFile)
+    log.info("Loading all files in: {}", uploadPath);
+    try (Stream<Path> paths = Files.walk(Paths.get(uploadPath))) {
+      return paths.filter(Files::isRegularFile)
           .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build())
           .collect(Collectors.toList());
     }  catch (IOException ex) {
@@ -85,9 +85,9 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public Resource loadAsResource(String filename) {
-    log.info("Loading file {} from: {}", filename, path);
+    log.info("Loading file {} from: {}", filename, uploadPath);
     try {
-      Path filePath = Paths.get(path).resolve(filename).normalize();
+      Path filePath = Paths.get(uploadPath).resolve(filename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
       if(resource.exists()) {
         return resource;
@@ -101,9 +101,9 @@ public class FileStorageLocalService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
-    log.info("Deleting file {} from: {}", filename, path);
+    log.info("Deleting file {} from: {}", filename, uploadPath);
     try {
-      Files.deleteIfExists(Paths.get(path).resolve(filename).normalize());
+      Files.deleteIfExists(Paths.get(uploadPath).resolve(filename).normalize());
     } catch (IOException ex) {
       throw new FileStorageException("File not found " + filename, ex);
     }
@@ -112,7 +112,7 @@ public class FileStorageLocalService implements FileStorageService {
   @Override
   public void deleteAll() {
     try {
-      FileUtils.cleanDirectory(new File(path));
+      FileUtils.cleanDirectory(new File(uploadPath));
     } catch (IOException ex) {
       throw new FileStorageException("Exception while deleting files");
     }

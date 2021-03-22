@@ -22,6 +22,6 @@ public class User {
 
   @Id
   @Column(name = "email")
-  private String email; //= "anonymous";
+  private String email;
 
 }
