@@ -29,7 +29,7 @@ public class PersistenceService {
     this.userRepository = userRepository;
   }
 
-  private Message getMessageByKey(String key) {
+  public Message getMessageByKey(String key) {
     return messageRepository.findByKeyId(key)
         .orElseThrow(() -> new PersistenceException("Message is not found"));
   }
