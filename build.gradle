@@ -25,7 +25,6 @@ sonarqube {
     properties {
         property 'sonar.projectKey', 'microservice-kubernetes-cluster'
         property 'sonar.projectName', 'Microservice Kubernetes Cluster'
-        property 'sonar.sourceEncoding', 'UTF-8'
     }
 }
 
@@ -35,8 +34,11 @@ subprojects {
     gitHash = rootProject.ext.gitHash
     sonarqube {
         properties {
+            property 'sonar.sourceEncoding', 'UTF-8'
             property 'sonar.sources', 'src/main/'
             property 'sonar.tests', 'src/test/'
+            property 'sonar.java.codeCoveragePlugin', 'jacoco'
+            property 'sonar.jacoco.reportPath', 'build/jacoco/jacoco.exec'
         }
     }
 }

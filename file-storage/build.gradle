@@ -8,6 +8,13 @@ plugins {
 	id 'idea'
 }
 
+ext {
+	minimumCoveragePerFile = 0.6
+	filesExcludedFromCoverage = []
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 project.description = 'filestorage'
@@ -58,7 +65,7 @@ dependencies {
 	implementation 'org.springframework.security.oauth:spring-security-oauth2'
 	implementation 'commons-io:commons-io:2.8.0'
 	implementation 'com.azure:azure-storage-blob:12.10.1'
-	implementation 'org.apache.commons:commons-lang3:3.11'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
