@@ -1,7 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'com.google.cloud.tools.jib' version '2.7.1'
+	id 'com.google.cloud.tools.jib' version '2.8.0'
 	id 'java'
 	id 'java-library'
 	id 'eclipse'
@@ -56,8 +56,8 @@ dependencies {
 	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.13.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.security.oauth:spring-security-oauth2'
-	implementation 'commons-io:commons-io:2.6'
-	implementation 'com.azure:azure-storage-blob:12.10.0'
+	implementation 'commons-io:commons-io:2.8.0'
+	implementation 'com.azure:azure-storage-blob:12.10.1'
 	implementation 'org.apache.commons:commons-lang3:3.11'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"

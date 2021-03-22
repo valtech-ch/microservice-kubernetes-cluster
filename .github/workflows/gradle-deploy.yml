@@ -20,3 +20,5 @@ jobs:
         run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_registry_password=${{ secrets.DOCKER_PASSWORD }}
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
+      - name: SonarQube Scan
+        run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
