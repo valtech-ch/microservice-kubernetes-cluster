@@ -3,7 +3,7 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingRequestDTO;
+import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -29,8 +29,8 @@ public class PersistenceControllerTest {
   
   @Test
   @SneakyThrows
-  public void shouldPostNewMessage() {
-    AuditingRequestDTO request = AuditingRequestDTO.builder()
+  void shouldPostNewMessage() {
+    AuditingRequestDto request = AuditingRequestDto.builder()
         .email("email1.com")
         .key("Ab456")
         .messageValue("some message")
@@ -41,7 +41,7 @@ public class PersistenceControllerTest {
         .andExpect(status().isOk());
   }
 
-  public static String convertObjectToJsonBytes(Object object) throws IOException {
+  private static String convertObjectToJsonBytes(Object object) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper()
         .setSerializationInclusion(JsonInclude.Include.NON_NULL)
         .registerModules(new JavaTimeModule(), new Jdk8Module())

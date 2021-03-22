@@ -76,7 +76,7 @@ public class FileStorageCloudService implements FileStorageService {
   public URL getResourceUrl(String filename) {
     try {
       BlobClient blobClient = containerClient.getBlobClient(filename);
-      if (blobClient.exists()){
+      if (blobClient.exists()) {
         return new URL(blobClient.getBlobUrl());
       } else {
         throw new FileStorageException("File not found " + filename);

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Audits the attempt from a {@link User} to modify a {@link Message}
+ * Audits the attempt from a {@link User} to modify a {@link Message}.
  */
 @Data
 @ToString

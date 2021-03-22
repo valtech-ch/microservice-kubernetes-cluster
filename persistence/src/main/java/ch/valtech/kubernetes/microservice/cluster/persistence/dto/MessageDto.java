@@ -7,10 +7,9 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public class AuditingRequestDTO {
+public class MessageDto {
 
-  String email;
   String key;
-  String messageValue;
+  String message;
 
 }
