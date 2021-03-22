@@ -9,6 +9,13 @@ plugins {
     id 'idea'
 }
 
+ext {
+    minimumCoveragePerFile = 0.2 // TODO improve coverage
+    filesExcludedFromCoverage = ["*Configuration.java", "*Application.java", "*Exception.java"]
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 project.description = 'Persistence'
