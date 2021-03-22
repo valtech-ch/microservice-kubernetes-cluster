@@ -1,0 +1,41 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gradle-build-cache-gradle-cache
+  namespace: argocd
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - argocd-gateway
+  http:
+    - name: "gradle-cache"
+      match:
+        - uri:
+            prefix: "/gradle/"
+        - uri:
+            prefix: "/gradle"
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            port:
+              number: 80
+            host: gradle-build-cache-gradle-cache
+    - name: "gradle-cache-assets"
+      match:
+        - uri:
+            prefix: "/assets"
+        - uri:
+            prefix: "/status"
+        - uri:
+            prefix: "/snapshot"
+        - uri:
+            prefix: "/credentials"
+        - uri:
+            prefix: "/purge"
+      route:
+        - destination:
+            port:
+              number: 80
+            host: gradle-build-cache-gradle-cache

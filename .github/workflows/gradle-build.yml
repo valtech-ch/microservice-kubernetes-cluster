@@ -19,3 +19,5 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
