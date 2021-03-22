@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Logged in
+ * Logged in.
  */
 @Data
 @ToString

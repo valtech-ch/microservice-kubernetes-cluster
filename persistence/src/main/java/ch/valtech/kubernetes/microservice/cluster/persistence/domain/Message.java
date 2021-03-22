@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * Represents a message
+ * Represents a message.
  */
 @Data
 @ToString

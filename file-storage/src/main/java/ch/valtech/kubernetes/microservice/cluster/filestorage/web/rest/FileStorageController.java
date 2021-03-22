@@ -49,7 +49,8 @@ public class FileStorageController {
   }
 
   /**
-   * {@code GET  /api/files} : get a list of all the files uploaded to the file system
+   * {@code GET  /api/files} : get a list of all the files uploaded to the file system.
+   *
    * @return list of uploaded files
    */
   @GetMapping("/files")

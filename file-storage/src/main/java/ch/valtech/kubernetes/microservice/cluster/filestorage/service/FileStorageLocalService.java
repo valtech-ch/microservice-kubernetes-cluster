@@ -89,7 +89,7 @@ public class FileStorageLocalService implements FileStorageService {
     try {
       Path filePath = Paths.get(uploadPath).resolve(filename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
-      if(resource.exists()) {
+      if (resource.exists()) {
         return resource;
       } else {
         throw new FileStorageException("File not found " + filename);
