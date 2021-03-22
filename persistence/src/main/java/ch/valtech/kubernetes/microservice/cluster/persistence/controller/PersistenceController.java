@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/api/v1")
 public class PersistenceController {
 
   private final PersistenceService persistenceService;
-
+  private static final Logger LOG = Logger.getLogger(PersistenceController.class.getName());
+  
   public PersistenceController(PersistenceService persistenceService) {
     this.persistenceService = persistenceService;
   }
@@ -22,6 +26,7 @@ public class PersistenceController {
   @PostMapping("/messages")
   public ResponseEntity<MessageDTO> saveNewMessage(@RequestBody AuditingRequestDTO requestDTO) {
     MessageDTO newMessage = persistenceService.saveNewMessage(requestDTO);
+    LOG.log(Level.INFO, "** New message was just posted! ");
     return ResponseEntity.ok(newMessage);
   }
 
