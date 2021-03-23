@@ -13,8 +13,6 @@ spec:
         protocol: HTTP
       hosts:
         - "vtch-aks-demo-argocd.duckdns.org"
-      tls:
-        httpsRedirect: true # sends 301 redirect for http requests
     - port:
         number: 443
         name: https
