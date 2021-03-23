@@ -13,7 +13,7 @@ plugins {
 description = 'Valtech Kubernetes Microservice Cluster'
 version = '1.0.0-SNAPSHOT'
 group = 'ch.valtech.kubernetes.microservice.cluster'
-ext.gitHash = gitVersion()
+ext.gitHash = versionDetails().gitHashFull
 
 allprojects {
     repositories {

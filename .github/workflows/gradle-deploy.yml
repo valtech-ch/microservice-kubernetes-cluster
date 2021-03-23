@@ -22,3 +22,11 @@ jobs:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      - name: Deploy on ArgoCD
+        uses: clowdhaus/argo-cd-action/@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: 1.8.4
+          command: app set authentication
+          options: -p image.tag=GITHUB_SHA --auth-token ${{ secrets.ARGOCD_TOKEN }} --server vtch-aks-demo-argocd.duckdns.org:80 --grpc-web
