@@ -14,19 +14,24 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Deploy on ArgoCD
-        uses: clowdhaus/argo-cd-action/@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          version: 1.8.7
-          command: app set authentication
-          options: -p image.tag=$GITHUB_SHA --auth-token ${{ secrets.ARGOCD_TOKEN }} --server vtch-aks-demo-argocd.duckdns.org:80 --grpc-web
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build and Deploy to Docker Registry
         run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_registry_password=${{ secrets.DOCKER_PASSWORD }}
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
+      - name: Deploy to ArgoCD
+        env:
+          ARGOCD_SERVER: vtch-aks-demo-argocd.duckdns.org:80
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
+        run: >
+          curl -sSL -o argocd http://vtch-aks-demo-argocd.duckdns.org:80/download/argocd-linux-amd64 &&
+          chmod +x argocd &&
+          ./argocd app set authentication -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set file-storage -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set persistence -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app sync authentication --plaintext --grpc-web &&
+          ./argocd app sync file-storage --plaintext --grpc-web &&
+          ./argocd app sync persistence --plaintext --grpc-web
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
