@@ -3,8 +3,8 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

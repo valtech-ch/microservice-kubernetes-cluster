@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.common.dto;
+package ch.valtech.kubernetes.microservice.cluster.persistence.api.dto;
 
 import lombok.Builder;
 import lombok.Value;

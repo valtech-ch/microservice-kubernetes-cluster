@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

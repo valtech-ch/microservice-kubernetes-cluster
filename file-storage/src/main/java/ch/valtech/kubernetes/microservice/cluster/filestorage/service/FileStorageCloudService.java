@@ -2,7 +2,7 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;

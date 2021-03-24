@@ -3,8 +3,8 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.createMessage;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.getUsername;
 
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;

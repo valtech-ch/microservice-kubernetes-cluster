@@ -9,7 +9,7 @@ plugins {
 
 apply plugin: "com.gorylenko.gradle-git-properties"
 
-project.description = 'Common'
+project.description = 'Persistence API'
 
 sourceCompatibility = 11
 targetCompatibility = 11

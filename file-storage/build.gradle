@@ -58,7 +58,7 @@ ext {
 }
 
 dependencies {
-	implementation project(':common')
+	implementation project(':persistence-api')
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.13.RELEASE'

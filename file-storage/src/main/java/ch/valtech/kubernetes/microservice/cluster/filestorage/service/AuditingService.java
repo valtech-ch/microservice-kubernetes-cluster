@@ -2,9 +2,9 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import static ch.valtech.kubernetes.microservice.cluster.filestorage.utils.FileStorageUtils.getToken;
 
-import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
