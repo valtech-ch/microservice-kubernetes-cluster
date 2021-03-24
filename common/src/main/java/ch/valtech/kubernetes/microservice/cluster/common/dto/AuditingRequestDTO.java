@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.persistence.dto;
+package ch.valtech.kubernetes.microservice.cluster.common.dto;
 
 import lombok.Builder;
 import lombok.Value;
@@ -9,8 +9,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class AuditingRequestDTO {
 
-  String email;
-  String key;
-  String messageValue;
+  String filename;
+  Action action;
 
 }

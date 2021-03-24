@@ -1,7 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
 
-import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingRequestDTO;
-import ch.valtech.kubernetes.microservice.cluster.persistence.dto.MessageDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDTO;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

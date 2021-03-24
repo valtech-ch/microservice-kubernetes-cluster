@@ -3,7 +3,8 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingRequestDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,9 +32,8 @@ public class PersistenceControllerTest {
   @SneakyThrows
   public void shouldPostNewMessage() {
     AuditingRequestDTO request = AuditingRequestDTO.builder()
-        .email("email1.com")
-        .key("Ab456")
-        .messageValue("some message")
+        .action(Action.UPLOAD)
+        .filename("some file")
         .build();
     mockMvc.perform(post("/api/v1/messages")
         .content(convertObjectToJsonBytes(request))
