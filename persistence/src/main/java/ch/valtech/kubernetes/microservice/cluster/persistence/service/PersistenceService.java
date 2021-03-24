@@ -3,8 +3,8 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.createMessage;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.getUsername;
 
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
@@ -24,14 +24,14 @@ public class PersistenceService {
     this.persistenceMapper = persistenceMapper;
   }
 
-  public MessageDTO saveNewMessage(AuditingRequestDTO requestDTO) {
+  public MessageDto saveNewMessage(AuditingRequestDto requestDTO) {
     Auditing auditing = addAuditRecord(requestDTO);
-    return MessageDTO.builder()
+    return MessageDto.builder()
         .message(createMessage(auditing))
         .build();
   }
 
-  private Auditing addAuditRecord(AuditingRequestDTO requestDTO) {
+  private Auditing addAuditRecord(AuditingRequestDto requestDTO) {
     return auditingRepository.save(
         persistenceMapper.toAuditing(requestDTO, getUsername().get()));
   }

@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -30,8 +30,8 @@ public class PersistenceControllerTest {
   
   @Test
   @SneakyThrows
-  public void shouldPostNewMessage() {
-    AuditingRequestDTO request = AuditingRequestDTO.builder()
+  void shouldPostNewMessage() {
+    AuditingRequestDto request = AuditingRequestDto.builder()
         .action(Action.UPLOAD)
         .filename("some file")
         .build();
@@ -41,7 +41,7 @@ public class PersistenceControllerTest {
         .andExpect(status().isOk());
   }
 
-  public static String convertObjectToJsonBytes(Object object) throws IOException {
+  private static String convertObjectToJsonBytes(Object object) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper()
         .setSerializationInclusion(JsonInclude.Include.NON_NULL)
         .registerModules(new JavaTimeModule(), new Jdk8Module())

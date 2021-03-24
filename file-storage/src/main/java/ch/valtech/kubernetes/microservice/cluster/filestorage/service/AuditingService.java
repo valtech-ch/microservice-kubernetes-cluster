@@ -3,8 +3,8 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 import static ch.valtech.kubernetes.microservice.cluster.filestorage.utils.FileStorageUtils.getToken;
 
 import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -31,11 +31,11 @@ public class AuditingService {
   }
 
   public void audit(String filename, Action action) {
-    AuditingRequestDTO auditingRequest = AuditingRequestDTO.builder()
+    AuditingRequestDto auditingRequest = AuditingRequestDto.builder()
         .filename(filename)
         .action(action).build();
     HttpHeaders headers = populateHeaders();
-    HttpEntity<AuditingRequestDTO> request = new HttpEntity<>(auditingRequest, headers);
+    HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, headers);
 
     postForEntity(request);
   }
@@ -47,9 +47,9 @@ public class AuditingService {
     return headers;
   }
 
-  public HttpEntity<? extends Object> postForEntity(HttpEntity<AuditingRequestDTO> httpRequest) {
+  public HttpEntity<? extends Object> postForEntity(HttpEntity<AuditingRequestDto> httpRequest) {
     try {
-      return restTemplate.postForEntity(persistenceUrl, httpRequest, MessageDTO.class);
+      return restTemplate.postForEntity(persistenceUrl, httpRequest, MessageDto.class);
     } catch (RestClientException e) {
       return handleException(e);
     }

@@ -20,5 +20,19 @@ jobs:
         run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_registry_password=${{ secrets.DOCKER_PASSWORD }}
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
+      - name: Deploy to ArgoCD
+        env:
+          ARGOCD_SERVER: vtch-aks-demo-argocd.duckdns.org:80
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
+        run: >
+          curl -sSL -o argocd http://vtch-aks-demo-argocd.duckdns.org:80/download/argocd-linux-amd64 &&
+          chmod +x argocd &&
+          ./argocd app set authentication -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set file-storage -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set persistence -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app sync authentication --plaintext --grpc-web &&
+          ./argocd app sync file-storage --plaintext --grpc-web &&
+          ./argocd app sync persistence --plaintext --grpc-web &&
+          ./argocd app sync bootstrap-cluster --plaintext --grpc-web
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}

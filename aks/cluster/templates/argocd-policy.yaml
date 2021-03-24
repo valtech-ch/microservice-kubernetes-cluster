@@ -1,7 +1,7 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: gradle-cache-policy
+  name: argocd-policy
   namespace: istio-system
 spec:
   selector:
@@ -13,3 +13,6 @@ spec:
         - operation:
             hosts: ["vtch-aks-demo-argocd.duckdns.org"]
             paths: ["/gradle/cache/*"]
+        - operation:
+            hosts: ["vtch-aks-demo-argocd.duckdns.org:80"]
+            paths: ["/application*"]

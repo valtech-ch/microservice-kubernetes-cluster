@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 import ch.valtech.kubernetes.microservice.cluster.common.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDTO;
-import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDTO;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.common.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapperImpl;
@@ -44,13 +44,13 @@ public class PersistenceServiceTest {
     
     given(auditingRepository.save(auditing)).willReturn(auditing);
 
-    MessageDTO message =
-        persistenceService.saveNewMessage(AuditingRequestDTO
+    MessageDto message =
+        persistenceService.saveNewMessage(AuditingRequestDto
             .builder()
             .filename("email1.com")
             .action(Action.UPLOAD)
             .build());
-    
+
     assertNotNull(message);
   }
 }

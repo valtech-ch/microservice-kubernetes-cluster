@@ -7,7 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public class AuditingRequestDTO {
+public class AuditingRequestDto {
 
   String filename;
   Action action;

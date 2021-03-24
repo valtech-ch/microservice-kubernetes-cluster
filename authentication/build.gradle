@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib' version '2.8.0'
     id 'java'
@@ -8,6 +8,14 @@ plugins {
     id 'idea'
 }
 
+ext {
+    set('springCloudVersion', "2020.0.2")
+    minimumCoveragePerFile = 0.6
+    filesExcludedFromCoverage = []
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 project.description = 'authentication'
@@ -45,10 +53,6 @@ jib {
         }
         tags = ["${gitHash}", 'latest']
     }
-}
-
-ext {
-    set('springCloudVersion', "2020.0.2")
 }
 
 dependencies {

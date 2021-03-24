@@ -1,0 +1,52 @@
+apply plugin: 'jacoco'
+
+ext {
+  if (!project.hasProperty("jacocoEnabled")) {
+    jacocoEnabled = true
+  }
+  if (!project.hasProperty("minimumCoveragePerFile")) {
+    minimumCoveragePerFile = 0.6
+  }
+  if (!project.hasProperty("filesExcludedFromCoverage")) {
+    filesExcludedFromCoverage = ["*Configuration.java", "*Application.java", "Exception.java"]
+  }
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      enabled = jacocoEnabled
+      element = 'SOURCEFILE'
+      excludes = filesExcludedFromCoverage
+
+      limit {
+        counter = 'LINE'
+        minimum = minimumCoveragePerFile
+      }
+    }
+  }
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    xml.destination file("${buildDir}/reports/coverage/coverage.xml")
+    csv.enabled false
+    html.destination file("${buildDir}/reports/coverage")
+  }
+}
+
+jacoco {
+  toolVersion = "0.8.6"
+}
+
+test {
+  finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+  dependsOn test // tests are required to run before generating the report
+  finalizedBy jacocoTestCoverageVerification
+}
+
+jacocoTestCoverageVerification.mustRunAfter jacocoTestReport

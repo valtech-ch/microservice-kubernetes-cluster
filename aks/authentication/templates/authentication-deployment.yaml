@@ -6,7 +6,7 @@ metadata:
   labels:
     app: authentication
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
         - name: authentication
-          image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/authentication:latest
-          imagePullPolicy: Always
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
