@@ -1,0 +1,55 @@
+apply plugin: "org.asciidoctor.convert"
+apply plugin: "io.github.swagger2markup"
+apply plugin: "org.ajoberstar.git-publish"
+apply plugin: "org.ajoberstar.grgit"
+
+ext {
+  generatedAsciidoc = file("${buildDir}/docs/asciidoc/generated")
+  swaggerOutputDir = file("${buildDir}/swagger")
+  snippetsOutputDir = file("${buildDir}/asciidoc/snippets")
+}
+
+convertSwagger2markup {
+  dependsOn test
+  swaggerInput "${swaggerOutputDir}/swagger.json"
+  outputDir generatedAsciidoc
+  config = [
+    'swagger2markup.pathsGroupedBy' : 'TAGS',
+    'swagger2markup.extensions.springRestDocs.snippetBaseUri': snippetsOutputDir.getAbsolutePath()]
+}
+
+asciidoctor {
+  dependsOn convertSwagger2markup
+  sources {
+    include 'index.adoc'
+  }
+  backends = ['html5']
+  attributes = [
+    doctype: 'book',
+    toc: 'left',
+    toclevels: '3',
+    numbered: '',
+    sectlinks: '',
+    sectanchors: '',
+    hardbreaks: '',
+    generated: generatedAsciidoc
+  ]
+}
+
+gitPublishCommit.dependsOn asciidoctor
+
+gitPublish {
+  branch = 'gh-pages'
+
+  contents {
+    from(asciidoctor.outputDir.path + '/html5') {
+      into project.description
+    }
+  }
+  preserve { include '**/*' }
+}
+
+test {
+  systemProperty 'io.springfox.staticdocs.outputDir', swaggerOutputDir
+  systemProperty 'io.springfox.staticdocs.snippetsOutputDir', snippetsOutputDir
+}
