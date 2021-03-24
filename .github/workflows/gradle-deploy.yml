@@ -39,5 +39,6 @@ jobs:
       - name: Publish API Documentation
         run: ./gradlew gitPublishPush
         env:
+          CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
           GRGIT_USER: ${{ secrets.GIT_USER }}
           GRGIT_PASS: ${{ secrets.GIT_PASSWORD }}

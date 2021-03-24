@@ -18,8 +18,7 @@ jobs:
         java-version: 11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Publish API Documentation
-      run: ./gradlew gitPublishPush
+    - name: Build with Gradle
+      run: ./gradlew build
       env:
-        GRGIT_USER: ${{ secrets.GIT_USER }}
-        GRGIT_PASS: ${{ secrets.GIT_PASSWORD }}
+        CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
