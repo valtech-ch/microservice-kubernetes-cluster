@@ -35,7 +35,11 @@ gitProperties {
 }
 
 springBoot {
-	buildInfo()
+	buildInfo{
+		properties {
+			time = null
+		}
+	}
 }
 
 jib {
