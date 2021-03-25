@@ -12,7 +12,7 @@ spec:
     - to:
         - operation:
             hosts: ["vtch-aks-demo-argocd.duckdns.org"]
-            paths: ["/gradle/cache/*"]
+            paths: ["/gradle/cache/*", "/download/*"]
         - operation:
             hosts: ["vtch-aks-demo-argocd.duckdns.org:80"]
             paths: ["/application*"]
