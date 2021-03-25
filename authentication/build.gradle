@@ -1,24 +1,24 @@
 plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'com.google.cloud.tools.jib' version '2.8.0'
+    id 'com.google.cloud.tools.jib'
+    id 'com.gorylenko.gradle-git-properties'
     id 'java'
     id 'java-library'
     id 'eclipse'
     id 'idea'
 }
 
+project.description = 'authentication'
+
 ext {
-    set('springCloudVersion', "2020.0.2")
-    minimumCoveragePerFile = 0.6
+    springCloudVersion = '2020.0.2'
+    minimumCoveragePerFile = 0.0 // TODO improve coverage
     filesExcludedFromCoverage = []
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
-apply plugin: "com.gorylenko.gradle-git-properties"
-
-project.description = 'authentication'
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -29,16 +29,16 @@ configurations {
     }
 }
 
-repositories {
-    jcenter()
-}
-
 gitProperties {
     keys = ['git.branch', 'git.commit.id', 'git.commit.time', 'git.commit.id.full']
 }
 
 springBoot {
-    buildInfo()
+    buildInfo{
+        properties {
+            time = null
+        }
+    }
 }
 
 jib {
@@ -65,12 +65,11 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
     compileOnly 'org.projectlombok:lombok'
-
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
 }
 
 dependencyManagement {

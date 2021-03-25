@@ -36,3 +36,9 @@ jobs:
           ./argocd app sync bootstrap-cluster --plaintext --grpc-web
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      - name: Publish API Documentation
+        run: ./gradlew gitPublishPush --no-parallel
+        env:
+          CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
+          GRGIT_USER: ${{ secrets.GIT_USER }}
+          GRGIT_PASS: ${{ secrets.GIT_PASSWORD }}

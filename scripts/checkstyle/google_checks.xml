@@ -18,6 +18,7 @@
 
 <module name = "Checker">
   <property name="charset" value="UTF-8"/>
+  <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
   <property name="severity" value="warning"/>
 
@@ -29,9 +30,7 @@
   </module>
   <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
   <module name="SuppressionFilter">
-    <property name="file" value="${org.checkstyle.google.suppressionfilter.config}"
-        default="checkstyle-suppressions.xml" />
-    <property name="optional" value="true"/>
+    <property name="file" value="${config_loc}/suppressions.xml"/>
   </module>
 
   <!-- Checks for whitespace                               -->
@@ -325,21 +324,6 @@
       <property name="allowMissingReturnTag" value="true"/>
       <property name="allowedAnnotations" value="Override, Test"/>
       <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF, COMPACT_CTOR_DEF"/>
-    </module>
-    <module name="MissingJavadocMethod">
-      <property name="scope" value="public"/>
-      <property name="minLineCount" value="2"/>
-      <property name="allowedAnnotations" value="Override, Test, Bean"/>
-      <property name="tokens" value="METHOD_DEF, ANNOTATION_FIELD_DEF,
-                                   COMPACT_CTOR_DEF"/>
-    </module>
-    <module name="MissingJavadocType">
-      <property name="scope" value="protected"/>
-      <property name="skipAnnotations" value="SpringBootApplication, SpringBootTest, Configuration, ExtendWith"/>
-      <property name="tokens"
-          value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
-                      RECORD_DEF, ANNOTATION_DEF"/>
-      <property name="excludeScope" value="nothing"/>
     </module>
     <module name="MethodName">
       <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
