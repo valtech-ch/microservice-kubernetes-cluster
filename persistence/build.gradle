@@ -14,7 +14,7 @@ project.description = 'persistence'
 
 ext {
     springCloudVersion = '2020.0.2'
-    minimumCoveragePerFile = 0.2 // TODO improve coverage
+    minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*Configuration.java", "*Application.java", "*Exception.java"]
 }
 

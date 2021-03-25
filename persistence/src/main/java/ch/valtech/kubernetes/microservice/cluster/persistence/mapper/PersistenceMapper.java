@@ -13,6 +13,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface PersistenceMapper {
 
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "modificationDate", ignore = true)
   @Mapping(target = "username", source = "username")
   @Mapping(target = "filename", source = "auditingRequestDto.filename")
   @Mapping(target = "action", source = "auditingRequestDto.action")
