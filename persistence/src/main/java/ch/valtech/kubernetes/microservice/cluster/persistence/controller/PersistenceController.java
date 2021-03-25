@@ -22,8 +22,8 @@ public class PersistenceController {
   }
   
   @PostMapping("/messages")
-  public ResponseEntity<MessageDto> saveNewMessage(@RequestBody AuditingRequestDto requestDTO) {
-    MessageDto newMessage = persistenceService.saveNewMessage(requestDTO);
+  public ResponseEntity<MessageDto> saveNewMessage(@RequestBody AuditingRequestDto requestDto) {
+    MessageDto newMessage = persistenceService.saveNewMessage(requestDto);
     log.info("** New message was just posted! ");
     return ResponseEntity.ok(newMessage);
   }

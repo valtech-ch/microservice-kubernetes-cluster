@@ -24,15 +24,15 @@ public class PersistenceService {
     this.persistenceMapper = persistenceMapper;
   }
 
-  public MessageDto saveNewMessage(AuditingRequestDto requestDTO) {
-    Auditing auditing = addAuditRecord(requestDTO);
+  public MessageDto saveNewMessage(AuditingRequestDto requestDto) {
+    Auditing auditing = addAuditRecord(requestDto);
     return MessageDto.builder()
         .message(createMessage(auditing))
         .build();
   }
 
-  private Auditing addAuditRecord(AuditingRequestDto requestDTO) {
+  private Auditing addAuditRecord(AuditingRequestDto requestDto) {
     return auditingRepository.save(
-        persistenceMapper.toAuditing(requestDTO, getUsername().get()));
+        persistenceMapper.toAuditing(requestDto, getUsername().get()));
   }
 }

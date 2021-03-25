@@ -14,7 +14,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * Audits the changes made to the filesystem
+ * Audits the changes made to the filesystem.
  */
 @Data
 @ToString

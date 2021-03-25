@@ -23,33 +23,31 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class})
 public class PersistenceServiceTest {
-  
+
   private PersistenceService persistenceService;
-  
+
   @Mock
   private AuditingRepository auditingRepository;
 
   private PersistenceMapper persistenceMapper = new PersistenceMapperImpl();
-  
-  
+
+
   @BeforeEach
   public void setUp() {
     persistenceService = new PersistenceService(auditingRepository, persistenceMapper);
   }
-  
+
   @Test
   @WithMockUser
   public void shouldStoreNewMessage() {
     String filename = "test.txt";
-    LocalDate modificationDate = LocalDate.of(2021, 3, 24);
+    LocalDate modificationDate = LocalDate.now();
     Auditing auditing = new Auditing();
     auditing.setUsername("user");
     auditing.setFilename(filename);
     auditing.setAction(ch.valtech.kubernetes.microservice.cluster.persistence.domain.Action.UPLOAD);
     auditing.setModificationDate(modificationDate);
 
-    PersistenceMapper spyMapper = spy(persistenceMapper);
-    when(spyMapper.now()).thenReturn(modificationDate);
     given(auditingRepository.save(auditing)).willReturn(auditing);
 
     MessageDto message =

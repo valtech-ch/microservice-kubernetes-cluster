@@ -1,5 +1,4 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'java-library'
@@ -7,9 +6,13 @@ plugins {
     id 'idea'
 }
 
-apply plugin: "com.gorylenko.gradle-git-properties"
-
 project.description = 'Persistence API'
+
+ext {
+    lombokVersion = '1.18.16'
+}
+
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -20,28 +23,18 @@ configurations {
     }
 }
 
-bootJar {
-    enabled = false
-}
-
 jar {
     enabled = true
 }
 
-repositories {
-    jcenter()
-}
-
-gitProperties {
-    keys = ['git.branch','git.commit.id','git.commit.time','git.commit.id.full']
-}
-
 dependencies {
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 test {

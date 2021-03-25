@@ -14,12 +14,12 @@ import org.mapstruct.Named;
 public interface PersistenceMapper {
 
   @Mapping(target = "username", source = "username")
-  @Mapping(target = "filename", source = "auditingRequestDTO.filename")
-  @Mapping(target = "action", source = "auditingRequestDTO.action")
-  Auditing toAuditing(AuditingRequestDto auditingRequestDTO, String username);
+  @Mapping(target = "filename", source = "auditingRequestDto.filename")
+  @Mapping(target = "action", source = "auditingRequestDto.action")
+  Auditing toAuditing(AuditingRequestDto auditingRequestDto, String username);
 
   @AfterMapping
-  default void toAuditing(@MappingTarget Auditing auditing, AuditingRequestDto auditingRequestDTO, String username) {
+  default void toAuditing(@MappingTarget Auditing auditing, AuditingRequestDto auditingRequestDto, String username) {
     auditing.setModificationDate(now());
   }
 
