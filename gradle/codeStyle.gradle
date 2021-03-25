@@ -7,5 +7,7 @@ ext.checkstyleConfigDir = "$configDir/checkstyle"
 checkstyle {
     toolVersion = '8.41'
     config = resources.text.fromFile("$checkstyleConfigDir/google_checks.xml")
+    configDirectory = file("$checkstyleConfigDir")
     ignoreFailures = false
+    configProperties = ['checkstyle.cache.file': "${buildDir}/checkstyle/cacheFile"]
 }
