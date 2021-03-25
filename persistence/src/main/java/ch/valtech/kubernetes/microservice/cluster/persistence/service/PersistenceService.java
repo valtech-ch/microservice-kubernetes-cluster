@@ -6,6 +6,7 @@ import static ch.valtech.kubernetes.microservice.cluster.persistence.service.Per
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
+import ch.valtech.kubernetes.microservice.cluster.persistence.exception.PersistenceException;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import javax.transaction.Transactional;
@@ -32,7 +33,8 @@ public class PersistenceService {
   }
 
   private Auditing addAuditRecord(AuditingRequestDto requestDto) {
+    String username = getUsername().orElseThrow(() -> new PersistenceException("Username not found"));
     return auditingRepository.save(
-        persistenceMapper.toAuditing(requestDto, getUsername().get()));
+        persistenceMapper.toAuditing(requestDto, username));
   }
 }

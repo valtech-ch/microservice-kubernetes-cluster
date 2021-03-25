@@ -43,7 +43,9 @@ public class AuditingService {
   private HttpHeaders populateHeaders() {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.setBearerAuth(getToken().get());
+    if (getToken().isPresent()){
+      headers.setBearerAuth(getToken().get());
+    }
     return headers;
   }
 
