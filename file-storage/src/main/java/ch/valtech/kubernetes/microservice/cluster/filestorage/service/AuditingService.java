@@ -43,7 +43,7 @@ public class AuditingService {
   private HttpHeaders populateHeaders() {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    if (getToken().isPresent()){
+    if (getToken().isPresent()) {
       headers.setBearerAuth(getToken().get());
     }
     return headers;
