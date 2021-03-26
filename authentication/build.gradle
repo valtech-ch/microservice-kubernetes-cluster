@@ -13,8 +13,8 @@ project.description = 'authentication'
 
 ext {
     springCloudVersion = '2020.0.2'
-    minimumCoveragePerFile = 0.0 // TODO improve coverage
-    filesExcludedFromCoverage = []
+    minimumCoveragePerFile = 0.6
+    filesExcludedFromCoverage = ["*Application.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
