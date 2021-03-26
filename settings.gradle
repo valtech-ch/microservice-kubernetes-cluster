@@ -30,4 +30,5 @@ buildCache {
 include ':persistence'
 include ':file-storage'
 include ':authentication'
+include ':persistence-api'
 

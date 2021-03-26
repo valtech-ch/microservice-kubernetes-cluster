@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,15 +31,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Service
 public class FileStorageLocalService implements FileStorageService {
-  
+
+  public static final String ALL_FILES = "ALL FILES";
+
   private final String hostname;
   private final String uploadPath;
-  
+  private final AuditingService auditingService;
+
   public FileStorageLocalService(
       @Value("${application.hostname}") String hostname,
-      @Value("${application.upload.path}") String uploadPath) {
+      @Value("${application.upload.path}") String uploadPath,
+      AuditingService auditingService) {
     this.hostname = hostname;
     this.uploadPath = uploadPath;
+    this.auditingService = auditingService;
   }
 
   @Override
@@ -54,6 +60,7 @@ public class FileStorageLocalService implements FileStorageService {
       Files.createDirectories(Paths.get(uploadPath));
       Files.copy(inputStream, Paths.get(uploadPath + filename),
           StandardCopyOption.REPLACE_EXISTING);
+      auditingService.audit(filename, Action.UPLOAD);
       log.info("File {} added successfully", filename);
     } catch (IOException e) {
       String message = String.format("Failed to store file %s", file.getName());
@@ -90,6 +97,7 @@ public class FileStorageLocalService implements FileStorageService {
       Path filePath = Paths.get(uploadPath).resolve(filename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
       if (resource.exists()) {
+        auditingService.audit(filename, Action.DOWNLOAD);
         return resource;
       } else {
         throw new FileStorageException("File not found " + filename);
@@ -107,11 +115,13 @@ public class FileStorageLocalService implements FileStorageService {
     } catch (IOException ex) {
       throw new FileStorageException("File not found " + filename, ex);
     }
+    auditingService.audit(filename, Action.DELETE);
   }
 
   @Override
   public void deleteAll() {
     try {
+      auditingService.audit(ALL_FILES, Action.DELETE);
       FileUtils.cleanDirectory(new File(uploadPath));
     } catch (IOException ex) {
       throw new FileStorageException("Exception while deleting files");

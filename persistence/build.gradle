@@ -14,7 +14,7 @@ project.description = 'persistence'
 
 ext {
     springCloudVersion = '2020.0.2'
-    minimumCoveragePerFile = 0.2 // TODO improve coverage
+    minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*Configuration.java", "*Application.java", "*Exception.java"]
 }
 
@@ -58,6 +58,7 @@ jib {
 }
 
 dependencies {
+    implementation project(':persistence-api')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.2.13.RELEASE'
@@ -76,6 +77,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testImplementation "org.testcontainers:mariadb:1.15.2"
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'

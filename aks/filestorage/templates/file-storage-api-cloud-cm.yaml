@@ -21,6 +21,7 @@ data:
         basic:
           enabled: false
     application:
+      persistence.url: http://persistence-service.default.svc.cluster.local:8081/api/v1/messages
       cloud:
         storage:
           account.name: vtchk8sblueprinttfst

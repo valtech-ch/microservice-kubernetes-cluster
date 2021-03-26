@@ -46,7 +46,8 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
       PasswordEncoder passwordEncoder,
       @Value("${application.jwt.client.id}") String clientId,
       @Value("${application.jwt.client.secret}") String clientSecret,
-      @Value("${application.jwt.authorizedGrantTypes:password,authorization_code,refresh_token}") String[] authorizedGrantTypes,
+      @Value("${application.jwt.authorizedGrantTypes:password,authorization_code,refresh_token}")
+          String[] authorizedGrantTypes,
       @Value("${application.jwt.access.token.validity}") int accessTokenValiditySeconds,
       @Value("${application.jwt.refresh.token.validity}") int refreshTokenValiditySeconds,
       @Value("${application.hostname}") String hostname,
