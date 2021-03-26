@@ -30,6 +30,7 @@ application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
   persistence.url: http://localhost:8081/api/v1/messages
+  token.url: http://localhost:8090/oauth/token
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst

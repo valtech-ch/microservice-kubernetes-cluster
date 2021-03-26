@@ -17,3 +17,5 @@ data:
           preferTokenInfo: true
         basic:
           enabled: false
+    application:
+      token.url: http://authentication.default.svc.cluster.local:8080/auth/oauth/token
