@@ -18,4 +18,4 @@ data:
         basic:
           enabled: false
     application:
-      token.url: http://authentication.default.svc.cluster.local:8080/auth/oauth/token
+      token.url: https://vtch-aks-demo.duckdns.org/auth/oauth/token

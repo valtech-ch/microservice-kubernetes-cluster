@@ -28,7 +28,7 @@ public class SpringFoxConfig {
         .apiInfo(apiInfo())
         .select()
         .apis(RequestHandlerSelectors.any())
-        .paths(PathSelectors.ant("/api/**"))
+        .paths(PathSelectors.ant("/**/api/**"))
         .build()
         .securitySchemes(List.of(securityScheme(tokenUrl)))
         .securityContexts(List.of(securityContext()));
