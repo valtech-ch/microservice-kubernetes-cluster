@@ -1,7 +1,9 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
+import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import java.net.URL;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -28,10 +30,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api")
 public class FileStorageController {
 
-  private final FileStorageService fileStorageService;
+  public static final String ALL_FILES = "ALL FILES";
 
-  public FileStorageController(FileStorageService fileStorageService) {
+  private final FileStorageService fileStorageService;
+  private final AuditingService auditingService;
+
+  public FileStorageController(FileStorageService fileStorageService,
+      AuditingService auditingService) {
     this.fileStorageService = fileStorageService;
+    this.auditingService = auditingService;
   }
 
   /**
@@ -43,7 +50,8 @@ public class FileStorageController {
   @PostMapping(value = "/files", consumes = {"multipart/form-data"})
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
-    String fileName = fileStorageService.saveFile(file); // todo return id save to persistence -> later on
+    String fileName = fileStorageService.saveFile(file);
+    auditingService.audit(fileName, Action.UPLOAD);
     URL resourceUrl = fileStorageService.getResourceUrl(fileName);
     return ResponseEntity.created(resourceUrl.toURI()).build();
   }
@@ -62,6 +70,7 @@ public class FileStorageController {
   @ResponseBody public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
     Resource file = fileStorageService.loadAsResource(filename);
+    auditingService.audit(filename, Action.DOWNLOAD);
     String downloadFilename = file.getFilename() != null ? file.getFilename()
         : StringUtils.substringBetween(file.getDescription(), "[", "]");
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
@@ -71,12 +80,14 @@ public class FileStorageController {
   @DeleteMapping("/files/{filename}")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
     fileStorageService.deleteByFilename(filename);
+    auditingService.audit(filename, Action.DELETE);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/files/")
   public ResponseEntity<Void> deleteFiles() {
     fileStorageService.deleteAll();
+    auditingService.audit(ALL_FILES, Action.DELETE);
     return ResponseEntity.noContent().build();
   }
 
