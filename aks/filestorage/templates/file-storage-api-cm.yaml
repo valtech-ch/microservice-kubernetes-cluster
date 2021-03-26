@@ -10,3 +10,4 @@ data:
     application:
       hostname: http://vtch-aks-demo.duckdns.org
       upload.path: /etc/file-storage/uploads/
+      persistence.url: http://persistence-service.default.svc.cluster.local:8081/api/v1/messages

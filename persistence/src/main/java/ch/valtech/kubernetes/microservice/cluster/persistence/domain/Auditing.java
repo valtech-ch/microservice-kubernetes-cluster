@@ -1,22 +1,20 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.domain;
 
-
 import java.time.LocalDate;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * Audits the attempt from a {@link User} to modify a {@link Message}.
+ * Audits the changes made to the filesystem.
  */
 @Data
 @ToString
@@ -30,13 +28,19 @@ public class Auditing {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  private User user;
-
-  @ManyToOne(cascade = CascadeType.PERSIST)
-  private Message message;
-
   @Column(name = "modification_date")
   private LocalDate modificationDate;
+
+  @NonNull
+  @Column(name = "username")
+  private String username;
+
+  @NonNull
+  @Column(name = "filename")
+  private String filename;
+
+  @NonNull
+  @Column(name = "action")
+  private Action action;
 
 }

@@ -2,6 +2,7 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -28,21 +29,26 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
 
+  public static final String ALL_FILES = "ALL FILES";
+
   private final BlobContainerClient containerClient;
+  private final AuditingService auditingService;
 
   public FileStorageCloudService(
       @Value("${application.cloud.storage.account.name}") String accountName,
       @Value("${application.cloud.storage.account.key}") String accountKey,
       @Value("${application.cloud.storage.connection}") String connection,
-      @Value("${application.cloud.storage.container.name}") String containerName) {
+      @Value("${application.cloud.storage.container.name}") String containerName,
+      AuditingService auditingService) {
     StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
-    
+
     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .connectionString(connection)
         .credential(credential)
         .buildClient();
 
     containerClient = blobServiceClient.getBlobContainerClient(containerName);
+    this.auditingService = auditingService;
 
     try {
       containerClient.create();
@@ -64,6 +70,7 @@ public class FileStorageCloudService implements FileStorageService {
     // Upload the blob
     try (InputStream inputStream = file.getInputStream()) {
       blobClient.upload(inputStream, file.getSize(), true);
+      auditingService.audit(filename, Action.UPLOAD);
       log.info("File {} added successfully to cloud storage", filename);
     } catch (IOException e) {
       String message = String.format("Failed to store file %s to cloud", filename);
@@ -99,6 +106,7 @@ public class FileStorageCloudService implements FileStorageService {
     log.info("Loading file {} from cloud", filename);
     BlobClient blobClient = containerClient.getBlobClient(filename);
     if (blobClient.exists()) {
+      auditingService.audit(filename, Action.DOWNLOAD);
       return new InputStreamResource(blobClient.openInputStream(), filename);
     } else {
       throw new FileStorageException("File not found " + filename);
@@ -117,11 +125,13 @@ public class FileStorageCloudService implements FileStorageService {
         throw ex;
       }
     }
+    auditingService.audit(filename, Action.DELETE);
   }
 
   @Override
   public void deleteAll() {
     try {
+      auditingService.audit(ALL_FILES, Action.DELETE);
       containerClient.delete();
     } catch (BlobStorageException ex) {
       throw new FileStorageException("Exception while deleting files");

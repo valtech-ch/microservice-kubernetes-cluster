@@ -4,7 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.valtech.kubernetes.microservice.cluster.persistence.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -40,9 +41,8 @@ public class PersistenceControllerTest {
   @SneakyThrows
   void shouldPostNewMessage() {
     AuditingRequestDto request = AuditingRequestDto.builder()
-        .email("email1.com")
-        .key("Ab456")
-        .messageValue("some message")
+        .action(Action.UPLOAD)
+        .filename("some file")
         .build();
     mockMvc.perform(post("/api/v1/messages")
         .content(convertObjectToJsonBytes(request))
