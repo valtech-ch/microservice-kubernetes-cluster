@@ -37,6 +37,8 @@ security:
       preferTokenInfo: true
     basic:
       enabled: false
+application:
+  token.url: http://localhost:8090/oauth/token
 ---
 spring:
   config:

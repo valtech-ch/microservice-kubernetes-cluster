@@ -19,7 +19,7 @@ public class SpringFoxConfig {
         .apiInfo(apiInfo())
         .select()
         .apis(RequestHandlerSelectors.any())
-        .paths(PathSelectors.ant("/oauth/**"))
+        .paths(PathSelectors.ant("/**/oauth/**"))
         .build();
   }
 

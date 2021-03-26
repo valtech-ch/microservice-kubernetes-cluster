@@ -17,3 +17,5 @@ data:
           preferTokenInfo: true
         basic:
           enabled: false
+    application:
+      token.url: https://vtch-aks-demo.duckdns.org/auth/oauth/token
