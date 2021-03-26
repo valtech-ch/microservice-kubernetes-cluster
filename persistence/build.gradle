@@ -71,6 +71,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     runtimeOnly 'com.h2database:h2:1.4.200'
