@@ -10,8 +10,10 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.exception.Persiste
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @Transactional
 public class PersistenceService {
@@ -27,8 +29,10 @@ public class PersistenceService {
 
   public MessageDto saveNewMessage(AuditingRequestDto requestDto) {
     Auditing auditing = addAuditRecord(requestDto);
+    String message = createMessage(auditing);
+    log.info(message);
     return MessageDto.builder()
-        .message(createMessage(auditing))
+        .message(message)
         .build();
   }
 
