@@ -30,14 +30,14 @@ public class AuditingService {
     this.restTemplate = restTemplate;
   }
 
-  public void audit(String filename, Action action) {
+  public MessageDto audit(String filename, Action action) {
     AuditingRequestDto auditingRequest = AuditingRequestDto.builder()
         .filename(filename)
         .action(action).build();
     HttpHeaders headers = populateHeaders();
     HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, headers);
 
-    postForEntity(request);
+    return postForEntity(request).getBody();
   }
 
   private HttpHeaders populateHeaders() {
@@ -49,7 +49,7 @@ public class AuditingService {
     return headers;
   }
 
-  public HttpEntity<? extends Object> postForEntity(HttpEntity<AuditingRequestDto> httpRequest) {
+  public HttpEntity<MessageDto> postForEntity(HttpEntity<AuditingRequestDto> httpRequest) {
     try {
       return restTemplate.postForEntity(persistenceUrl, httpRequest, MessageDto.class);
     } catch (RestClientException e) {
@@ -57,7 +57,7 @@ public class AuditingService {
     }
   }
 
-  private ResponseEntity<String> handleException(RestClientException e) {
+  private ResponseEntity<MessageDto> handleException(RestClientException e) {
     if (e instanceof HttpStatusCodeException) {
       return ResponseEntity.status(((HttpStatusCodeException) e).getStatusCode()).build();
     }

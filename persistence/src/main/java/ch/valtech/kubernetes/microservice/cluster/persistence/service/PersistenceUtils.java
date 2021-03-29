@@ -2,11 +2,14 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class PersistenceUtils {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class PersistenceUtils {
 
   public static Optional<String> getUsername() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
