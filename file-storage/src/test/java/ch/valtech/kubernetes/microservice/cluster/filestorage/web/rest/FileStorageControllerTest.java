@@ -48,4 +48,5 @@ public class FileStorageControllerTest {
   private RequestPostProcessor getBearerToken() {
     return helper.bearerToken("kubernetes-cluster", "admin");
   }
+
 }

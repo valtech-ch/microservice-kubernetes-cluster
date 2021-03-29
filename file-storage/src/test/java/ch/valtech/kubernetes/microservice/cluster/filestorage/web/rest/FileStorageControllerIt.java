@@ -158,4 +158,5 @@ class FileStorageControllerIt {
   private RequestPostProcessor getBearerToken(String username) {
     return helper.bearerToken("kubernetes-cluster", username);
   }
+
 }

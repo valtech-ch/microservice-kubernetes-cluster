@@ -62,4 +62,5 @@ public class OauthHelper {
         authorities);
     return new OAuth2Authentication(oauth2Request, authenticationToken);
   }
+
 }

@@ -41,5 +41,6 @@ class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
         .authorizedGrantTypes("password")
         .scopes("read", "write");
   }
+
 }
 
