@@ -12,7 +12,7 @@ data:
         context-path: /filestorage
     spring:
       zipkin:
-        baseUrl: http://zipkin.default.svc.cluster.local:9411/
+        baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
     security:
       oauth2:
         client:
