@@ -18,7 +18,7 @@ spec:
             backend:
               serviceName: kiali
               servicePort: 20001
-          - path: /zipkin/*
+          - path: /jaeger/*
             backend:
               serviceName: tracing
               servicePort: 80
