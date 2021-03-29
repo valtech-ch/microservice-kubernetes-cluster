@@ -7,6 +7,9 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
+    spring:
+      zipkin:
+        baseUrl: http://zipkin.default.svc.cluster.local:9411/
     application:
       hostname: http://vtch-aks-demo.duckdns.org
       upload.path: /etc/file-storage/uploads/

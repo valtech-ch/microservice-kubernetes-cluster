@@ -7,6 +7,9 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
+    spring:
+      zipkin:
+        baseUrl: http://zipkin.default.svc.cluster.local:9411/
     security:
       oauth2:
         client:
