@@ -1,9 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.filter;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -89,7 +87,8 @@ class FileStorageControllerIt {
         .andReturn();
 
     String content = mvcResult.getResponse().getContentAsString();
-    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {});
+    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
+    });
     assertThat(files).contains(FileArtifact.builder().filename(FILENAME).build());
   }
 
@@ -131,7 +130,8 @@ class FileStorageControllerIt {
         .andReturn();
 
     String content = mvcResult.getResponse().getContentAsString();
-    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {});
+    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
+    });
     assertThat(files).doesNotContain(FileArtifact.builder().filename(FILENAME).build());
     verify(auditingService, times(1)).audit(FILENAME, Action.DELETE);
   }
@@ -148,7 +148,8 @@ class FileStorageControllerIt {
         .andReturn();
 
     String content = mvcResult.getResponse().getContentAsString();
-    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {});
+    List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
+    });
     assertThat(files).isEmpty();
     verify(auditingService, times(1)).audit("ALL FILES", Action.DELETE);
   }

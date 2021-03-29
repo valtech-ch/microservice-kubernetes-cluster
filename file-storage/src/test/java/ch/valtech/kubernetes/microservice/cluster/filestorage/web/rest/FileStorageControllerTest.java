@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,11 +25,11 @@ public class FileStorageControllerTest {
 
   @Autowired
   MockMvc mockMvc;
+
   @Autowired
   OauthHelper helper;
 
   @Test
-  @Disabled
   void createSpringfoxSwaggerJson() throws Exception {
     String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
     MvcResult mvcResult = mockMvc.perform(get(API_URI).with(getBearerToken())

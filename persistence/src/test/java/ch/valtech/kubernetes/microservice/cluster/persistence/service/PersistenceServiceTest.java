@@ -3,8 +3,6 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
@@ -29,7 +27,7 @@ public class PersistenceServiceTest {
   @Mock
   private AuditingRepository auditingRepository;
 
-  private PersistenceMapper persistenceMapper = new PersistenceMapperImpl();
+  private final PersistenceMapper persistenceMapper = new PersistenceMapperImpl();
 
 
   @BeforeEach

@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -32,7 +31,6 @@ import org.springframework.util.MimeTypeUtils;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-//@ActiveProfiles("test")
 public class PersistenceControllerTest {
 
   private static final String API_URI = "/v2/api-docs";
@@ -56,7 +54,6 @@ public class PersistenceControllerTest {
   }
 
   @Test
-  @Disabled
   void createSpringfoxSwaggerJson() throws Exception {
     String outputDir = System.getProperty("io.springfox.staticdocs.outputDir");
     MvcResult mvcResult = mockMvc.perform(get(API_URI).with(getBearerToken())
@@ -84,4 +81,5 @@ public class PersistenceControllerTest {
   private RequestPostProcessor getBearerToken() {
     return helper.bearerToken("kubernetes-cluster", "user");
   }
+
 }
