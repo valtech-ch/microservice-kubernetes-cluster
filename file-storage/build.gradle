@@ -64,13 +64,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.security.oauth:spring-security-oauth2'
 	implementation 'commons-io:commons-io:2.8.0'
-	implementation 'com.azure:azure-storage-blob:12.10.1'
+	implementation 'com.azure:azure-storage-blob:12.10.2'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.cloud:spring-cloud-starter-zipkin:2.2.7.RELEASE'
+	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

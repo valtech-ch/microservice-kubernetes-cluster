@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"app_name":"authentication"}</customFields>
+        </encoder>
+    </appender>
+    <logger name="jsonLogger" level="DEBUG" additivity="false">
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+    <springProfile name="prod | cloud">
+        <root level="INFO">
+            <appender-ref ref="consoleAppender"/>
+        </root>
+    </springProfile>
+</configuration>
