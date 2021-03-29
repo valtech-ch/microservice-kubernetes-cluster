@@ -10,6 +10,9 @@ data:
     server:
       servlet:
         context-path: /auth
+    spring:
+      zipkin:
+        baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
     application:
       hostname: https://vtch-aks-demo.duckdns.org
       signing.key: ${SIGNING_KEY}
