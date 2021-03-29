@@ -27,6 +27,12 @@ jar {
     enabled = true
 }
 
+sonarqube {
+    properties {
+        property "sonar.tests", ""
+    }
+}
+
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -35,8 +41,4 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-}
-
-test {
-    useJUnitPlatform()
 }
