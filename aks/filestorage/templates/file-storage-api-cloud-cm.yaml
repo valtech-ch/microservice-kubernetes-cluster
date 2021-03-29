@@ -24,7 +24,7 @@ data:
         basic:
           enabled: false
     application:
-      persistence.url: http://persistence-service.default.svc.cluster.local:8081/api/v1/messages
+      persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
       token.url: https://vtch-aks-demo.duckdns.org/auth/oauth/token
       cloud:
         storage:
