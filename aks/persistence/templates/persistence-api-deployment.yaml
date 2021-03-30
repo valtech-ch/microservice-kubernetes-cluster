@@ -11,6 +11,8 @@ spec:
   selector:
     matchLabels:
       app: persistence-api
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
