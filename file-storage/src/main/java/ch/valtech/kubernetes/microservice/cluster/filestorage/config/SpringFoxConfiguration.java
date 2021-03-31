@@ -61,10 +61,7 @@ public class SpringFoxConfiguration {
   }
 
   private AuthorizationScope[] scopes() {
-    AuthorizationScope[] scopes = {
-        new AuthorizationScope("read", "for read operations"),
-        new AuthorizationScope("write", "for write operations")};
-    return scopes;
+    return new AuthorizationScope[0];
   }
 
 }
