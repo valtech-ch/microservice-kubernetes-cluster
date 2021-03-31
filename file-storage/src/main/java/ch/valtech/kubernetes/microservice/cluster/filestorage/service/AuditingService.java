@@ -1,11 +1,10 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
-import static ch.valtech.kubernetes.microservice.cluster.filestorage.utils.FileStorageUtils.getToken;
-
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +24,7 @@ public class AuditingService {
   private final RestTemplate restTemplate;
 
   public AuditingService(@Value("${application.persistence.url}") String persistenceUrl,
-      RestTemplate restTemplate) {
+      @Qualifier("keycloakRestTemplate") RestTemplate restTemplate) {
     this.persistenceUrl = persistenceUrl;
     this.restTemplate = restTemplate;
   }
@@ -34,18 +33,13 @@ public class AuditingService {
     AuditingRequestDto auditingRequest = AuditingRequestDto.builder()
         .filename(filename)
         .action(action).build();
-    HttpHeaders headers = populateHeaders();
-    HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, headers);
-
+    HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, populateHeaders());
     return postForEntity(request).getBody();
   }
 
   private HttpHeaders populateHeaders() {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    if (getToken().isPresent()) {
-      headers.setBearerAuth(getToken().get());
-    }
     return headers;
   }
 

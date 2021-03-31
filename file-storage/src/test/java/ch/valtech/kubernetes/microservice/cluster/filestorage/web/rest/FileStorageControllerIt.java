@@ -1,7 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -10,9 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.valtech.kubernetes.microservice.cluster.filestorage.config.OauthHelper;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
-import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -28,24 +25,20 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
 class FileStorageControllerIt {
 
   public static final String FILENAME = "test.txt";
-  public static final String ADMIN = "admin";
-  private static final String USER = "user";
 
   @Autowired
-  MockMvc mockMvc;
-  @Autowired
-  OauthHelper helper;
+  private MockMvc mockMvc;
+
   @MockBean
   private AuditingService auditingService;
 
-  ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
   @SneakyThrows
@@ -56,7 +49,7 @@ class FileStorageControllerIt {
         "test content".getBytes()
     );
 
-    mockMvc.perform(multipart("/api/files").file(file).with(getBearerToken(ADMIN)))
+    mockMvc.perform(multipart("/api/files").file(file))
         .andExpect(status().isCreated())
         .andExpect(header().string("Location", "http://localhost:8080/api/file/" + file.getOriginalFilename()));
 
@@ -69,11 +62,11 @@ class FileStorageControllerIt {
     MockMultipartFile file = new MockMultipartFile("file",
         FILENAME,
         MediaType.TEXT_PLAIN_VALUE,
-        "test content".getBytes()
+        new byte[0]
     );
 
-    mockMvc.perform(multipart("/api/files").file(file).with(getBearerToken(USER)))
-        .andExpect(status().isForbidden());
+    mockMvc.perform(multipart("/api/files").file(file))
+        .andExpect(status().isBadRequest());
 
     verify(auditingService, times(0)).audit(FILENAME, Action.UPLOAD);
   }
@@ -82,7 +75,7 @@ class FileStorageControllerIt {
   @SneakyThrows
   void shouldListUploadedFiles() {
     shouldUploadNewFile();
-    MvcResult mvcResult = mockMvc.perform(get("/api/files").with(getBearerToken(USER)))
+    MvcResult mvcResult = mockMvc.perform(get("/api/files"))
         .andExpect(status().isOk())
         .andReturn();
 
@@ -96,7 +89,7 @@ class FileStorageControllerIt {
   @SneakyThrows
   void shouldGetFileByFilename() {
     shouldUploadNewFile();
-    mockMvc.perform(get("/api/files/" + FILENAME).with(getBearerToken(USER)))
+    mockMvc.perform(get("/api/files/" + FILENAME))
         .andExpect(status().isOk())
         .andExpect(header().string("Content-Disposition", "attachment; filename=\"" + FILENAME + "\""));
 
@@ -106,14 +99,11 @@ class FileStorageControllerIt {
   @Test
   @SneakyThrows
   void shouldFailToGetFileByFilename() {
-    mockMvc.perform(delete("/api/files/" + FILENAME).with(getBearerToken(ADMIN)))
+    mockMvc.perform(delete("/api/files/" + FILENAME))
         .andExpect(status().isNoContent());
 
-    assertThatThrownBy(() ->
-        mockMvc.perform(get("/api/files/" + FILENAME).with(getBearerToken(USER)))
-            .andExpect(status().isOk())
-            .andExpect(header().string("Content-Disposition", "attachment; filename=\"" + FILENAME + "\"")))
-        .hasCause(new FileStorageException("File not found " + FILENAME));
+    mockMvc.perform(get("/api/files/" + FILENAME))
+        .andExpect(status().isNotFound());
 
     verify(auditingService, times(0)).audit(FILENAME, Action.DOWNLOAD);
   }
@@ -122,10 +112,10 @@ class FileStorageControllerIt {
   @SneakyThrows
   void shouldDeleteFileByFilename() {
     shouldUploadNewFile();
-    mockMvc.perform(delete("/api/files/" + FILENAME).with(getBearerToken(ADMIN)))
+    mockMvc.perform(delete("/api/files/" + FILENAME))
         .andExpect(status().isNoContent());
 
-    MvcResult mvcResult = mockMvc.perform(get("/api/files").with(getBearerToken(ADMIN)))
+    MvcResult mvcResult = mockMvc.perform(get("/api/files"))
         .andExpect(status().isOk())
         .andReturn();
 
@@ -140,10 +130,10 @@ class FileStorageControllerIt {
   @SneakyThrows
   void shouldDeleteAllFiles() {
     shouldUploadNewFile();
-    mockMvc.perform(delete("/api/files/").with(getBearerToken(USER)))
+    mockMvc.perform(delete("/api/files/"))
         .andExpect(status().isNoContent());
 
-    MvcResult mvcResult = mockMvc.perform(get("/api/files").with(getBearerToken(USER)))
+    MvcResult mvcResult = mockMvc.perform(get("/api/files"))
         .andExpect(status().isOk())
         .andReturn();
 
@@ -152,11 +142,6 @@ class FileStorageControllerIt {
     });
     assertThat(files).isEmpty();
     verify(auditingService, times(1)).audit("ALL FILES", Action.DELETE);
-  }
-
-
-  private RequestPostProcessor getBearerToken(String username) {
-    return helper.bearerToken("kubernetes-cluster", username);
   }
 
 }

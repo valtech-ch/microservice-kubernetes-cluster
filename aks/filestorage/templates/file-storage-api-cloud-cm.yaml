@@ -13,6 +13,8 @@ data:
     spring:
       zipkin:
         baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
+    keycloak:
+      auth-server-url: https://vtch-aks-demo.duckdns.org/auth
     security:
       oauth2:
         client:

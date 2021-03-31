@@ -67,7 +67,8 @@ public class FileStorageController {
   }
 
   @GetMapping("/files/{filename}")
-  @ResponseBody public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+  @ResponseBody
+  public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
     Resource file = fileStorageService.loadAsResource(filename);
     auditingService.audit(filename, Action.DOWNLOAD);
