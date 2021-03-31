@@ -2,16 +2,17 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.createMessage;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.getUsername;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
-import ch.valtech.kubernetes.microservice.cluster.persistence.exception.PersistenceException;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -37,7 +38,8 @@ public class PersistenceService {
   }
 
   private Auditing addAuditRecord(AuditingRequestDto requestDto) {
-    String username = getUsername().orElseThrow(() -> new PersistenceException("Username not found"));
+    String username = getUsername().orElseThrow(() ->
+        new ResponseStatusException(FORBIDDEN, "Username not found"));
     return auditingRepository.save(
         persistenceMapper.toAuditing(requestDto, username));
   }

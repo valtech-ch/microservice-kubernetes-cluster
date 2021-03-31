@@ -37,7 +37,7 @@ class AuditingServiceTest {
   }
 
   @Test
-  public void testSuccessfulAudit() {
+  void testSuccessfulAudit() {
     mockRestServiceServer.expect(requestTo(url))
         .andExpect(method(HttpMethod.POST))
         .andRespond(withSuccess("{\"message\": \"test.txt uploaded successfully\"}", MediaType.APPLICATION_JSON));
@@ -47,7 +47,7 @@ class AuditingServiceTest {
   }
 
   @Test
-  public void testFailedAudit() {
+  void testFailedAudit() {
     mockRestServiceServer.expect(requestTo(url))
         .andExpect(method(HttpMethod.POST))
         .andRespond(withUnauthorizedRequest());
@@ -56,11 +56,12 @@ class AuditingServiceTest {
   }
 
   @Test
-  public void testFailedAuditIoException() {
+  void testFailedAuditIoException() {
     mockRestServiceServer.expect(requestTo(url))
         .andExpect(method(HttpMethod.POST))
         .andRespond(withException(new IOException()));
     MessageDto response = auditingService.audit("test.txt", Action.UPLOAD);
     assertNull(response);
   }
+
 }

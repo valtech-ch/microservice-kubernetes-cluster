@@ -1,7 +1,0 @@
-apiVersion: v2
-name: authentication
-description: Authentication API
-
-type: application
-
-version: 0.1.0

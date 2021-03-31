@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 @Slf4j
 public class PersistenceController {
-  
+
   private final PersistenceService persistenceService;
-  
+
   public PersistenceController(PersistenceService persistenceService) {
     this.persistenceService = persistenceService;
   }
-  
+
   @PostMapping("/messages")
   public ResponseEntity<MessageDto> saveNewMessage(@RequestBody AuditingRequestDto requestDto) {
     MessageDto newMessage = persistenceService.saveNewMessage(requestDto);
     log.info("** New message was just posted! ");
     return ResponseEntity.ok(newMessage);
   }
-  
+
 }
