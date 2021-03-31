@@ -11,5 +11,7 @@ spring:
     locations: classpath:db/migration/mariadb
   zipkin:
     enabled: false
+keycloak:
+  enabled: false
 application:
   token.url: http://localhost:8090/oauth/token

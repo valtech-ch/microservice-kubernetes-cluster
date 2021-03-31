@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
+package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
@@ -58,8 +58,7 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         .and()
         .antMatcher("/api/**")
         .authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/api/files/**").hasAnyRole("admin", "user")
-        .antMatchers(HttpMethod.POST, "/api/files/**").hasAnyRole("admin")
+        .antMatchers(HttpMethod.POST, "/api/v1/messages").hasAnyRole("admin", "user")
         .antMatchers("/api/**").authenticated()
         .anyRequest().authenticated();
   }

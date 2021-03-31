@@ -4,6 +4,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +16,12 @@ public final class PersistenceUtils {
     SecurityContext securityContext = SecurityContextHolder.getContext();
     return Optional.ofNullable(securityContext.getAuthentication())
         .map(authentication -> {
-          if (authentication.getPrincipal() instanceof UserDetails) {
+          if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
+            KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) authentication.getPrincipal();
+            return keycloakPrincipal.getName();
+          } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
             return springSecurityUser.getUsername();
-          } else if (authentication.getPrincipal() instanceof String) {
-            return (String) authentication.getPrincipal();
           }
           return null;
         });
@@ -30,9 +32,9 @@ public final class PersistenceUtils {
       case UPLOAD:
         return String.format("User %s uploaded %s", auditing.getUsername(), auditing.getFilename());
       case DELETE:
-        return String.format("User %s downloaded %s", auditing.getUsername(), auditing.getFilename());
-      case DOWNLOAD:
         return String.format("User %s deleted %s", auditing.getUsername(), auditing.getFilename());
+      case DOWNLOAD:
+        return String.format("User %s downloaded %s", auditing.getUsername(), auditing.getFilename());
       default:
         return "No action detected";
     }
