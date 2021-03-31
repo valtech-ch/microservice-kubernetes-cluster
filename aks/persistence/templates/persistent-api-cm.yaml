@@ -10,15 +10,7 @@ data:
     spring:
       zipkin:
         baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
-    security:
-      oauth2:
-        client:
-          clientId: ${CLIENT_ID}
-          clientSecret: ${CLIENT_SECRET}
-        resource:
-          token-info-uri: http://authentication.default.svc.cluster.local:8080/auth/oauth/check_token
-          preferTokenInfo: true
-        basic:
-          enabled: false
+    keycloak:
+      auth-server-url: https://vtch-aks-demo.duckdns.org/auth
     application:
-      token.url: https://vtch-aks-demo.duckdns.org/auth/oauth/token
+      token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token

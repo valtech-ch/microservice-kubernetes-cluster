@@ -1,6 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
@@ -25,6 +27,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Profile("!cloud")
 @Slf4j
@@ -45,7 +48,7 @@ public class FileStorageLocalService implements FileStorageService {
   public String saveFile(MultipartFile file) {
     log.info("Adding a new file to path: {}", uploadPath);
     if (file.isEmpty()) {
-      throw new FileStorageException("File should not be empty");
+      throw new ResponseStatusException(BAD_REQUEST, "File should not be empty");
     }
 
     String filename = file.getOriginalFilename();
@@ -61,16 +64,16 @@ public class FileStorageLocalService implements FileStorageService {
     }
     return filename;
   }
-  
+
   @Override
   @SneakyThrows
   public URL getResourceUrl(String filename) {
     if (!Files.exists(Paths.get(uploadPath).resolve(filename).normalize())) {
-      throw new FileStorageException(format("File %s not found", filename));
+      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
     }
     return new URL(hostname + format("/api/file/%s", filename));
   }
-  
+
   @Override
   public List<FileArtifact> loadAll() {
     log.info("Loading all files in: {}", uploadPath);
@@ -78,7 +81,7 @@ public class FileStorageLocalService implements FileStorageService {
       return paths.filter(Files::isRegularFile)
           .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build())
           .collect(Collectors.toList());
-    }  catch (IOException ex) {
+    } catch (IOException ex) {
       throw new FileStorageException("Files not found ", ex);
     }
   }
@@ -92,7 +95,7 @@ public class FileStorageLocalService implements FileStorageService {
       if (resource.exists()) {
         return resource;
       } else {
-        throw new FileStorageException("File not found " + filename);
+        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
       }
     } catch (MalformedURLException ex) {
       throw new FileStorageException("File not found " + filename, ex);
@@ -105,7 +108,7 @@ public class FileStorageLocalService implements FileStorageService {
     try {
       Files.deleteIfExists(Paths.get(uploadPath).resolve(filename).normalize());
     } catch (IOException ex) {
-      throw new FileStorageException("File not found " + filename, ex);
+      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
     }
   }
 

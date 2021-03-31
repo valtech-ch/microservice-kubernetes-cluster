@@ -12,6 +12,11 @@ management:
     web:
       exposure:
         include: "*"
+keycloak:
+  realm: master
+  resource: login-app
+  public-client: true
+  principal-attribute: preferred_username
 ---
 spring:
   config:
@@ -29,18 +34,14 @@ spring:
       enabled: true
   flyway:
     locations: classpath:db/migration/h2
-security:
-  oauth2:
-    client:
-      clientId: kubernetes-cluster
-      clientSecret: secret
-    resource:
-      token-info-uri: http://localhost:8090/oauth/check_token
-      preferTokenInfo: true
-    basic:
-      enabled: false
+logging:
+  level:
+    root: INFO
+    ch.valtech: DEBUG
+keycloak:
+  auth-server-url: http://localhost:8180/auth
 application:
-  token.url: http://localhost:8090/oauth/token
+  token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
 ---
 spring:
   config:

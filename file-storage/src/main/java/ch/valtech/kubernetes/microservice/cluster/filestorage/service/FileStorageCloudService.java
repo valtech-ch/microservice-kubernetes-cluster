@@ -1,5 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
+import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
 import com.azure.storage.blob.BlobClient;
@@ -22,6 +25,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Profile("cloud")
 @Service
@@ -54,7 +58,7 @@ public class FileStorageCloudService implements FileStorageService {
       }
     }
   }
-  
+
   @Override
   public String saveFile(MultipartFile file) {
     String filename = file.getOriginalFilename();
@@ -71,7 +75,7 @@ public class FileStorageCloudService implements FileStorageService {
     }
     return filename;
   }
-  
+
   @Override
   public URL getResourceUrl(String filename) {
     try {
@@ -79,7 +83,7 @@ public class FileStorageCloudService implements FileStorageService {
       if (blobClient.exists()) {
         return new URL(blobClient.getBlobUrl());
       } else {
-        throw new FileStorageException("File not found " + filename);
+        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
       }
     } catch (MalformedURLException ex) {
       throw new FileStorageException("Could not get resource URL");
@@ -101,7 +105,7 @@ public class FileStorageCloudService implements FileStorageService {
     if (blobClient.exists()) {
       return new InputStreamResource(blobClient.openInputStream(), filename);
     } else {
-      throw new FileStorageException("File not found " + filename);
+      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
     }
   }
 
@@ -112,7 +116,7 @@ public class FileStorageCloudService implements FileStorageService {
       containerClient.getBlobClient(filename).delete();
     } catch (BlobStorageException ex) {
       if (ex.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
-        throw new FileStorageException("File not found " + filename, ex);
+        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
       } else {
         throw ex;
       }
@@ -127,5 +131,5 @@ public class FileStorageCloudService implements FileStorageService {
       throw new FileStorageException("Exception while deleting files");
     }
   }
-  
+
 }

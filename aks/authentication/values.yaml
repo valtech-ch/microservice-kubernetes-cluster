@@ -1,7 +1,0 @@
-cluster: https://kubernetes.default.svc
-project: default
-
-image:
-  repository: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/authentication
-  tag: latest
-  pullPolicy: Always

@@ -11,6 +11,8 @@ spec:
   selector:
     matchLabels:
       app: persistence-api
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -38,16 +40,6 @@ spec:
                 configMapKeyRef:
                   name: mariadb-cm
                   key: database-url
-            - name: CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: authentication-secret
-                  key: client-id
-            - name: CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: authentication-secret
-                  key: client-secret
           livenessProbe:
             httpGet:
               path: /persistence/actuator/health/liveness

@@ -13,7 +13,7 @@ public interface FileStorageService {
   List<FileArtifact> loadAll();
 
   Resource loadAsResource(String filename);
-  
+
   URL getResourceUrl(String filename);
 
   void deleteByFilename(String filename);
