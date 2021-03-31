@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt
+  name: letsencrypt-staging
   namespace: istio-system
 spec:
   acme:
@@ -11,7 +11,7 @@ spec:
     email: lukas.rohner@valtech.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt
+      name: letsencrypt-staging
     # Enable the HTTP-01 challenge provider
     solvers:
       - http01:
