@@ -1,7 +1,5 @@
-package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
+package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
 
-import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
-
-  @ExceptionHandler(value = FileStorageException.class)
-  protected ResponseEntity<Object> handleInternalServerError(RuntimeException ex, WebRequest request) {
-    return handleExceptionInternal(ex, ExceptionUtils.getMessage(ex),
-        new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-  }
 
   @ExceptionHandler(value = AccessDeniedException.class)
   protected ResponseEntity<Object> handleInternalForbidden(RuntimeException ex, WebRequest request) {

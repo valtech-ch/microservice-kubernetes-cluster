@@ -29,7 +29,7 @@ public class PersistenceControllerIt {
 
   @Test
   @SneakyThrows
-  @WithMockUser
+  @WithMockUser(roles = "admin")
   void shouldPostNewMessage() {
     AuditingRequestDto request = AuditingRequestDto.builder()
         .action(Action.UPLOAD)
@@ -43,6 +43,7 @@ public class PersistenceControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "foo")
   void shouldFailPostNewMessage() {
     AuditingRequestDto request = AuditingRequestDto.builder()
         .action(Action.UPLOAD)
