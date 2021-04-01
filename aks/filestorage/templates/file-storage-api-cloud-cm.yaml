@@ -14,7 +14,7 @@ data:
       zipkin:
         baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
     keycloak:
-      auth-server-url: http://keycloak-http.default.svc.cluster.local/auth
+      auth-server-url: https://vtch-aks-demo.duckdns.org/auth
     application:
       persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
