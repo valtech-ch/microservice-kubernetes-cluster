@@ -56,7 +56,8 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
   @Override
   public void configure(HttpSecurity http) throws Exception {
     super.configure(http);
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    http.csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .antMatcher("/api/**")
         .authorizeRequests()
