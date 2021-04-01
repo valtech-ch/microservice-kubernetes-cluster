@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -42,6 +43,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldUploadNewFile() {
     MockMultipartFile file = new MockMultipartFile("file",
         FILENAME,
@@ -58,6 +60,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldFailUploadNewFile() {
     MockMultipartFile file = new MockMultipartFile("file",
         FILENAME,
@@ -73,6 +76,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldListUploadedFiles() {
     shouldUploadNewFile();
     MvcResult mvcResult = mockMvc.perform(get("/api/files"))
@@ -87,6 +91,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldGetFileByFilename() {
     shouldUploadNewFile();
     mockMvc.perform(get("/api/files/" + FILENAME))
@@ -98,6 +103,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldFailToGetFileByFilename() {
     mockMvc.perform(delete("/api/files/" + FILENAME))
         .andExpect(status().isNoContent());
@@ -110,6 +116,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldDeleteFileByFilename() {
     shouldUploadNewFile();
     mockMvc.perform(delete("/api/files/" + FILENAME))
@@ -128,6 +135,7 @@ class FileStorageControllerIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
   void shouldDeleteAllFiles() {
     shouldUploadNewFile();
     mockMvc.perform(delete("/api/files/"))
