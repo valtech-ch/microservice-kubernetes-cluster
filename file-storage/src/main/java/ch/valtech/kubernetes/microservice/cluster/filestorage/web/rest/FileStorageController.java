@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ public class FileStorageController {
    */
   @SneakyThrows
   @PostMapping(value = "/files", consumes = {"multipart/form-data"})
+  @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
     String fileName = fileStorageService.saveFile(file);
@@ -62,12 +64,14 @@ public class FileStorageController {
    * @return list of uploaded files
    */
   @GetMapping("/files")
+  @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<List<FileArtifact>> listUploadedFiles() {
     return ResponseEntity.ok(fileStorageService.loadAll());
   }
 
   @GetMapping("/files/{filename}")
   @ResponseBody
+  @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<Resource> getFile(@PathVariable String filename) {
 
     Resource file = fileStorageService.loadAsResource(filename);
@@ -79,6 +83,7 @@ public class FileStorageController {
   }
 
   @DeleteMapping("/files/{filename}")
+  @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
     fileStorageService.deleteByFilename(filename);
     auditingService.audit(filename, Action.DELETE);
@@ -86,6 +91,7 @@ public class FileStorageController {
   }
 
   @DeleteMapping("/files/")
+  @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFiles() {
     fileStorageService.deleteAll();
     auditingService.audit(ALL_FILES, Action.DELETE);
