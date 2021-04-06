@@ -2,7 +2,6 @@ plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'com.google.cloud.tools.jib'
-	id 'java'
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
@@ -21,8 +20,9 @@ apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/swaggerDocs.gradle"
 
-sourceCompatibility = 11
-targetCompatibility = 11
+compileJava {
+	options.release = 15
+}
 
 configurations {
 	compileOnly {
@@ -44,7 +44,7 @@ springBoot {
 
 jib {
 	from {
-		image = 'adoptopenjdk/openjdk11:alpine-jre'
+		image = 'azul/zulu-openjdk-alpine:15-jre'
 	}
 	to {
 		image = "${docker_registry}/microservice-kubernetes-cluster/file-storage"
@@ -57,7 +57,7 @@ jib {
 }
 
 dependencies {
-	implementation project(':persistence-api')
+	api project(':persistence-api')
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
