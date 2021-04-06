@@ -1,6 +1,5 @@
 plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
     id 'java-library'
     id 'eclipse'
     id 'idea'
@@ -14,8 +13,9 @@ ext {
 
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 
-sourceCompatibility = 11
-targetCompatibility = 11
+compileJava {
+    options.release = 15
+}
 
 configurations {
     compileOnly {
