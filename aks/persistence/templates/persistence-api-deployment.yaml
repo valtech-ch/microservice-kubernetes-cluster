@@ -52,6 +52,13 @@ spec:
               port: 8081
             initialDelaySeconds: 25
             periodSeconds: 10
+          resources:
+            limits:
+              cpu: '2'
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           volumeMounts:
             - name: application-config
               mountPath: "/etc/config/"
