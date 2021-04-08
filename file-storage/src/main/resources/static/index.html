@@ -4,8 +4,25 @@
   <title>Uploading file</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://vtch-aks-demo.duckdns.org/auth/js/keycloak.js"></script>
+  <script>
+    function initKeycloak() {
+      var keycloak = new Keycloak({
+        url: 'https://vtch-aks-demo.duckdns.org/auth',
+        realm: 'master',
+        clientId: 'login-app'
+      });
+      keycloak.init({
+        onLoad: 'login-required',
+      }).then(function(authenticated) {
+        alert(authenticated ? 'authenticated' : 'not authenticated');
+      }).catch(function() {
+        alert('failed to initialize');
+      });
+    }
+  </script>
 </head>
-<body>
+<body onload="initKeycloak()">
 <h1>Uploading file</h1>
 
 <form id="upload" method="post" enctype="multipart/form-data">
