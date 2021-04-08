@@ -44,14 +44,14 @@ spec:
             httpGet:
               path: /persistence/actuator/health/liveness
               port: 8081
-            initialDelaySeconds: 20
-            periodSeconds: 5
+            initialDelaySeconds: 30
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /persistence/actuator/health/readiness
               port: 8081
-            initialDelaySeconds: 15
-            periodSeconds: 2
+            initialDelaySeconds: 25
+            periodSeconds: 10
           volumeMounts:
             - name: application-config
               mountPath: "/etc/config/"

@@ -39,14 +39,14 @@ spec:
             httpGet:
               path: /filestorage/actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 5
+            initialDelaySeconds: 25
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /filestorage/actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 2
+            initialDelaySeconds: 20
+            periodSeconds: 10
           volumeMounts:
 #            - name: application-config
 #              mountPath: "/etc/config/"
