@@ -12,6 +12,7 @@ plugins {
 project.description = 'persistence'
 
 ext {
+    imageName = 'persistence'
     springCloudVersion = '2020.0.2'
     keycloakVersion = '12.0.4'
     minimumCoveragePerFile = 0.6
@@ -21,6 +22,7 @@ ext {
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/swaggerDocs.gradle"
+apply from: "${rootProject.projectDir}/gradle/dockerBuild.gradle"
 
 sourceCompatibility = 11
 targetCompatibility = 11
@@ -40,20 +42,6 @@ springBoot {
         properties {
             time = null
         }
-    }
-}
-
-jib {
-    from {
-        image = 'adoptopenjdk/openjdk11:alpine-jre'
-    }
-    to {
-        image = "${docker_registry}/microservice-kubernetes-cluster/persistence"
-        auth {
-            username = "${docker_registry_username}"
-            password = "${docker_registry_password}"
-        }
-        tags = ["${gitHash}", 'latest']
     }
 }
 

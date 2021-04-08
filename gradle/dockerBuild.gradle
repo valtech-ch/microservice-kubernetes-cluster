@@ -1,0 +1,50 @@
+apply plugin: "com.google.cloud.tools.jib"
+
+ext {
+  if (!project.hasProperty("imageName")) {
+    throw new GradleException('imageName not set')
+  }
+}
+
+tasks.register('downloadOpentelemetryAgent') {
+  doLast {
+    println('Check OpenTelemetry agent')
+    def agentDir = new File(buildscript.sourceFile.parentFile.parentFile, 'agent')
+    mkdir agentDir
+    def opentelemetryAgent = new File(agentDir, 'opentelemetry-javaagent-all.jar')
+    if (!opentelemetryAgent.exists()) {
+      println('Download OpenTelemetry agent')
+      new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.0.1/opentelemetry-javaagent-all.jar')
+              .withInputStream{ i -> opentelemetryAgent.withOutputStream{ it << i }}
+    }
+  }
+}
+
+jib {
+  from {
+    image = 'adoptopenjdk/openjdk11:alpine-jre'
+  }
+  to {
+    image = "${docker_registry}/microservice-kubernetes-cluster/file-storage"
+    auth {
+      username = "${docker_registry_username}"
+      password = "${docker_registry_password}"
+    }
+    tags = ["${gitHash}", 'latest']
+  }
+  container {
+    jvmFlags = ['-Dotel.exporter=jaeger',
+                '-Dotel.jaeger.endpoint=jaeger:14250',
+                '-javaagent:/app/opentelemetry-javaagent-all.jar']
+  }
+  extraDirectories {
+    paths {
+      path {
+        from = file('../agent')
+        into = '/app'
+      }
+    }
+  }
+}
+
+tasks.jib.dependsOn tasks.downloadOpentelemetryAgent
