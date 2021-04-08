@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib'
-    id "org.flywaydb.flyway" version "7.7.2"
+    id "org.flywaydb.flyway" version "7.7.3"
     id 'java'
     id 'java-library'
     id 'eclipse'
