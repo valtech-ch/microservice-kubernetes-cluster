@@ -33,8 +33,10 @@ jib {
     tags = ["${gitHash}", 'latest']
   }
   container {
-    jvmFlags = ['-Dotel.exporter=jaeger',
-                '-Dotel.jaeger.endpoint=jaeger-collector.istio-system.svc.cluster.local:14250',
+    jvmFlags = ['-Dotel.traces.exporter=jaeger',
+                '-Dotel.exporter.jaeger.endpoint=http://jaeger-collector.istio-system.svc.cluster.local:14250',
+                '-Dotel.metrics.exporter=none',
+                '-Dotel.resource.attributes=service.name=' + project.description,
                 '-javaagent:/app/opentelemetry-javaagent-all.jar']
   }
   extraDirectories {
