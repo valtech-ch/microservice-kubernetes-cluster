@@ -34,7 +34,7 @@ jib {
   }
   container {
     jvmFlags = ['-Dotel.exporter=jaeger',
-                '-Dotel.jaeger.endpoint=jaeger:14250',
+                '-Dotel.jaeger.endpoint=jaeger-collector.istio-system.svc.cluster.local:14250',
                 '-javaagent:/app/opentelemetry-javaagent-all.jar']
   }
   extraDirectories {
