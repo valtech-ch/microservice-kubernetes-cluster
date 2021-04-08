@@ -50,6 +50,13 @@ gitPublish {
 }
 
 test {
+  outputs.upToDateWhen {
+    if (project.hasProperty('rerun')) {
+      return false
+    } else {
+      return true
+    }
+  }
   systemProperty 'io.springfox.staticdocs.outputDir', swaggerOutputDir
   systemProperty 'io.springfox.staticdocs.snippetsOutputDir', snippetsOutputDir
 }
