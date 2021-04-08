@@ -5,24 +5,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://vtch-aks-demo.duckdns.org/auth/js/keycloak.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function initKeycloak() {
-      var keycloak = new Keycloak({
-        url: 'https://vtch-aks-demo.duckdns.org/auth',
-        realm: 'master',
-        clientId: 'login-app'
-      });
+    let token = '';
+    const filesApiPath = window.location.href.split('#')[0] + "api/files/";
+    let keycloak = new Keycloak({
+      url: 'https://vtch-aks-demo.duckdns.org/auth',
+      realm: 'master',
+      clientId: 'login-app'
+    });
+    $(document).ready(function(){
+      document.getElementById('upload').setAttribute("action", filesApiPath);
       keycloak.init({
         onLoad: 'login-required',
       }).then(function(authenticated) {
-        alert(authenticated ? 'authenticated' : 'not authenticated');
+        token = keycloak.token;
+        $.ajax({
+          url: filesApiPath,
+          type: "GET",
+          beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
+          success: function( data ) {
+            $.each( data, function (item, value){
+              $( "#list-files" ).append( '<li><a href="' + filesApiPath + value.filename + '" target="_blank">' + value.filename + '</a><button data-filename="'+ value.filename +'">Delete</button></li>');
+            });
+          }
+        });
+        $(document).on('click', "#list-files li button", function () {
+          var fileName = $(this).attr('data-filename');
+          $.ajax({
+            url: filesApiPath + fileName,
+            type: 'DELETE',
+            beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token);},
+          })
+        })
       }).catch(function() {
         alert('failed to initialize');
       });
-    }
+    });
   </script>
 </head>
-<body onload="initKeycloak()">
+<body>
 <h1>Uploading file</h1>
 
 <form id="upload" method="post" enctype="multipart/form-data">
@@ -39,27 +61,4 @@
 </ul>
 
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<script type="text/javascript">
-  let filesApiPath = window.location.href + "api/files/";
-  document.getElementById('upload').setAttribute("action", filesApiPath);
-  $(document).ready(function(){
-
-    $.get( filesApiPath, function( data ) {
-      $.each( data, function (item, value){
-        $( "#list-files" ).append( '<li><a href="' + filesApiPath + value.filename + '" target="_blank">' + value.filename + '</a><button data-filename="'+ value.filename +'">Delete</button></li>');
-      });
-    });
-
-    $(document).on('click', "#list-files li button", function () {
-      var fileName = $(this).attr('data-filename');
-      $.ajax({
-        url: filesApiPath + fileName,
-        type: 'DELETE'
-      })
-    })
-  });
-
-</script>
 </html>
