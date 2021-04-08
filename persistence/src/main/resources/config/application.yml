@@ -22,8 +22,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  zipkin:
-    enabled: false
   datasource:
     url: jdbc:h2:mem:messaging
     username: sa
