@@ -36,7 +36,7 @@ jobs:
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
       - name: Publish API Documentation
-        run: ./gradlew gitPublishPush --no-parallel --stacktrace
+        run: ./gradlew gitPublishPush --no-parallel -Prerun
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
           GRGIT_USER: ${{ secrets.GIT_USER }}
