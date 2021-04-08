@@ -22,10 +22,10 @@ tasks.register('downloadOpentelemetryAgent') {
 
 jib {
   from {
-    image = 'adoptopenjdk/openjdk11:alpine-jre'
+    image = 'azul/zulu-openjdk-alpine:11-jre'
   }
   to {
-    image = "${docker_registry}/microservice-kubernetes-cluster/file-storage"
+    image = "${docker_registry}/microservice-kubernetes-cluster/${imageName}"
     auth {
       username = "${docker_registry_username}"
       password = "${docker_registry_password}"
