@@ -22,7 +22,7 @@ tasks.register('downloadOpentelemetryAgent') {
 
 jib {
   from {
-    image = 'adoptopenjdk/openjdk11:alpine-jre'
+    image = 'azul/zulu-openjdk-alpine:11-jre'
   }
   to {
     image = "${docker_registry}/microservice-kubernetes-cluster/${imageName}"
