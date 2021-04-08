@@ -25,7 +25,7 @@ jib {
     image = 'adoptopenjdk/openjdk11:alpine-jre'
   }
   to {
-    image = "${docker_registry}/microservice-kubernetes-cluster/file-storage"
+    image = "${docker_registry}/microservice-kubernetes-cluster/${imageName}"
     auth {
       username = "${docker_registry_username}"
       password = "${docker_registry_password}"
