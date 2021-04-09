@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: file-storage
+spec:
+  host: file-storage
+  trafficPolicy:
+    connectionPool:
+      http:
+        http1MaxPendingRequests: 20
+        maxRequestsPerConnection: 0
+      tcp:
+        maxConnections: 10
+    outlierDetection:
+      baseEjectionTime: 30s
+      consecutiveErrors: 2
+      interval: 10s
+      maxEjectionPercent: 100
