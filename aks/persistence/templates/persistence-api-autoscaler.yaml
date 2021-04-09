@@ -24,8 +24,8 @@ metadata:
         ) by (pod)
       )
 spec:
-  minReplicas: 1
-  maxReplicas: 10
+  minReplicas: 2
+  maxReplicas: 5
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
