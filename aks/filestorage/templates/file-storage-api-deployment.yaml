@@ -17,6 +17,7 @@ spec:
     metadata:
       labels:
         app: file-storage
+        auth: jwt
     spec:
       containers:
         - name: file-storage
