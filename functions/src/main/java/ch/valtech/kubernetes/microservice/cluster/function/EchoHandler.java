@@ -13,7 +13,7 @@ public class EchoHandler extends FunctionInvoker<String, String> {
 
   @FunctionName("echo")
   public String execute(@HttpTrigger(name = "req", methods = HttpMethod.POST,
-      authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<String> request,
+      authLevel = AuthorizationLevel.FUNCTION) HttpRequestMessage<String> request,
       ExecutionContext context) {
     return handleRequest(request.getBody(), context);
   }
