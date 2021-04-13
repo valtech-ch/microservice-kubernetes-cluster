@@ -26,13 +26,14 @@ assemble.dependsOn azureFunctionsPackage
 
 azurefunctions {
 	resourceGroup = 'vtch-kubernetes-blueprint'
-	appName = 'vtch-kubernetes-functions'
+	appName = 'vtch-functions'
 	pricingTier = 'Consumption'
 	region = 'switzerlandnorth'
+	appServicePlanName = 'vtch-service-plan'
+	disableAppInsights = false
 	authentication {
 		type = 'azure_cli'
 	}
-	localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
 }
 
 jar {
