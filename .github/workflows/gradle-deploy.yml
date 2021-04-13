@@ -33,6 +33,13 @@ jobs:
           ./argocd app sync file-storage --plaintext --grpc-web &&
           ./argocd app sync persistence --plaintext --grpc-web &&
           ./argocd app sync bootstrap-cluster --plaintext --grpc-web
+      - name: Deploy Azure Functions
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: vtch-functions
+          package: './functions/build/azure-functions/vtch-functions'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 #      - name: Publish API Documentation
