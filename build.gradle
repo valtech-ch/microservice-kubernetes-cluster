@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.6.1'
@@ -27,7 +27,7 @@ ext.gitHash = versionDetails().gitHashFull
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 
