@@ -17,6 +17,7 @@ spec:
     metadata:
       labels:
         app: persistence-api
+        auth: jwt
     spec:
       containers:
         - name: persistence-api
