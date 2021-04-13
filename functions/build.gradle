@@ -1,0 +1,55 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.4'
+	id 'com.microsoft.azure.azurefunctions'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'eclipse'
+	id 'idea'
+}
+
+project.description = 'functions'
+
+ext {
+	springCloudVersion = '2020.0.2'
+	azureFunctionsVersion = '1.4.2'
+	minimumCoveragePerFile = 0.6
+	filesExcludedFromCoverage = ["*Handler.java"]
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+azurefunctions {
+	resourceGroup = 'vtch-kubernetes-blueprint'
+	appName = 'vtch-kubernetes-functions'
+	pricingTier = 'Consumption'
+	region = 'switzerlandnorth'
+	authentication {
+		type = 'azure_cli'
+	}
+	localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
+}
+
+jar {
+	enabled = true
+}
+
+dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure'
+	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web'
+	implementation 'commons-io:commons-io:2.8.0'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "com.microsoft.azure.functions:azure-functions-java-library:${azureFunctionsVersion}"
+    }
+}
+test {
+	useJUnitPlatform()
+}
