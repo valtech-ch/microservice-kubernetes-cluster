@@ -15,6 +15,8 @@ application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
   token.url: http://localhost:8090/oauth/token
+  functions.url: https://vtch-functions.azurewebsites.net/api
+  functions.key: 123456
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst

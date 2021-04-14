@@ -36,6 +36,11 @@ spec:
                 secretKeyRef:
                   key: STORAGE_CONNECTION
                   name: file-storage-cloud-secret
+            - name: FUNCTIONS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: FUNCTIONS_KEY
+                  name: file-storage-cloud-secret
           livenessProbe:
             httpGet:
               path: /filestorage/actuator/health/liveness
