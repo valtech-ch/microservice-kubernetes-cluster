@@ -123,7 +123,7 @@ resource "azurerm_function_app" "function" {
   version                    = "~3"
   https_only                 = true
   site_config {
-    scm_use_main_ip_restriction = true
+    scm_use_main_ip_restriction = false
     ftps_state = "Disabled"
   }
 }
