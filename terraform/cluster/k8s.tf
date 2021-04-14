@@ -121,7 +121,9 @@ resource "azurerm_function_app" "function" {
   storage_account_name       = var.storage_account_name
   storage_account_access_key = var.storage_account_access_key
   version                    = "~3"
+  https_only                 = true
   site_config {
+    scm_use_main_ip_restriction = true
     ftps_state = "Disabled"
   }
 }

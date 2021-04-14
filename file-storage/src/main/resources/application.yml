@@ -20,6 +20,8 @@ keycloak:
   resource: login-app
   public-client: true
   principal-attribute: preferred_username
+application:
+  functions.url: https://vtch-functions.azurewebsites.net/api
 ---
 spring:
   config:
@@ -35,6 +37,7 @@ application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
   persistence.url: http://localhost:8081/api/v1/messages
+  functions.key: functionKey
   token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
   cloud:
     storage:
