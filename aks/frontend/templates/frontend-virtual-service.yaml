@@ -16,4 +16,4 @@ spec:
         - destination:
             port:
               number: 80
-            host: frontend
+            host: frontend-service
