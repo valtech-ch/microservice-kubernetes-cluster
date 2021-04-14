@@ -1,3 +1,5 @@
+.DS_Store
+
 # Compiled class file
 *.class
 
@@ -29,6 +31,14 @@ hs_err_pid*
 build
 bin
 
+# Ignore Node build output directory
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
 # Local .terraform directories
 **/.terraform/*
 
@@ -42,3 +52,12 @@ crash.log
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
