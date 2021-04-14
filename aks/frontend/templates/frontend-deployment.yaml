@@ -13,6 +13,8 @@ spec:
       app: frontend
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
