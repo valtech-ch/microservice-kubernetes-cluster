@@ -24,9 +24,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           readinessProbe:
             httpGet:
-              scheme: HTTPS
               path: /index.html
-            initialDelaySeconds: 15
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
           resources:
             limits:
               cpu: 500m
