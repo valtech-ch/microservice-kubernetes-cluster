@@ -24,7 +24,7 @@ public class AuditingService {
   private final RestTemplate restTemplate;
 
   public AuditingService(@Value("${application.persistence.url}") String persistenceUrl,
-      @Qualifier("keycloakRestTemplate") RestTemplate restTemplate) {
+      @Qualifier("jwtRestTemplate") RestTemplate restTemplate) {
     this.persistenceUrl = persistenceUrl;
     this.restTemplate = restTemplate;
   }
