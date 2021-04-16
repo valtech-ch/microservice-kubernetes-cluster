@@ -14,13 +14,13 @@ public final class ProducerService {
   private final String topic;
 
   public ProducerService(KafkaTemplate<String, String> kafkaTemplate,
-      @Value(value = "${kafka.topic}") String topic) {
+      @Value(value = "${application.kafka.topic}") String topic) {
     this.kafkaTemplate = kafkaTemplate;
     this.topic = topic;
   }
 
   public void sendMessage(String message) {
-    log.info(String.format("Producing message: %s", message));
+    log.info("Producing message: {}", message);
 
     this.kafkaTemplate.send(topic, message);
   }

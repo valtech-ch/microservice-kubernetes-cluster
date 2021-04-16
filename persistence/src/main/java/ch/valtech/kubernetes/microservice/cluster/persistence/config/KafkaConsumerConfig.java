@@ -20,8 +20,8 @@ public class KafkaConsumerConfig {
   private String groupId;
 
   public KafkaConsumerConfig(
-      @Value(value = "${kafka.bootstrapAddress}") String bootstrapAddress,
-      @Value(value = "${kafka.groupId}") String groupId) {
+      @Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress,
+      @Value(value = "${application.kafka.groupId}") String groupId) {
     this.bootstrapAddress = bootstrapAddress;
     this.groupId = groupId;
   }

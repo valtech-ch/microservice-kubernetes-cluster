@@ -15,6 +15,6 @@ public final class ConsumerService {
 
   @KafkaListener(topics = TOPIC, groupId = GROUP_ID)
   public void consume(String message) {
-    log.info(String.format("$$$$ => Consumed message: %s", message));
+    log.info("Consumed message: {}", message);
   }
 }

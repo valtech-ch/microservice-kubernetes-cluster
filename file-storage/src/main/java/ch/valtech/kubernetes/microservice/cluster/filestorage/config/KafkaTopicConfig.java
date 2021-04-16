@@ -16,8 +16,8 @@ public class KafkaTopicConfig {
   private String topic;
 
   public KafkaTopicConfig(
-      @Value(value = "${kafka.bootstrapAddress}") String bootstrapAddress,
-      @Value(value = "${kafka.topic}") String topic) {
+      @Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress,
+      @Value(value = "${application.kafka.topic}") String topic) {
     this.bootstrapAddress = bootstrapAddress;
     this.topic = topic;
   }
