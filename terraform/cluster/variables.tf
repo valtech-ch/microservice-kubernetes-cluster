@@ -2,7 +2,11 @@ variable "admin_username" {
   description = "Linux Administrator Password"
 }
 
-variable "agent_count" {
+variable "agent_min_count" {
+  default = 2
+}
+
+variable "agent_max_count" {
   default = 3
 }
 
@@ -35,4 +39,13 @@ variable "mariadb_username" {
 
 variable "mariadb_password" {
   description = "Maria DB password login credential"
+}
+
+variable "storage_account_name" {
+  description = "Terraform State Storage Account Name"
+  default     = "vtchk8sblueprinttfst"
+}
+
+variable "storage_account_access_key" {
+  description = "Terraform State Storage Account Key"
 }

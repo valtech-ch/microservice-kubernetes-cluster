@@ -21,6 +21,12 @@ jobs:
         run: ./gradlew build jib -Pdocker_registry=${{ secrets.DOCKER_REGISTRY }} -Pdocker_registry_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_registry_password=${{ secrets.DOCKER_PASSWORD }}
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
+      - name: Build and Deploy Frontend
+        run: >
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} &&
+          docker build -t ${{ secrets.DOCKER_REGISTRY }}/microservice-kubernetes-cluster/frontend:${GITHUB_SHA} -t ${{ secrets.DOCKER_REGISTRY }}/microservice-kubernetes-cluster/frontend:latest ./frontend &&
+          docker push ${{ secrets.DOCKER_REGISTRY }}/microservice-kubernetes-cluster/frontend:latest &&
+          docker push ${{ secrets.DOCKER_REGISTRY }}/microservice-kubernetes-cluster/frontend:${GITHUB_SHA}
       - name: Deploy to ArgoCD
         env:
           ARGOCD_SERVER: vtch-aks-demo-argocd.duckdns.org:80
@@ -30,9 +36,18 @@ jobs:
           chmod +x argocd &&
           ./argocd app set file-storage -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
           ./argocd app set persistence -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set frontend -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
           ./argocd app sync file-storage --plaintext --grpc-web &&
           ./argocd app sync persistence --plaintext --grpc-web &&
+          ./argocd app sync frontend --plaintext --grpc-web &&
           ./argocd app sync bootstrap-cluster --plaintext --grpc-web
+      - name: Deploy Azure Functions
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: vtch-functions
+          package: './functions/build/azure-functions/vtch-functions'
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
       - name: SonarQube Scan
         run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 #      - name: Publish API Documentation

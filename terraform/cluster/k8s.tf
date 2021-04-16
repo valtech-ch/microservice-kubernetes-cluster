@@ -1,5 +1,6 @@
 provider "azurerm" {
   features {}
+  skip_provider_registration = true
 }
 
 terraform {
@@ -44,9 +45,11 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   default_node_pool {
-    name            = "agentpool"
-    node_count      = var.agent_count
-    vm_size         = "Standard_D2_v2"
+    enable_auto_scaling = true
+    min_count = var.agent_min_count
+    max_count = var.agent_max_count
+    name = "agentpool"
+    vm_size = "Standard_D2_v2"
   }
 
   network_profile {
@@ -60,6 +63,9 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   addon_profile {
     kube_dashboard {
+      enabled = false
+    }
+    http_application_routing {
       enabled = false
     }
   }
@@ -94,6 +100,32 @@ resource "azurerm_mariadb_database" "mariadb" {
   server_name         = azurerm_mariadb_server.mariadb_server.name
   charset             = "utf8"
   collation           = "utf8_general_ci"
+}
+
+resource "azurerm_app_service_plan" "app_plan" {
+  name                = "vtch-service-plan"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  kind                = "FunctionApp"
+  sku {
+    tier = "Dynamic"
+    size = "Y1"
+  }
+}
+
+resource "azurerm_function_app" "function" {
+  name                       = "vtch-functions"
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  app_service_plan_id        = azurerm_app_service_plan.app_plan.id
+  storage_account_name       = var.storage_account_name
+  storage_account_access_key = var.storage_account_access_key
+  version                    = "~3"
+  https_only                 = true
+  site_config {
+    scm_use_main_ip_restriction = false
+    ftps_state = "Disabled"
+  }
 }
 
 resource "tls_private_key" "ssh_key" {

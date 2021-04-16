@@ -13,6 +13,8 @@ spec:
       app: file-storage
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
@@ -36,11 +38,16 @@ spec:
                 secretKeyRef:
                   key: STORAGE_CONNECTION
                   name: file-storage-cloud-secret
+            - name: FUNCTIONS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: FUNCTIONS_KEY
+                  name: file-storage-cloud-secret
           livenessProbe:
             httpGet:
               path: /filestorage/actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 25
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -50,7 +57,7 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: '2'
+              cpu: 500m
               memory: 1Gi
             requests:
               cpu: 100m

@@ -13,6 +13,8 @@ spec:
       app: persistence-api
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
@@ -45,7 +47,7 @@ spec:
             httpGet:
               path: /persistence/actuator/health/liveness
               port: 8081
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -55,7 +57,7 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: '2'
+              cpu: 500m
               memory: 1Gi
             requests:
               cpu: 100m

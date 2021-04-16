@@ -7,9 +7,9 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
-    spring:
-      zipkin:
-        baseUrl: http://zipkin.istio-system.svc.cluster.local:9411/
+    server:
+      servlet:
+        context-path: /filestorage
     keycloak:
       auth-server-url: https://vtch-aks-demo.duckdns.org/auth
     application:
@@ -17,3 +17,4 @@ data:
       upload.path: /etc/file-storage/uploads/
       persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
+      functions.key: ${FUNCTIONS_KEY}

@@ -22,25 +22,30 @@ apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 sourceCompatibility = 11
 targetCompatibility = 11
 
+assemble.dependsOn azureFunctionsPackage
+
 azurefunctions {
 	resourceGroup = 'vtch-kubernetes-blueprint'
-	appName = 'vtch-kubernetes-functions'
+	appName = 'vtch-functions'
 	pricingTier = 'Consumption'
 	region = 'switzerlandnorth'
+	appServicePlanName = 'vtch-service-plan'
+	disableAppInsights = false
 	authentication {
 		type = 'azure_cli'
 	}
-	localDebug = "transport=dt_socket,server=y,suspend=n,address=5005"
 }
 
 jar {
 	enabled = true
+	manifest {
+		attributes 'Main-Class': 'ch.valtech.kubernetes.microservice.cluster.function.Config'
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure'
 	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web'
-	implementation 'commons-io:commons-io:2.8.0'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
