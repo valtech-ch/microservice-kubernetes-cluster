@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib'
-    id "org.flywaydb.flyway" version "7.8.0"
+    id "org.flywaydb.flyway" version "7.8.1"
     id 'java'
     id 'java-library'
     id 'eclipse'
@@ -57,7 +57,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
     implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
-    implementation 'org.springframework.kafka:spring-kafka:2.5.8.RELEASE'
+    implementation 'org.springframework.kafka:spring-kafka:2.7.0'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     runtimeOnly 'com.h2database:h2:1.4.200'
