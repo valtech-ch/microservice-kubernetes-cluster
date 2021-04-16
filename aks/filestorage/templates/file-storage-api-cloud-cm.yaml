@@ -21,3 +21,6 @@ data:
           container.name: filestorage
           account.key: ${STORAGE_ACCOUNT_KEY}
           connection: ${STORAGE_CONNECTION}
+      kafka:
+        bootstrapAddress: kafka.default.svc.cluster.local:9092
+        topic: auditing

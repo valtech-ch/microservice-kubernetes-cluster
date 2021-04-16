@@ -10,3 +10,7 @@ data:
     application:
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
       token.issuer: https://vtch-aks-demo.duckdns.org/auth/realms/master
+      kafka:
+        bootstrapAddress: kafka.default.svc.cluster.local:9092
+        groupId: persistenceApp
+        topic: auditing

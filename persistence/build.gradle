@@ -15,7 +15,7 @@ ext {
     imageName = 'persistence'
     springCloudVersion = '2020.0.2'
     minimumCoveragePerFile = 0.6
-    filesExcludedFromCoverage = ["*/config/*.java", "*Application.java", "*Exception.java"]
+    filesExcludedFromCoverage = ["*/config/*.java", "*Application.java", "*Exception.java", "*ConsumerService.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
@@ -57,6 +57,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
     implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+    implementation 'org.springframework.kafka:spring-kafka:2.5.8.RELEASE'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     runtimeOnly 'com.h2database:h2:1.4.200'
