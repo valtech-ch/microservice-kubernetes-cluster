@@ -12,11 +12,6 @@ management:
     web:
       exposure:
         include: "*"
-keycloak:
-  realm: master
-  resource: login-app
-  public-client: true
-  principal-attribute: preferred_username
 application:
   kafka:
     bootstrapAddress: localhost:9092
@@ -27,6 +22,9 @@ spring:
   config:
     activate:
       on-profile: dev
+  security:
+    oauth2:
+      enabled: false
   datasource:
     url: jdbc:h2:mem:messaging
     username: sa
@@ -41,10 +39,9 @@ logging:
   level:
     root: INFO
     ch.valtech: DEBUG
-keycloak:
-  auth-server-url: http://localhost:8180/auth
 application:
   token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
+  token.issuer: http://localhost:8180/auth/realms/master
 ---
 spring:
   config:

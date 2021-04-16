@@ -1,7 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 
 import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.createMessage;
-import static ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceUtils.getUsername;
+import static ch.valtech.kubernetes.microservice.cluster.persistence.util.SecurityUtils.getUsername;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
@@ -43,4 +43,5 @@ public class PersistenceService {
     return auditingRepository.save(
         persistenceMapper.toAuditing(requestDto, username));
   }
+
 }

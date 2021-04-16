@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'com.google.cloud.tools.jib'
-    id "org.flywaydb.flyway" version "7.7.3"
+    id "org.flywaydb.flyway" version "7.8.0"
     id 'java'
     id 'java-library'
     id 'eclipse'
@@ -14,9 +14,8 @@ project.description = 'persistence'
 ext {
     imageName = 'persistence'
     springCloudVersion = '2020.0.2'
-    keycloakVersion = '12.0.4'
     minimumCoveragePerFile = 0.6
-    filesExcludedFromCoverage = ["*Configuration.java", "*Application.java", "*Exception.java", "*ConsumerService.java"]
+    filesExcludedFromCoverage = ["*/config/*.java", "*Application.java", "*Exception.java", "*ConsumerService.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
@@ -50,7 +49,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     implementation 'org.flywaydb:flyway-core'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
@@ -76,7 +75,6 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        mavenBom "org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}"
     }
 }
 test {

@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
+package ch.valtech.kubernetes.microservice.cluster.persistence.web.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

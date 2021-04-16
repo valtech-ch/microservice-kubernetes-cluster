@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith({SpringExtension.class})
+@ExtendWith(SpringExtension.class)
 public class PersistenceServiceTest {
 
   private PersistenceService persistenceService;
