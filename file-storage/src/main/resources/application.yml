@@ -15,11 +15,6 @@ management:
     web:
       exposure:
         include: "*"
-keycloak:
-  realm: master
-  resource: login-app
-  public-client: true
-  principal-attribute: preferred_username
 application:
   functions.url: https://vtch-functions.azurewebsites.net/api
 ---
@@ -27,18 +22,20 @@ spring:
   config:
     activate:
       on-profile: dev
+  security:
+    oauth2:
+      enabled: false
 logging:
   level:
     root: INFO
     ch.valtech: DEBUG
-keycloak:
-  auth-server-url: http://localhost:8180/auth
 application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
   persistence.url: http://localhost:8081/api/v1/messages
   functions.key: functionKey
   token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
+  token.issuer: http://localhost:8180/auth/realms/master
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst

@@ -1,67 +1,60 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
-import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
-import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
-import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
-import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
-import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import static org.springframework.security.oauth2.jwt.JwtDecoders.fromIssuerLocation;
+import static org.springframework.security.oauth2.jwt.JwtValidators.createDefaultWithIssuer;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
-import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) {
-    KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-    keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
-    auth.authenticationProvider(keycloakAuthenticationProvider);
-  }
+  private final Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>> oauthConfig;
 
-  @Bean
-  public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
-    return new KeycloakSpringBootConfigResolver();
-  }
-
-  @Bean
-  @Override
-  protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-    return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
-  }
-
-  @Bean
-  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-  public KeycloakRestTemplate keycloakRestTemplate(KeycloakClientRequestFactory keycloakClientRequestFactory) {
-    return new KeycloakRestTemplate(keycloakClientRequestFactory);
+  public SecurityConfiguration(
+      @Value("${spring.security.oauth2.enabled:true}") boolean enabledOauth2,
+      @Value("${application.token.issuer}") String tokenIssuer) {
+    if (enabledOauth2) {
+      this.oauthConfig = oauthConfigEnabled(tokenIssuer);
+    } else {
+      this.oauthConfig = oauth2 -> oauth2.disable();
+    }
   }
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    super.configure(http);
     http.csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .antMatcher("/api/**")
         .authorizeRequests()
-        .anyRequest().authenticated();
+        .anyRequest().authenticated()
+        .and()
+        .oauth2ResourceServer(oauthConfig);
+  }
+
+  private Customizer<OAuth2ResourceServerConfigurer<HttpSecurity>> oauthConfigEnabled(String tokenIssuer) {
+    OAuth2TokenValidator<Jwt> jwtValidator = createDefaultWithIssuer(tokenIssuer);
+    NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) fromIssuerLocation(tokenIssuer);
+    jwtDecoder.setJwtValidator(jwtValidator);
+    jwtDecoder.setClaimSetConverter(new UsernameSubClaimAdapter());
+
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
+    return oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter).decoder(jwtDecoder));
   }
 
 }

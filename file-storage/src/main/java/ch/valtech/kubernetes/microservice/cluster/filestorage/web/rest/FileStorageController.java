@@ -73,7 +73,6 @@ public class FileStorageController {
   @ResponseBody
   @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-
     Resource file = fileStorageService.loadAsResource(filename);
     auditingService.audit(filename, Action.DOWNLOAD);
     String downloadFilename = file.getFilename() != null ? file.getFilename()

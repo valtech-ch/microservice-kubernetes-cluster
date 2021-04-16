@@ -12,9 +12,13 @@ project.description = 'filestorage'
 ext {
 	imageName = 'file-storage'
 	springCloudVersion = '2020.0.2'
-	keycloakVersion = '12.0.4'
 	minimumCoveragePerFile = 0.6
-	filesExcludedFromCoverage = ["*Application.java", "*Exception.java", "*ExceptionTranslator.java", "*FileStorageCloudService.java"]
+	filesExcludedFromCoverage = ["*Application.java",
+								 "*Exception.java",
+								 "*ExceptionTranslator.java",
+								 "*FileStorageCloudService.java",
+								 "*SecurityUtils.java",
+								 "*/config/*.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
@@ -47,7 +51,7 @@ dependencies {
 	implementation project(':persistence-api')
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation "org.keycloak:keycloak-spring-boot-starter:${keycloakVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'commons-io:commons-io:2.8.0'
 	implementation 'com.azure:azure-storage-blob:12.10.2'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
@@ -67,7 +71,6 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        mavenBom "org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}"
     }
 }
 test {
