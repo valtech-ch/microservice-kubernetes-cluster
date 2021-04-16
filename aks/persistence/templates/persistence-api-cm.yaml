@@ -7,7 +7,6 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
-    keycloak:
-      auth-server-url: https://vtch-aks-demo.duckdns.org/auth
     application:
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
+      token.issuer: https://vtch-aks-demo.duckdns.org/auth/realms/master

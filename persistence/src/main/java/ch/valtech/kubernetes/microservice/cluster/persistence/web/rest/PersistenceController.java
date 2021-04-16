@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
+package ch.valtech.kubernetes.microservice.cluster.persistence.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;

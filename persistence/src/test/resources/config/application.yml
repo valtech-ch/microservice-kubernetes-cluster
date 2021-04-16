@@ -1,4 +1,7 @@
 spring:
+  security:
+    oauth2:
+      enabled: false
   datasource:
     url: jdbc:tc:mariadb:10.3:///
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
@@ -9,7 +12,6 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration/mariadb
-keycloak:
-  enabled: false
 application:
   token.url: http://localhost:8090/oauth/token
+  token.issuer: http://localhost:8180/auth/realms/master
