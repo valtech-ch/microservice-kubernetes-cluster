@@ -12,14 +12,18 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Configuration
 public class KafkaTopicConfig {
 
-  private String bootstrapAddress;
-  private String topic;
+  private final String bootstrapAddress;
+  private final String topic;
+  private final int numOfPartitions;
+  private final short replicationFactor;
 
   public KafkaTopicConfig(
       @Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress,
       @Value(value = "${application.kafka.topic}") String topic) {
     this.bootstrapAddress = bootstrapAddress;
     this.topic = topic;
+    this.numOfPartitions = 1;
+    this.replicationFactor = 1;
   }
 
   @Bean
@@ -31,6 +35,6 @@ public class KafkaTopicConfig {
 
   @Bean
   public NewTopic auditTopic() {
-    return new NewTopic(topic, 1, (short) 1);
+    return new NewTopic(topic, numOfPartitions, replicationFactor);
   }
 }

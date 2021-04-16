@@ -16,8 +16,8 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class KafkaConsumerConfig {
 
-  private String bootstrapAddress;
-  private String groupId;
+  private final String bootstrapAddress;
+  private final String groupId;
 
   public KafkaConsumerConfig(
       @Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress,

@@ -14,7 +14,7 @@ import org.springframework.kafka.core.ProducerFactory;
 @Configuration
 public class KafkaProducerConfig {
 
-  private String bootstrapAddress;
+  private final String bootstrapAddress;
 
   public KafkaProducerConfig(@Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress) {
     this.bootstrapAddress = bootstrapAddress;
