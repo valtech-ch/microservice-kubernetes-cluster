@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.persistence.controller;
+package ch.valtech.kubernetes.microservice.cluster.persistence.web.rest;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
