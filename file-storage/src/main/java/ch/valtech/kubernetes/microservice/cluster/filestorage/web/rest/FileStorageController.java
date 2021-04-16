@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
+import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.ProducerService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
@@ -35,11 +36,19 @@ public class FileStorageController {
 
   private final FileStorageService fileStorageService;
   private final AuditingService auditingService;
+  private final ProducerService producerService;
 
   public FileStorageController(FileStorageService fileStorageService,
-      AuditingService auditingService) {
+      AuditingService auditingService,
+      ProducerService producerService) {
     this.fileStorageService = fileStorageService;
     this.auditingService = auditingService;
+    this.producerService = producerService;
+  }
+
+  @PostMapping(value = "/publish")
+  public void sendMessageToKafkaTopic(@RequestParam String message) {
+    producerService.sendMessage(message);
   }
 
   /**

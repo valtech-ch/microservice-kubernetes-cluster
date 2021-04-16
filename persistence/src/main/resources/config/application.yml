@@ -12,6 +12,11 @@ management:
     web:
       exposure:
         include: "*"
+application:
+  kafka:
+    bootstrapAddress: localhost:9092
+    groupId: persistenceApp
+    topic: auditing
 ---
 spring:
   config:

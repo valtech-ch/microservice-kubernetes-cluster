@@ -17,6 +17,9 @@ management:
         include: "*"
 application:
   functions.url: https://vtch-functions.azurewebsites.net/api
+  kafka:
+    bootstrapAddress: localhost:9092
+    topic: auditing
 ---
 spring:
   config:

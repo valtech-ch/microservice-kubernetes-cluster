@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: kafka-no-tls
+  namespace: default
+spec:
+  host: "kafka-headless.default.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: DISABLE
