@@ -26,7 +26,8 @@ public class JwtRestTemplateConfiguration {
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
         throws IOException {
-      SecurityUtils.getJwt().ifPresent(token -> request.getHeaders().add(HttpHeaders.AUTHORIZATION, token));
+      SecurityUtils.getJwt().ifPresent(token -> request.getHeaders()
+          .add(HttpHeaders.AUTHORIZATION, "Bearer " + token));
       return execution.execute(request, body);
     }
 
