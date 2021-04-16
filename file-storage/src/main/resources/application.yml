@@ -20,6 +20,9 @@ keycloak:
   resource: login-app
   public-client: true
   principal-attribute: preferred_username
+kafka:
+  bootstrapAddress: localhost:9092
+  topic: auditing
 ---
 spring:
   config:
