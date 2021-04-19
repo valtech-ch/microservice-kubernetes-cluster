@@ -25,3 +25,6 @@ application:
       container.name: filestorage
       account.key: secret
       connection: secret
+  kafka:
+    bootstrapAddress: ${spring.embedded.kafka.brokers}
+    topic: auditing

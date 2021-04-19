@@ -46,11 +46,6 @@ public class FileStorageController {
     this.producerService = producerService;
   }
 
-  @PostMapping(value = "/publish")
-  public void sendMessageToKafkaTopic(@RequestParam String message) {
-    producerService.sendMessage(message);
-  }
-
   /**
    * {@code POST  /api/file} : save a new file to the file system.
    *
@@ -62,7 +57,7 @@ public class FileStorageController {
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
     String fileName = fileStorageService.saveFile(file);
-    auditingService.audit(fileName, Action.UPLOAD);
+    producerService.sendMessage(fileName, Action.UPLOAD);
     URL resourceUrl = fileStorageService.getResourceUrl(fileName);
     return ResponseEntity.created(resourceUrl.toURI()).build();
   }

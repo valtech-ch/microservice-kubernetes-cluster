@@ -1,20 +1,32 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.kafka;
 
+import static ch.valtech.kubernetes.microservice.cluster.persistence.util.SecurityUtils.decode;
+
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @Service
-@RestController
 public final class ConsumerService {
 
-  public static final String TOPIC = "auditing";
-  public static final String GROUP_ID = "persistenceApp";
+  private final PersistenceService persistenceService;
 
-  @KafkaListener(topics = TOPIC, groupId = GROUP_ID)
-  public void consume(String message) {
-    log.info("Consumed message: {}", message);
+  public ConsumerService(PersistenceService persistenceService) {
+    this.persistenceService = persistenceService;
+  }
+
+  @KafkaListener(topics = "${application.kafka.topic}", groupId = "${application.kafka.groupId}")
+  public void consume(@Payload AuditingRequestDto message, @Header("jwt") String token) {
+    log.info("Consumed auditing message: {}", message);
+    JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(decode(token));
+    SecurityContextHolder.getContext().setAuthentication(jwtAuthenticationToken);
+    persistenceService.saveNewMessage(message);
   }
 }
