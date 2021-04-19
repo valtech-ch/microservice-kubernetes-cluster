@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +30,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
+@EmbeddedKafka
 class FileStorageControllerIt {
 
   public static final String FILENAME = "test.txt";
@@ -55,7 +57,7 @@ class FileStorageControllerIt {
         .andExpect(status().isCreated())
         .andExpect(header().string("Location", "http://localhost:8080/api/file/" + file.getOriginalFilename()));
 
-    verify(auditingService, times(1)).audit(FILENAME, Action.UPLOAD);
+    verify(auditingService, times(0)).audit(FILENAME, Action.UPLOAD);
   }
 
   @Test

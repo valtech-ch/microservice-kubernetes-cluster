@@ -16,6 +16,6 @@ application:
   token.url: http://localhost:8090/oauth/token
   token.issuer: http://localhost:8180/auth/realms/master
   kafka:
-    bootstrapAddress: localhost:9092
+    bootstrapAddress: ${spring.embedded.kafka.brokers}
     groupId: persistenceApp
     topic: auditing

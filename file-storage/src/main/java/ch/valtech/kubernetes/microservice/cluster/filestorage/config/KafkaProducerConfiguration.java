@@ -1,5 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.AuditingRequestDtoSerializer;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -12,25 +14,25 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
-public class KafkaProducerConfig {
+public class KafkaProducerConfiguration {
 
   private final String bootstrapAddress;
 
-  public KafkaProducerConfig(@Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress) {
+  public KafkaProducerConfiguration(@Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress) {
     this.bootstrapAddress = bootstrapAddress;
   }
 
   @Bean
-  public ProducerFactory<String, String> producerFactory() {
+  public ProducerFactory<String, AuditingRequestDto> producerFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, AuditingRequestDtoSerializer.class);
     return new DefaultKafkaProducerFactory<>(configProps);
   }
 
   @Bean
-  public KafkaTemplate<String, String> kafkaTemplate() {
+  public KafkaTemplate<String, AuditingRequestDto> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
   }
 }

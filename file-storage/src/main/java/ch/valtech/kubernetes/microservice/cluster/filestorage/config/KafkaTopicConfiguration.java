@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
 @Configuration
-public class KafkaTopicConfig {
+public class KafkaTopicConfiguration {
 
   private final String bootstrapAddress;
   private final String topic;
   private final int numOfPartitions;
   private final short replicationFactor;
 
-  public KafkaTopicConfig(
+  public KafkaTopicConfiguration(
       @Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress,
       @Value(value = "${application.kafka.topic}") String topic) {
     this.bootstrapAddress = bootstrapAddress;
