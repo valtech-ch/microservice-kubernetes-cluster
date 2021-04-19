@@ -77,6 +77,7 @@ class ConsumerServiceTest {
     verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto);
 
   }
+
   public static String createToken(String username) {
     return Jwts.builder()
         .setSubject(username)
