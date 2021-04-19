@@ -12,13 +12,13 @@ import org.springframework.messaging.Message;
 @SpringBootApplication
 public class Config {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     SpringApplication.run(Config.class, args);
   }
 
   @Bean
   public Function<Message<String>, String> echo() {
-    return message -> message.getPayload();
+    return Message::getPayload;
   }
 
   @Bean
@@ -36,8 +36,8 @@ public class Config {
         }
         return reversed;
       } catch (Exception e) {
-        e.printStackTrace();
         if (context != null) {
+          context.getLogger().severe(e.getMessage());
           context.getLogger().severe("Function could not reverse incoming request");
         }
         return ("Function error: - bad request");

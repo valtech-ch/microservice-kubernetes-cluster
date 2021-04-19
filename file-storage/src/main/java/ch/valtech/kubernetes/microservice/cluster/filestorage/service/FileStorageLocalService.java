@@ -34,6 +34,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FileStorageLocalService implements FileStorageService {
 
+  public static final String FILE_NOT_FOUND = "File %s not found";
   private final String hostname;
   private final String uploadPath;
 
@@ -69,7 +70,7 @@ public class FileStorageLocalService implements FileStorageService {
   @SneakyThrows
   public URL getResourceUrl(String filename) {
     if (!Files.exists(Paths.get(uploadPath).resolve(filename).normalize())) {
-      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+      throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }
     return new URL(hostname + format("/api/file/%s", filename));
   }
@@ -95,7 +96,7 @@ public class FileStorageLocalService implements FileStorageService {
       if (resource.exists()) {
         return resource;
       } else {
-        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+        throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
       }
     } catch (MalformedURLException ex) {
       throw new FileStorageException("File not found " + filename, ex);
@@ -108,7 +109,7 @@ public class FileStorageLocalService implements FileStorageService {
     try {
       Files.deleteIfExists(Paths.get(uploadPath).resolve(filename).normalize());
     } catch (IOException ex) {
-      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+      throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }
   }
 
