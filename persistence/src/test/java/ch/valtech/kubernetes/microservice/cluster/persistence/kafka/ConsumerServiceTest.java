@@ -9,6 +9,11 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -66,10 +71,18 @@ class ConsumerServiceTest {
     producer.flush();
 
     //when
-    consumerService.consume(auditingRequestDto);
+    consumerService.consume(auditingRequestDto, createToken("test"));
 
     //then
     verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto);
 
   }
+  public static String createToken(String username) {
+    return Jwts.builder()
+        .setSubject(username)
+        .setExpiration(new Date(System.currentTimeMillis() + 50))
+        .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encode("testKey".getBytes(StandardCharsets.UTF_8)))
+        .compact();
+  }
+
 }
