@@ -32,6 +32,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Slf4j
 public class FileStorageCloudService implements FileStorageService {
 
+  public static final String FILE_NOT_FOUND = "File %s not found";
   private final BlobContainerClient containerClient;
 
   private final FunctionsService functionsService;
@@ -87,7 +88,7 @@ public class FileStorageCloudService implements FileStorageService {
       if (blobClient.exists()) {
         return new URL(blobClient.getBlobUrl());
       } else {
-        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+        throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
       }
     } catch (MalformedURLException ex) {
       throw new FileStorageException("Could not get resource URL");
@@ -109,7 +110,7 @@ public class FileStorageCloudService implements FileStorageService {
     if (blobClient.exists()) {
       return new InputStreamResource(blobClient.openInputStream(), filename);
     } else {
-      throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+      throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }
   }
 
@@ -120,7 +121,7 @@ public class FileStorageCloudService implements FileStorageService {
       containerClient.getBlobClient(filename).delete();
     } catch (BlobStorageException ex) {
       if (ex.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
-        throw new ResponseStatusException(NOT_FOUND, format("File %s not found", filename));
+        throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
       } else {
         throw ex;
       }
