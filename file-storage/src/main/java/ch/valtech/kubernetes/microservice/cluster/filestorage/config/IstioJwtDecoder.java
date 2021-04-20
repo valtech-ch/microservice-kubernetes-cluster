@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class IstioJwtDecoder implements JwtDecoder {
 
+  private final UsernameSubClaimAdapter claimsConverter = new UsernameSubClaimAdapter();
+
   @Override
   public Jwt decode(String token) throws JwtException {
     try {
@@ -29,11 +31,11 @@ public class IstioJwtDecoder implements JwtDecoder {
     }
   }
 
-  private static Jwt createJwt(String token, JWT parsedJwt) {
+  private Jwt createJwt(String token, JWT parsedJwt) {
     try {
       JWTClaimsSet jwtClaimsSet = parsedJwt.getJWTClaimsSet();
       Map<String, Object> headers = new LinkedHashMap<>(parsedJwt.getHeader().toJSONObject());
-      Map<String, Object> claims = new UsernameSubClaimAdapter().convert(jwtClaimsSet.getClaims());
+      Map<String, Object> claims = claimsConverter.convert(jwtClaimsSet.getClaims());
       return Jwt.withTokenValue(token)
           .headers((h) -> h.putAll(headers))
           .claims((c) -> c.putAll(claims))
