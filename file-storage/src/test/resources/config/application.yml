@@ -4,9 +4,6 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 1MB
-  security:
-    oauth2:
-      enabled: false
 management:
   endpoints:
     web:
@@ -16,7 +13,6 @@ application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
   token.url: http://localhost:8090/oauth/token
-  token.issuer: http://localhost:8180/auth/realms/master
   functions.url: https://vtch-functions.azurewebsites.net/api
   functions.key: 123456
   cloud:
