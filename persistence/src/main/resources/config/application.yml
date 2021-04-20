@@ -22,9 +22,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  security:
-    oauth2:
-      enabled: false
   datasource:
     url: jdbc:h2:mem:messaging
     username: sa
@@ -41,7 +38,6 @@ logging:
     ch.valtech: DEBUG
 application:
   token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
-  token.issuer: http://localhost:8180/auth/realms/master
 ---
 spring:
   config:

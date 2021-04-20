@@ -1,7 +1,4 @@
 spring:
-  security:
-    oauth2:
-      enabled: false
   datasource:
     url: jdbc:tc:mariadb:10.3:///
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
@@ -14,7 +11,6 @@ spring:
     locations: classpath:db/migration/mariadb
 application:
   token.url: http://localhost:8090/oauth/token
-  token.issuer: http://localhost:8180/auth/realms/master
   kafka:
     bootstrapAddress: ${spring.embedded.kafka.brokers}
     groupId: persistenceApp

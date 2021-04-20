@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
+package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
