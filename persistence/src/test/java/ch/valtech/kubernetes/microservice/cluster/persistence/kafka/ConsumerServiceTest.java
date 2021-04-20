@@ -41,6 +41,7 @@ class ConsumerServiceTest {
   public static final String FILENAME = "test.txt";
   private static String TOPIC = "auditing";
 
+  @Autowired
   private ConsumerService consumerService;
 
   @Autowired
@@ -48,12 +49,6 @@ class ConsumerServiceTest {
 
   @Mock
   private PersistenceService persistenceService;
-
-
-  @BeforeAll
-  void setUp() {
-    consumerService = new ConsumerService(persistenceService);
-  }
 
   @Test
   public void shouldCheckMessageIsProduced() {
