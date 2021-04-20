@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.kafka;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,6 +30,9 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.annotation.DirtiesContext;
 
 @Slf4j
@@ -39,9 +43,8 @@ import org.springframework.test.annotation.DirtiesContext;
 class ConsumerServiceTest {
 
   public static final String FILENAME = "test.txt";
-  private static String TOPIC = "auditing";
+  private static final String TOPIC = "auditing";
 
-  @Autowired
   private ConsumerService consumerService;
 
   @Autowired
@@ -49,6 +52,14 @@ class ConsumerServiceTest {
 
   @Mock
   private PersistenceService persistenceService;
+
+  @Mock
+  private AuthenticationManager authenticationManager;
+
+  @BeforeAll
+  void setUp() {
+    consumerService = new ConsumerService(persistenceService, authenticationManager);
+  }
 
   @Test
   public void shouldCheckMessageIsProduced() {
@@ -58,6 +69,9 @@ class ConsumerServiceTest {
         .action(Action.UPLOAD)
         .build();
     when(persistenceService.saveNewMessage(eq(auditingRequestDto))).thenReturn(MessageDto.builder().build());
+    JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken("username"));
+    when(authenticationManager.authenticate(any())).thenReturn(jwtAuthenticationToken);
+
     Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
     Producer<String, String> producer = new DefaultKafkaProducerFactory<String, String>(configs)
         .createProducer();
@@ -66,19 +80,24 @@ class ConsumerServiceTest {
     producer.flush();
 
     //when
-    consumerService.consume(auditingRequestDto, createToken("test"));
+    consumerService.consume(auditingRequestDto, null);
 
     //then
     verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto);
 
   }
 
-  public static String createToken(String username) {
-    return Jwts.builder()
+  public static Jwt createToken(String username) {
+    String token = Jwts.builder()
         .setSubject(username)
         .setExpiration(new Date(System.currentTimeMillis() + 50))
         .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encode("testKey".getBytes(StandardCharsets.UTF_8)))
         .compact();
+    return Jwt.withTokenValue(token)
+        .header("typ", "JWT")
+        .claim("test", "test")
+        .subject(username)
+        .build();
   }
 
 }

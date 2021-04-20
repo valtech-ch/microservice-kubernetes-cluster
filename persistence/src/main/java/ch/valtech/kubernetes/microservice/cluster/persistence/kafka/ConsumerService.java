@@ -32,7 +32,7 @@ public final class ConsumerService {
     log.info("Consumed auditing message: {}", message);
     if (StringUtils.isNotBlank(token)) {
       Authentication authentication = authenticationManager
-          .authenticate(new BearerTokenAuthenticationToken(t));
+          .authenticate(new BearerTokenAuthenticationToken(token));
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     persistenceService.saveNewMessage(message);
