@@ -35,15 +35,12 @@ public class FileStorageCloudService implements FileStorageService {
   public static final String FILE_NOT_FOUND = "File %s not found";
   private final BlobContainerClient containerClient;
 
-  private final FunctionsService functionsService;
-
   public FileStorageCloudService(
       @Value("${application.cloud.storage.account.name}") String accountName,
       @Value("${application.cloud.storage.account.key}") String accountKey,
       @Value("${application.cloud.storage.connection}") String connection,
       @Value("${application.cloud.storage.container.name}") String containerName,
       FunctionsService functionsService) {
-    this.functionsService = functionsService;
     StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
 
     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
@@ -116,7 +113,7 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public void deleteByFilename(String filename) {
-    log.info("Deleting file {} from cloud", functionsService.reverse(filename));
+    log.info("Deleting file {} from cloud", filename);
     try {
       containerClient.getBlobClient(filename).delete();
     } catch (BlobStorageException ex) {

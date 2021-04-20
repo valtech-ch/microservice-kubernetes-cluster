@@ -23,3 +23,5 @@ data:
       kafka:
         bootstrapAddress: kafka.default.svc.cluster.local:9092
         topic: auditing
+        stream:
+          topic: reverseAuditing

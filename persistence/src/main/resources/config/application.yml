@@ -16,7 +16,7 @@ application:
   kafka:
     bootstrapAddress: localhost:9092
     groupId: persistenceApp
-    topic: auditing
+    topic: reverseAuditing
 ---
 spring:
   config:
