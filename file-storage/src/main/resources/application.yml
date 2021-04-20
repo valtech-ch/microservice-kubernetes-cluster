@@ -25,9 +25,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  security:
-    oauth2:
-      enabled: false
 logging:
   level:
     root: INFO
@@ -38,7 +35,6 @@ application:
   persistence.url: http://localhost:8081/api/v1/messages
   functions.key: functionKey
   token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
-  token.issuer: http://localhost:8180/auth/realms/master
   cloud:
     storage:
       account.name: vtchk8sblueprinttfst
