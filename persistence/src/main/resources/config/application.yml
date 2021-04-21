@@ -17,6 +17,8 @@ application:
     bootstrapAddress: localhost:9092
     groupId: persistenceApp
     topic: auditing
+    stream:
+      topic: reverseAuditing
 ---
 spring:
   config:

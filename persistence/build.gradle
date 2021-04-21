@@ -15,7 +15,10 @@ ext {
     imageName = 'persistence'
     springCloudVersion = '2020.0.2'
     minimumCoveragePerFile = 0.6
-    filesExcludedFromCoverage = ["*/config/*.java", "*Application.java", "*Exception.java", "*ConsumerService.java"]
+    filesExcludedFromCoverage = ["*/config/*.java",
+                                 "*Application.java",
+                                 "*Exception.java",
+                                 "*ConsumerService.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
@@ -69,7 +72,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
     testImplementation "org.testcontainers:mariadb:1.15.3"
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.0'
     testImplementation 'io.jsonwebtoken:jjwt:0.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
     testCompileOnly 'org.projectlombok:lombok:1.18.16'

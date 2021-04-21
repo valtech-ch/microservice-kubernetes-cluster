@@ -17,5 +17,7 @@ data:
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
       functions.key: ${FUNCTIONS_KEY}
       kafka:
-        bootstrapAddress: kafka.default.svc.cluster.local:9092
+        bootstrapAddress: kafka-headless.default.svc.cluster.local:9092
         topic: auditing
+        stream:
+          topic: reverseAuditing
