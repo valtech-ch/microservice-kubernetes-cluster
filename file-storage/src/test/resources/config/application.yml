@@ -24,3 +24,5 @@ application:
   kafka:
     bootstrapAddress: ${spring.embedded.kafka.brokers}
     topic: auditing
+    stream:
+      topic: reverseAuditing

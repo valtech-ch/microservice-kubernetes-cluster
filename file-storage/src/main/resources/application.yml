@@ -20,6 +20,8 @@ application:
   kafka:
     bootstrapAddress: localhost:9092
     topic: auditing
+    stream:
+      topic: reverseAuditing
 ---
 spring:
   config:

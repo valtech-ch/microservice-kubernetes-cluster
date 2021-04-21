@@ -80,11 +80,10 @@ class ConsumerServiceTest {
     producer.flush();
 
     //when
-    consumerService.consume(auditingRequestDto, null);
+    consumerService.consumeTopic(auditingRequestDto, null);
 
     //then
     verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto);
-
   }
 
   public static Jwt createToken(String username) {

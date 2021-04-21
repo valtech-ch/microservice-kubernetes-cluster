@@ -28,7 +28,7 @@ public final class ConsumerService {
   }
 
   @KafkaListener(topics = "${application.kafka.topic}", groupId = "${application.kafka.groupId}")
-  public void consume(@Payload AuditingRequestDto message, @Header("jwt") String token) {
+  public void consumeTopic(@Payload AuditingRequestDto message, @Header("jwt") String token) {
     log.info("Consumed auditing message: {}", message);
     if (StringUtils.isNotBlank(token)) {
       Authentication authentication = authenticationManager
@@ -36,6 +36,16 @@ public final class ConsumerService {
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     persistenceService.saveNewMessage(message);
+  }
+
+  @KafkaListener(topics = "${application.kafka.stream.topic}", groupId = "${application.kafka.groupId}")
+  public void consumeStreamTopic(@Payload AuditingRequestDto message, @Header("jwt") String token) {
+    if (StringUtils.isNotBlank(token)) {
+      Authentication authentication = authenticationManager
+          .authenticate(new BearerTokenAuthenticationToken(token));
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+    log.info("Consumed reversed stream filename: {}", message.getFilename());
   }
 
 }
