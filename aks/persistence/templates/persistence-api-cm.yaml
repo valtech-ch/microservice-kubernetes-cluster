@@ -12,4 +12,6 @@ data:
       kafka:
         bootstrapAddress: kafka.default.svc.cluster.local:9092
         groupId: persistenceApp
-        topic: reverseAuditing
+        topic: auditing
+        stream:
+          topic: reverseAuditing

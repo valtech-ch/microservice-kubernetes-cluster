@@ -32,10 +32,8 @@ public class ReverseStream {
 
   @Bean("reverseStreamTopology")
   public KStream<String, AuditingRequestDto> startProcessing(
-      @Qualifier("reverseStreamBuilder") StreamsBuilder builder) {
-    Serde<AuditingRequestDto> auditingRequestSerde = Serdes
-        .serdeFrom(new AuditingRequestDtoSerializer(), new AuditingRequestDtoDeserializer());
-
+      @Qualifier("reverseStreamBuilder") StreamsBuilder builder,
+      @Qualifier("auditingRequestSerde") Serde<AuditingRequestDto> auditingRequestSerde) {
     KStream<String, AuditingRequestDto> toReverse = builder
         .stream(inputTopic, Consumed.with(Serdes.String(), auditingRequestSerde));
 

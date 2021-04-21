@@ -17,7 +17,6 @@ ext {
 								 "*Exception.java",
 								 "*ExceptionTranslator.java",
 								 "*FileStorageCloudService.java",
-								 "*erializer.java",
 								 "*SecurityUtils.java",
 								 "*/config/*.java"]
 }

@@ -18,7 +18,6 @@ ext {
     filesExcludedFromCoverage = ["*/config/*.java",
                                  "*Application.java",
                                  "*Exception.java",
-                                 "*erializer.java",
                                  "*ConsumerService.java"]
 }
 

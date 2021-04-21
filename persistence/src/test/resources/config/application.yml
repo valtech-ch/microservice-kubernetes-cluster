@@ -14,4 +14,6 @@ application:
   kafka:
     bootstrapAddress: ${spring.embedded.kafka.brokers}
     groupId: persistenceApp
-    topic: reverseAuditing
+    topic: auditing
+    stream:
+      topic: reverseAuditing
