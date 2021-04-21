@@ -21,7 +21,7 @@ data:
           account.key: ${STORAGE_ACCOUNT_KEY}
           connection: ${STORAGE_CONNECTION}
       kafka:
-        bootstrapAddress: kafka.default.svc.cluster.local:9092
+        bootstrapAddress: kafka-headless.default.svc.cluster.local:9092
         topic: auditing
         stream:
           topic: reverseAuditing
