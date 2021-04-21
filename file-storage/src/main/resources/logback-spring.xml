@@ -14,4 +14,5 @@
             <appender-ref ref="consoleAppender"/>
         </root>
     </springProfile>
+    <logger name="org.apache.kafka.streams.processor.internals" level="WARN"/>
 </configuration>
