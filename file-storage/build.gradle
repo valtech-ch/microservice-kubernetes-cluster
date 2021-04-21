@@ -61,7 +61,7 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
 	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
 	implementation 'org.springframework.kafka:spring-kafka:2.7.0'
-	implementation 'org.apache.kafka:kafka-clients:2.7.0'
+	implementation 'org.apache.kafka:kafka-clients:2.8.0'
 	implementation 'org.apache.kafka:kafka-streams:2.7.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
