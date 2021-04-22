@@ -4,7 +4,7 @@ metadata:
   name: kafka-no-tls
   namespace: default
 spec:
-  host: "kafka-headless.default.svc.cluster.local"
+  host: kafka-cluster-kafka-brokers.default.svc.cluster.local
   trafficPolicy:
     tls:
       mode: DISABLE
