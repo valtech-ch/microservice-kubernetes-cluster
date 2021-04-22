@@ -42,13 +42,9 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        .then((res) => {
-          // this.$emit('reload');
-          debugger; // eslint-disable-line no-debugger
-          console.log(res.data);
-
-          this.file = null;
-         })
+        .then(() => {
+          this.$emit('reload');
+        })
         .catch((error) => {
           this.error = true;
           console.error(error)
