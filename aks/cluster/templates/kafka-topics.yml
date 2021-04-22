@@ -2,6 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: auditing
+  namespace: default
   labels:
     strimzi.io/cluster: kafka-cluster
 spec:
@@ -17,6 +18,7 @@ apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
 metadata:
   name: reverse-auditing
+  namespace: default
   labels:
     strimzi.io/cluster: kafka-cluster
 spec:
