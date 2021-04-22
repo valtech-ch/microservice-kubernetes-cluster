@@ -1,0 +1,53 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: kafka-cluster
+  namespace: default
+  labels:
+    app: kafka
+spec:
+  kafka:
+    replicas: 1
+    listeners:
+      plain: {}
+      tls: {}
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+    resources:
+      requests:
+        memory: 1280Mi
+      limits:
+        memory: 2Gi
+    storage:
+      type: jbod
+      volumes:
+        - id: 0
+          type: persistent-claim
+          size: 10Gi
+          deleteClaim: false
+  zookeeper:
+    replicas: 1
+    resources:
+      requests:
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+    storage:
+      type: persistent-claim
+      size: 10Gi
+      deleteClaim: false
+  entityOperator:
+    topicOperator:
+      resources:
+        requests:
+          memory: 384Mi
+        limits:
+          memory: 512Mi
+    userOperator:
+      resources:
+        requests:
+          memory: 384Mi
+        limits:
+          memory: 512Mi

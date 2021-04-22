@@ -1,0 +1,29 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: auditing
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  partitions: 2
+  replicas: 1
+  config:
+    # Retention: 1 day or 1GB size
+    retention.ms: 86400000
+    retention.bytes: 1073741824
+    segment.bytes: 1073741824
+---
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: reverse-auditing
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  partitions: 2
+  replicas: 1
+  config:
+    # Retention: 1 day or 1GB size
+    retention.ms: 86400000
+    retention.bytes: 1073741824
+    segment.bytes: 1073741824
