@@ -1,0 +1,63 @@
+plugins {
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+}
+
+project.description = 'Release Toggles Library'
+
+ext {
+    lombokVersion = '1.18.16'
+    minimumCoveragePerFile = 0.6
+    filesExcludedFromCoverage = ["*/config/*.java"]
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+jar {
+    enabled = true
+}
+
+sonarqube {
+    properties {
+        property "sonar.tests", ""
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-aop:2.4.5'
+    implementation 'org.springframework:spring-web:5.3.6'
+    implementation 'org.springframework.security:spring-security-config:5.4.6'
+    implementation 'org.springframework.security:spring-security-web:5.4.6'
+    implementation 'org.togglz:togglz-spring-boot-starter:2.9.7'
+    implementation 'org.togglz:togglz-spring-security:2.9.7'
+    implementation 'org.togglz:togglz-console:2.9.7'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'io.vavr:vavr:0.10.3'
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.4.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation 'org.togglz:togglz-junit5:2.8.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -2,9 +2,12 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.ProducerService;
+import ch.valtech.kubernetes.microservice.cluster.filestorage.releasetoggle.ReleaseToggles;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.releasetoggle.annotation.aspect.ReleaseToggle;
+import ch.valtech.kubernetes.microservice.cluster.releasetoggle.exception.ReleaseToggleNotEnabledException;
 import java.net.URL;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -68,6 +71,7 @@ public class FileStorageController {
    * @return list of uploaded files
    */
   @GetMapping("/files")
+  @ReleaseToggle("VJAP_23")
   @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<List<FileArtifact>> listUploadedFiles() {
     return ResponseEntity.ok(fileStorageService.loadAll());
@@ -88,9 +92,13 @@ public class FileStorageController {
   @DeleteMapping("/files/{filename}")
   @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
-    fileStorageService.deleteByFilename(filename);
-    auditingService.audit(filename, Action.DELETE);
-    return ResponseEntity.noContent().build();
+    if (ReleaseToggles.VJAP_23.isActive()) {
+      fileStorageService.deleteByFilename(filename);
+      auditingService.audit(filename, Action.DELETE);
+      return ResponseEntity.noContent().build();
+    }
+    throw new ReleaseToggleNotEnabledException(
+        ReleaseToggles.VJAP_23.name());
   }
 
   @DeleteMapping("/files/")

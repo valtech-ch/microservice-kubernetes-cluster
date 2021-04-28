@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev, release-toggles
   application:
     name: filestorage
   servlet:
@@ -15,6 +15,15 @@ management:
     web:
       exposure:
         include: "*"
+togglz:
+  console:
+    enabled: false
+    secured: true
+    path: /togglz
+    use-management-port: false
+    feature-admin-authority: ROLE_togglz
+  endpoint:
+    enabled: true
 application:
   functions.url: https://vtch-functions.azurewebsites.net/api
   kafka:
