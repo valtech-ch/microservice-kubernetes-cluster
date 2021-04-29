@@ -19,7 +19,6 @@ import org.togglz.junit5.AllDisabled;
 import org.togglz.junit5.AllEnabled;
 
 @ActiveProfiles({"test", "release-toggles"})
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @DirtiesContext
 @EmbeddedKafka
