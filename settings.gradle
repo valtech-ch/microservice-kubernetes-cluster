@@ -27,6 +27,7 @@ buildCache {
     }
 }
 
+include ':release-toggles'
 include ':persistence'
 include ':file-storage'
 include ':persistence-api'
