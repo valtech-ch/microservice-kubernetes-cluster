@@ -35,7 +35,7 @@ services:
      - 8081:8081
 
   mariadb:
-    image: library/mariadb:10.5
+    image: library/mariadb:10.6
     networks:
       - services
     environment:
