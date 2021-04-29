@@ -2,12 +2,9 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.ProducerService;
-import ch.valtech.kubernetes.microservice.cluster.filestorage.releasetoggle.ReleaseToggles;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.releasetoggle.annotation.aspect.ReleaseToggle;
-import ch.valtech.kubernetes.microservice.cluster.releasetoggle.exception.ReleaseToggleNotEnabledException;
 import java.net.URL;
 import java.util.List;
 import lombok.SneakyThrows;
