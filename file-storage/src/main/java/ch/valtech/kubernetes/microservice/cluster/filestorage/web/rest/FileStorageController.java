@@ -71,7 +71,6 @@ public class FileStorageController {
    * @return list of uploaded files
    */
   @GetMapping("/files")
-  @ReleaseToggle("VJAP_23")
   @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<List<FileArtifact>> listUploadedFiles() {
     return ResponseEntity.ok(fileStorageService.loadAll());
@@ -92,13 +91,9 @@ public class FileStorageController {
   @DeleteMapping("/files/{filename}")
   @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
-    if (ReleaseToggles.VJAP_23.isActive()) {
-      fileStorageService.deleteByFilename(filename);
-      auditingService.audit(filename, Action.DELETE);
-      return ResponseEntity.noContent().build();
-    }
-    throw new ReleaseToggleNotEnabledException(
-        ReleaseToggles.VJAP_23.name());
+    fileStorageService.deleteByFilename(filename);
+    auditingService.audit(filename, Action.DELETE);
+    return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/files/")
