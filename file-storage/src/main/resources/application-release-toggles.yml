@@ -1,4 +1,4 @@
 togglz:
   console:
     enabled: true
-  release-toggles-list: VJAP-123
+  release-toggles-list: VJAP-24

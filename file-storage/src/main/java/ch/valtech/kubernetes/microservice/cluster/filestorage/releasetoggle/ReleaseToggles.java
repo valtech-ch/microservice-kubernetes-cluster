@@ -8,8 +8,8 @@ import org.togglz.core.context.FeatureContext;
 public enum ReleaseToggles implements Feature {
 
   @Test
-  @Label("VJAP-123: Test")
-  VJAP_123;
+  @Label("VJAP-24: Test")
+  VJAP_24;
 
   public boolean isActive() {
     return FeatureContext.getFeatureManager().isActive(this);
