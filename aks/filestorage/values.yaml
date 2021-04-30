@@ -5,3 +5,5 @@ image:
   repository: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/file-storage
   tag: latest
   pullPolicy: Always
+
+releaseToggles:

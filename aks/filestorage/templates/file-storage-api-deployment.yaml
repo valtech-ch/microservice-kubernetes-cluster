@@ -27,7 +27,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "cloud"
+              value: "cloud{{ if .Values.releaseToggles }},release-toggles{{ end }}"
+            {{ if .Values.releaseToggles }}
+            - name: TOGGLZ_RELEASE_TOGGLES_LIST
+              value: {{ .Values.releaseToggles }}
+            {{ end }}
             - name: STORAGE_ACCOUNT_KEY
               valueFrom:
                 secretKeyRef:

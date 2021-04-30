@@ -47,7 +47,7 @@ jobs:
           echo "Release Toggles are $releaseToggles" &&
           curl -sSL -o argocd http://vtch-aks-demo-argocd.duckdns.org:80/download/argocd-linux-amd64 &&
           chmod +x argocd &&
-          ./argocd app set file-storage -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
+          ./argocd app set file-storage -p image.tag=${GITHUB_SHA} -p releaseToggles=$releaseToggles --plaintext --grpc-web &&
           ./argocd app set persistence -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
           ./argocd app set frontend -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
           ./argocd app sync file-storage --plaintext --grpc-web &&
