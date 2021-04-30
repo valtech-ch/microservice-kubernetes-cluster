@@ -19,7 +19,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - run: python install requests
+      - name: Python install requests dependency
+        uses: py-actions/py-dependency-install@v2
+        with:
+          path: "scripts/release-toggles/requirements.txt"
+          update-pip: "false"
+          update-setuptools: "false"
+          update-wheel: "false"
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build and Deploy to Docker Registry
