@@ -16,6 +16,18 @@ togglz:
   release-toggles-list: VJAP-23,VJAP-24
 ```
 
+### Continuous Integration Environments
+
+In CI environments, release toggles will be enabled based on the `TOGGLZ_RELEASE_TOGGLES_LIST` environment variable.
+
+If the `TOGGLZ_RELEASE_TOGGLES_LIST` environment variable is set, the `release-toggles` Spring profile will be activated and therefore the ReleaseToggleConfiguration.java class be initialized.
+
+Setting of the `TOGGLZ_RELEASE_TOGGLES_LIST` enivronment variable happens in the GitHub pipeline workflows/gradle-deploy.yml where a python script will run to find the toggles to be activated by checking JIRA ticket status scripts/release-toggles/findJiraTickets.py and then set the found tickets in the helm variables of the filestorage chart aks/filestorage/values.yaml. Based if the releaseToggles variable is set, the deployment will add the release-toggles profile to the activated spring boot profiles and set the `TOGGLZ_RELEASE_TOGGLES_LIST` environment variable.
+
+### Releases and Production Environments
+
+In release testing and production environments, the `TOGGLZ_RELEASE_TOGGLES_LIST` environment variable *MUST NOT* be set, so that the `release-toggles` profile doesn't get activated and all release toggles are turned off.
+
 ### Togglz Admin Console
 
 The Togglz admin console displays all the backend release toggles and their state at runtime.
@@ -44,6 +56,7 @@ Release toggle names must be created using JIRA ticket keys with an underscore a
 
 
 1. All new release toggles must be added to `ReleaseToggles.java`
+2. By default all release toggles are disabled. They will be enabled/disabled in different CI/CD environments by the automated deployment pipeline based on the JIRA ticket.
 
 Each release toggle in `ReleaseToggles.java` should have a description which can be added using the `@Label` annotation. The description must
 contain the following information: `"<JIRA-KEY>: <SHORT_DESCRIPTION>"`.
@@ -154,7 +167,7 @@ The following two scenarios **must be tested** for each release toggle:
 2. Release toggle enabled.
 
 Since release toggles require all necessary Togglz Spring beans to be configured, each unit/integration test
-context configuration must load `TogglzAutoConfiguration.class` and `CommonReleaseToggleConfig.class`.
+context configuration must load `TogglzAutoConfiguration.class` and `ReleaseToggleConfiguration.class`.
 
 **Example:**
 
