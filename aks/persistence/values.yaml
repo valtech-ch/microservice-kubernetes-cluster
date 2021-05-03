@@ -4,4 +4,4 @@ project: default
 image:
   repository: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/persistence
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
