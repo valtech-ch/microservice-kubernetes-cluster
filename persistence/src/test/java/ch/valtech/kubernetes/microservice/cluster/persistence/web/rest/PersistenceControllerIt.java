@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.web.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,6 +56,14 @@ public class PersistenceControllerIt {
         .content(convertObjectToJsonBytes(request))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  @SneakyThrows
+  @WithMockUser(roles = "admin")
+  void shouldGetMessages() {
+    mockMvc.perform(get("/api/v1/messages"))
+        .andExpect(status().isOk());
   }
 
   private static String convertObjectToJsonBytes(Object object) throws IOException {

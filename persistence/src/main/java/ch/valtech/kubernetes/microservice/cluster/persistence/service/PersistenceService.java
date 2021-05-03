@@ -9,8 +9,15 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
+import io.vavr.collection.Stream;
+import io.vavr.control.Option;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +42,14 @@ public class PersistenceService {
     return MessageDto.builder()
         .message(message)
         .build();
+  }
+
+  public List<MessageDto> getMessages(int limit) {
+    Pageable pageRequest = PageRequest.of(0, limit, Direction.DESC, "id");
+    return Stream.ofAll(Option.of(auditingRepository.findAll(pageRequest)).getOrElse(Page.empty()))
+        .map(PersistenceUtils::createMessage)
+        .map(message -> MessageDto.builder().message(message).build())
+        .asJava();
   }
 
   private Auditing addAuditRecord(AuditingRequestDto requestDto) {

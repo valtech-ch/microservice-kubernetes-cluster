@@ -13,6 +13,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.Persistence
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapperImpl;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,6 +58,14 @@ public class PersistenceServiceTest {
 
     assertNotNull(message);
     assertEquals("User user downloaded " + filename, message.getMessage());
+  }
+
+  @Test
+  @WithMockUser
+  void getMessages() {
+    String filename = "test.txt";
+    List<MessageDto> messages = persistenceService.getMessages(10);
+    assertEquals(0, messages.size());
   }
 
 }
