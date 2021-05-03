@@ -61,9 +61,9 @@ jobs:
           app-name: vtch-functions
           package: './functions/build/azure-functions/vtch-functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-      - name: SonarQube Scan
-        run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
-#      - name: Publish API Documentation
+#      - name: SonarQube Scan # Not yet supporting Java 15
+#        run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+#      - name: Publish API Documentation # Not yet supporting Gradle 7.0
 #        run: ./gradlew gitPublishPush --no-parallel -Prerun
 #        env:
 #          CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
