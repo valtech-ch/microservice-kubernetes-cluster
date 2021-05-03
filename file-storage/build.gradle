@@ -26,8 +26,8 @@ apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/swaggerDocs.gradle"
 apply from: "${rootProject.projectDir}/gradle/dockerBuild.gradle"
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 15
+targetCompatibility = 15
 
 configurations {
 	compileOnly {
