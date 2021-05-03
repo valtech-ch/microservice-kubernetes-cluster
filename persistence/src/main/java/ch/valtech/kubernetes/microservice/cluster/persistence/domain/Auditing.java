@@ -42,7 +42,7 @@ public class Auditing {
   private String filename;
 
   @NonNull
-  @Enumerated(EnumType.STRING)
+  @Enumerated
   @Column(name = "action")
   private Action action;
 
