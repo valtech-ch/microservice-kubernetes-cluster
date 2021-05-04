@@ -37,12 +37,10 @@ public class ReverseStream {
     KStream<String, AuditingRequestDto> toReverse = builder
         .stream(inputTopic, Consumed.with(Serdes.String(), auditingRequestSerde));
 
-    toReverse.map((key, value) -> {
-      return new KeyValue<>(key, AuditingRequestDto.builder()
-          .action(value.getAction())
-          .filename(functionsService.reverse(value.getFilename()))
-          .build());
-    }).to(outputTopic, Produced.with(Serdes.String(), auditingRequestSerde));
+    toReverse.map((key, value) -> new KeyValue<>(key, AuditingRequestDto.builder()
+        .action(value.getAction())
+        .filename(functionsService.reverse(value.getFilename()))
+        .build())).to(outputTopic, Produced.with(Serdes.String(), auditingRequestSerde));
     return toReverse;
   }
 

@@ -1,0 +1,59 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+}
+
+project.description = 'Security Config'
+
+ext {
+    lombokVersion = '1.18.16'
+    minimumCoveragePerFile = 0.6
+    filesExcludedFromCoverage = ["*/config/*.java"]
+}
+
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+
+sourceCompatibility = 15
+targetCompatibility = 15
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+sonarqube {
+    properties {
+        property "sonar.tests", ""
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+//    implementation "io.springfox:springfox-boot-starter:3.0.0"
+//    implementation "io.springfox:springfox-swagger-ui:3.0.0"
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+    implementation 'org.springframework.kafka:spring-kafka:2.7.0'
+    implementation 'org.apache.kafka:kafka-clients:2.7.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
