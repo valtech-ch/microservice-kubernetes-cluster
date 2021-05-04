@@ -47,8 +47,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
-//    implementation "io.springfox:springfox-boot-starter:3.0.0"
-//    implementation "io.springfox:springfox-swagger-ui:3.0.0"
     implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
     implementation 'org.springframework.kafka:spring-kafka:2.7.0'
     implementation 'org.apache.kafka:kafka-clients:2.7.0'
