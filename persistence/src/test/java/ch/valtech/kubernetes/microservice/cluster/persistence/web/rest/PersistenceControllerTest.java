@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,8 @@ import org.springframework.util.MimeTypeUtils;
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
 @EmbeddedKafka
-public class PersistenceControllerTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class PersistenceControllerTest {
 
   private static final String API_URI = "/v2/api-docs";
 

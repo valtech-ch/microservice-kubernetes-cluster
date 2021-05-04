@@ -1,5 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 @Configuration
@@ -35,6 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public GrpcAuthenticationReader grpcAuthenticationReader() {
+    return new BearerAuthenticationReader(token -> new BearerTokenAuthenticationToken(token));
   }
 
 }

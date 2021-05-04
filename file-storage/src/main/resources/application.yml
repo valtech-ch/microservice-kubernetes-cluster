@@ -36,6 +36,12 @@ spring:
   config:
     activate:
       on-profile: dev
+grpc:
+  client:
+    GLOBAL:
+      negotiation-type: plaintext
+    persistence:
+      address: dns:///localhost:9090
 logging:
   level:
     root: INFO
