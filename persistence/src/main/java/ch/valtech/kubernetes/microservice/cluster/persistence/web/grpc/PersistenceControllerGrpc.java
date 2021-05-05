@@ -10,6 +10,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.service.Persistenc
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Slf4j
 @GrpcService
@@ -22,6 +23,7 @@ public class PersistenceControllerGrpc extends PersistenceServiceGrpc.Persistenc
   }
 
   @Override
+  @PreAuthorize("hasAnyRole('admin', 'user')")
   public void audit(AuditingRequest request, StreamObserver<MessageResponse> responseObserver) {
     log.info("gRPC Received!");
     MessageDto newMessage = persistenceService.saveNewMessage(AuditingRequestDto.builder()

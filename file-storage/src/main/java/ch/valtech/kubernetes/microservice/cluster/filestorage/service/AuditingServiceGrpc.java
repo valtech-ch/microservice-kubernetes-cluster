@@ -6,14 +6,11 @@ import ch.valtech.kubernetes.microservice.cluster.filestorage.util.SecurityUtils
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc.PersistenceServiceBlockingStub;
 import io.grpc.Status;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import net.devh.boot.grpc.client.security.CallCredentialsHelper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Slf4j
