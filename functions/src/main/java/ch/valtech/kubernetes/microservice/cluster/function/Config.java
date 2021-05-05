@@ -32,7 +32,7 @@ public class Config {
       try {
         String reversed = StringUtils.reverse(value);
         if (context != null) {
-          context.getLogger().info(String.format("Function: %s is reversing %s", context.getFunctionName(), value));
+          context.getLogger().info(() -> "Function: " + context.getFunctionName() + " is reversing " + value);
         }
         return reversed;
       } catch (Exception e) {

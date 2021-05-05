@@ -39,8 +39,7 @@ public class FileStorageCloudService implements FileStorageService {
       @Value("${application.cloud.storage.account.name}") String accountName,
       @Value("${application.cloud.storage.account.key}") String accountKey,
       @Value("${application.cloud.storage.connection}") String connection,
-      @Value("${application.cloud.storage.container.name}") String containerName,
-      FunctionsService functionsService) {
+      @Value("${application.cloud.storage.container.name}") String containerName) {
     StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
 
     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()

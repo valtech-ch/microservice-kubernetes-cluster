@@ -21,7 +21,7 @@ public class JwtRestTemplateConfiguration {
         .build();
   }
 
-  public class CustomClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+  public static class CustomClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)

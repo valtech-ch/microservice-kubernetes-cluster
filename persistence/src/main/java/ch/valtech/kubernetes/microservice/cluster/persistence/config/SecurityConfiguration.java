@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.context.annotation.Bean;
