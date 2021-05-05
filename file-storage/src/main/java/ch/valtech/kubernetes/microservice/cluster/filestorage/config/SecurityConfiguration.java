@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

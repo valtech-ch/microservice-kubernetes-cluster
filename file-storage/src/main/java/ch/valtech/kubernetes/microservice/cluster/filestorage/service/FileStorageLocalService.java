@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -52,7 +53,7 @@ public class FileStorageLocalService implements FileStorageService {
       throw new ResponseStatusException(BAD_REQUEST, "File should not be empty");
     }
 
-    String filename = file.getOriginalFilename();
+    String filename = FilenameUtils.getName(file.getOriginalFilename());
     try (InputStream inputStream = file.getInputStream()) {
 
       Files.createDirectories(Paths.get(uploadPath));
@@ -69,7 +70,8 @@ public class FileStorageLocalService implements FileStorageService {
   @Override
   @SneakyThrows
   public URL getResourceUrl(String filename) {
-    if (!Files.exists(Paths.get(uploadPath).resolve(filename).normalize())) {
+    String cleanFilename = FilenameUtils.getName(filename);
+    if (!Files.exists(Paths.get(uploadPath).resolve(cleanFilename).normalize())) {
       throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }
     return new URL(hostname + format("/api/file/%s", filename));
@@ -90,8 +92,9 @@ public class FileStorageLocalService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from: {}", filename, uploadPath);
+    String cleanFilename = FilenameUtils.getName(filename);
     try {
-      Path filePath = Paths.get(uploadPath).resolve(filename).normalize();
+      Path filePath = Paths.get(uploadPath).resolve(cleanFilename).normalize();
       Resource resource = new UrlResource(filePath.toUri());
       if (resource.exists()) {
         return resource;
@@ -107,7 +110,8 @@ public class FileStorageLocalService implements FileStorageService {
   public void deleteByFilename(String filename) {
     log.info("Deleting file {} from: {}", filename, uploadPath);
     try {
-      Files.deleteIfExists(Paths.get(uploadPath).resolve(filename).normalize());
+      String cleanFilename = FilenameUtils.getName(filename);
+      Files.deleteIfExists(Paths.get(uploadPath).resolve(cleanFilename).normalize());
     } catch (IOException ex) {
       throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }

@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.persistence.config;
+package ch.valtech.kubernetes.microservice.cluster.security.config;
 
 import java.util.Collection;
 import java.util.List;

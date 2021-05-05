@@ -1,4 +1,4 @@
-package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
+package ch.valtech.kubernetes.microservice.cluster.security.config;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -20,7 +19,7 @@ public class IstioJwtDecoder implements JwtDecoder {
   private final UsernameSubClaimAdapter claimsConverter = new UsernameSubClaimAdapter();
 
   @Override
-  public Jwt decode(String token) throws JwtException {
+  public Jwt decode(String token) {
     try {
       JWT jwt = JWTParser.parse(token);
       return createJwt(token, jwt);
@@ -37,8 +36,8 @@ public class IstioJwtDecoder implements JwtDecoder {
       Map<String, Object> headers = new LinkedHashMap<>(parsedJwt.getHeader().toJSONObject());
       Map<String, Object> claims = claimsConverter.convert(jwtClaimsSet.getClaims());
       return Jwt.withTokenValue(token)
-          .headers((h) -> h.putAll(headers))
-          .claims((c) -> c.putAll(claims))
+          .headers(h -> h.putAll(headers))
+          .claims(c -> c.putAll(claims))
           .build();
     } catch (Exception ex) {
       log.trace("Failed to process JWT", ex);
