@@ -70,6 +70,7 @@ dependencies {
 	implementation 'org.togglz:togglz-spring-boot-starter:2.9.8'
 	implementation 'org.togglz:togglz-spring-security:2.9.8'
 	implementation 'org.togglz:togglz-console:2.9.8'
+	implementation 'net.devh:grpc-client-spring-boot-starter:2.12.0.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -80,6 +81,7 @@ dependencies {
 	testImplementation 'org.apache.kafka:kafka_2.13:2.7.0'
 	testImplementation 'org.apache.kafka:kafka_2.13:2.7.0:test'
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
+	testImplementation 'io.grpc:grpc-testing:1.37.0'
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }

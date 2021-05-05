@@ -3,23 +3,22 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.web.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ch.valtech.kubernetes.microservice.cluster.persistence.AbstractIt;
 import java.io.BufferedWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.MimeTypeUtils;
 
 @AutoConfigureMockMvc(addFilters = false)
-@SpringBootTest
-@EmbeddedKafka
-public class PersistenceControllerTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class PersistenceControllerTest extends AbstractIt {
 
   private static final String API_URI = "/v2/api-docs";
 

@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +36,17 @@ public class FileStorageController {
   public static final String ALL_FILES = "ALL FILES";
 
   private final FileStorageService fileStorageService;
-  private final AuditingService auditingService;
+  private final AuditingService auditingServiceRest;
+  private final AuditingService auditingServiceGrpc;
   private final ProducerService producerService;
 
   public FileStorageController(FileStorageService fileStorageService,
-      AuditingService auditingService,
+      @Qualifier("auditingServiceRest") AuditingService auditingServiceRest,
+      @Qualifier("auditingServiceGrpc") AuditingService auditingServiceGrpc,
       ProducerService producerService) {
     this.fileStorageService = fileStorageService;
-    this.auditingService = auditingService;
+    this.auditingServiceRest = auditingServiceRest;
+    this.auditingServiceGrpc = auditingServiceGrpc;
     this.producerService = producerService;
   }
 
@@ -78,7 +82,7 @@ public class FileStorageController {
   @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<Resource> getFile(@PathVariable String filename) {
     Resource file = fileStorageService.loadAsResource(filename);
-    auditingService.audit(filename, Action.DOWNLOAD);
+    auditingServiceGrpc.audit(filename, Action.DOWNLOAD);
     String downloadFilename = file.getFilename() != null ? file.getFilename()
         : StringUtils.substringBetween(file.getDescription(), "[", "]");
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
@@ -89,7 +93,7 @@ public class FileStorageController {
   @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFile(@PathVariable String filename) {
     fileStorageService.deleteByFilename(filename);
-    auditingService.audit(filename, Action.DELETE);
+    auditingServiceRest.audit(filename, Action.DELETE);
     return ResponseEntity.noContent().build();
   }
 
@@ -97,7 +101,7 @@ public class FileStorageController {
   @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> deleteFiles() {
     fileStorageService.deleteAll();
-    auditingService.audit(ALL_FILES, Action.DELETE);
+    auditingServiceRest.audit(ALL_FILES, Action.DELETE);
     return ResponseEntity.noContent().build();
   }
 

@@ -10,6 +10,10 @@ data:
     server:
       servlet:
         context-path: /filestorage
+    grpc:
+      client:
+        persistence:
+          address: dns:///persistence-service.default.svc.cluster.local:9090
     application:
       persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token

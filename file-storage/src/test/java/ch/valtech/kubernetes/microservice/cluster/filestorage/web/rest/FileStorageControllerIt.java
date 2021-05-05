@@ -38,8 +38,11 @@ class FileStorageControllerIt {
   @Autowired
   private MockMvc mockMvc;
 
-  @MockBean
-  private AuditingService auditingService;
+  @MockBean(name = "auditingServiceRest")
+  private AuditingService auditingServiceRest;
+
+  @MockBean(name = "auditingServiceGrpc")
+  private AuditingService auditingServiceGrpc;
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -57,7 +60,7 @@ class FileStorageControllerIt {
         .andExpect(status().isCreated())
         .andExpect(header().string("Location", "http://localhost:8080/api/file/" + file.getOriginalFilename()));
 
-    verify(auditingService, times(0)).audit(FILENAME, Action.UPLOAD);
+    verify(auditingServiceRest, times(0)).audit(FILENAME, Action.UPLOAD);
   }
 
   @Test
@@ -73,7 +76,7 @@ class FileStorageControllerIt {
     mockMvc.perform(multipart("/api/files").file(file))
         .andExpect(status().isBadRequest());
 
-    verify(auditingService, times(0)).audit(FILENAME, Action.UPLOAD);
+    verify(auditingServiceRest, times(0)).audit(FILENAME, Action.UPLOAD);
   }
 
   @Test
@@ -100,7 +103,7 @@ class FileStorageControllerIt {
         .andExpect(status().isOk())
         .andExpect(header().string("Content-Disposition", "attachment; filename=\"" + FILENAME + "\""));
 
-    verify(auditingService, times(1)).audit(FILENAME, Action.DOWNLOAD);
+    verify(auditingServiceGrpc, times(1)).audit(FILENAME, Action.DOWNLOAD);
   }
 
   @Test
@@ -113,7 +116,7 @@ class FileStorageControllerIt {
     mockMvc.perform(get("/api/files/" + FILENAME))
         .andExpect(status().isNotFound());
 
-    verify(auditingService, times(0)).audit(FILENAME, Action.DOWNLOAD);
+    verify(auditingServiceRest, times(0)).audit(FILENAME, Action.DOWNLOAD);
   }
 
   @Test
@@ -132,7 +135,7 @@ class FileStorageControllerIt {
     List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
     });
     assertThat(files).doesNotContain(FileArtifact.builder().filename(FILENAME).build());
-    verify(auditingService, times(1)).audit(FILENAME, Action.DELETE);
+    verify(auditingServiceRest, times(1)).audit(FILENAME, Action.DELETE);
   }
 
   @Test
@@ -151,7 +154,7 @@ class FileStorageControllerIt {
     List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
     });
     assertThat(files).isEmpty();
-    verify(auditingService, times(1)).audit("ALL FILES", Action.DELETE);
+    verify(auditingServiceRest, times(1)).audit("ALL FILES", Action.DELETE);
   }
 
 }

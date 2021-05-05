@@ -10,6 +10,10 @@ spring:
       max-file-size: 1MB
 server:
   port: 8080
+grpc:
+  client:
+    GLOBAL:
+      negotiation-type: plaintext
 management:
   endpoints:
     web:
@@ -36,6 +40,10 @@ spring:
   config:
     activate:
       on-profile: dev
+grpc:
+  client:
+    persistence:
+      address: dns:///localhost:9090
 logging:
   level:
     root: INFO

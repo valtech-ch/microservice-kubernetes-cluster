@@ -10,6 +10,10 @@ data:
     server:
       servlet:
         context-path: /filestorage
+    grpc:
+      client:
+        persistence:
+          address: dns:///persistence-service.default.svc.cluster.local:9090
     application:
       hostname: http://vtch-aks-demo.duckdns.org
       upload.path: /etc/file-storage/uploads/

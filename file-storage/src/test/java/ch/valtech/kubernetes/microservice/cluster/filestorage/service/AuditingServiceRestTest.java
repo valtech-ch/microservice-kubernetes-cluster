@@ -21,18 +21,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-@ExtendWith({SpringExtension.class})
-class AuditingServiceTest {
+@ExtendWith(SpringExtension.class)
+class AuditingServiceRestTest {
 
   private final RestTemplate restTemplate = new RestTemplate();
   private final String url = "http://localhost:8081/api/v1/messages";
 
-  private AuditingService auditingService;
+  private final AuditingService auditingService = new AuditingServiceRest(url, restTemplate);
   private MockRestServiceServer mockRestServiceServer;
 
   @BeforeEach
   void mockAuditingCall() {
-    auditingService = new AuditingService(url, restTemplate);
     mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
   }
 
