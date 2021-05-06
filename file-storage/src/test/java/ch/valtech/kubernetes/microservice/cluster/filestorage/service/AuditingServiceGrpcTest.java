@@ -2,6 +2,7 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(SpringExtension.class)
 class AuditingServiceGrpcTest {
@@ -45,9 +47,9 @@ class AuditingServiceGrpcTest {
   void testSuccessfulAuditFailed() {
     when(persistenceService.audit(any()))
         .thenThrow(new StatusRuntimeException(Status.PERMISSION_DENIED.withDescription("Permission denied")));
-    MessageDto response = auditingService.audit("test.txt", Action.UPLOAD);
-    assertNotNull(response.getMessage());
-    assertEquals("Permission denied", response.getMessage());
+    assertThrows(ResponseStatusException.class, () -> {
+      auditingService.audit("test.txt", Action.UPLOAD);
+    });
   }
 
 }

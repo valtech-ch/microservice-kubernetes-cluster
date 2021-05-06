@@ -1,17 +1,18 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
-import static net.devh.boot.grpc.client.security.CallCredentialsHelper.authorizationHeader;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
-import ch.valtech.kubernetes.microservice.cluster.filestorage.util.SecurityUtils;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc.PersistenceServiceBlockingStub;
 import io.grpc.Status;
-import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service("auditingServiceGrpc")
@@ -27,24 +28,22 @@ public class AuditingServiceGrpc implements AuditingService {
         .setAction(AuditingRequest.Action.valueOf(action.toString()))
         .build();
 
-    Optional<String> jwtToken = SecurityUtils.getJwt();
-    PersistenceServiceBlockingStub stub = persistenceStub;
-    if (jwtToken.isPresent()) {
-      stub = persistenceStub.withCallCredentials(authorizationHeader("Bearer " + jwtToken.get()));
-    }
-
-    String message;
     try {
-      message = stub.audit(test).getMessage();
+      return MessageDto.builder()
+          .message(persistenceStub.audit(test).getMessage())
+          .build();
     } catch (Exception e) {
       Status status = Status.fromThrowable(e);
-      log.error("Audit failed with status {} : {}", status.getCode(), status.getDescription());
-      message = status.getDescription();
+      switch (status.getCode()) {
+        case UNAVAILABLE:
+          throw new ResponseStatusException(SERVICE_UNAVAILABLE, "Persistence service unavailable");
+        case PERMISSION_DENIED:
+          throw new ResponseStatusException(FORBIDDEN, status.getDescription());
+        default:
+          log.error("Audit failed with status {} : {}", status.getCode(), status.getDescription());
+          throw new ResponseStatusException(INTERNAL_SERVER_ERROR, status.getDescription());
+      }
     }
-
-    return MessageDto.builder()
-        .message(message)
-        .build();
   }
 
 }
