@@ -39,7 +39,6 @@ sonarqube {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server:${springBootVersion}"
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
