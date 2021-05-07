@@ -22,6 +22,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: SonarQube Frontend
-      - run: cd ./frontend && npm install && npm test && npm run sonar -- ${{ secrets.SONARQUBE_HOST }} ${{ secrets.SONARQUBE_TOKEN }}
+        run: cd ./frontend && npm install && npm test && npm run sonar -- ${{ secrets.SONARQUBE_HOST }} ${{ secrets.SONARQUBE_TOKEN }}
       - name: SonarQube Scan Backend
         run: ./gradlew sonarqube -Pjava_source_compatibility=11 -Pjava_target_compatibility=11 -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
