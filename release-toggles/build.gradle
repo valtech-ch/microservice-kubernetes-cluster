@@ -17,8 +17,8 @@ ext {
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 
-sourceCompatibility = 15
-targetCompatibility = 15
+sourceCompatibility = java_source_compatibility ?: 15
+targetCompatibility = java_target_compatibility ?: 15
 
 configurations {
     compileOnly {
