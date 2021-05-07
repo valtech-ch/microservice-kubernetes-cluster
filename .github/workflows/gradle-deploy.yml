@@ -65,8 +65,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm run sonar -- ${{ secrets.SONARQUBE_HOST }} ${{ secrets.SONARQUBE_TOKEN }}
+      - run: cd ./frontend && npm install && npm run sonar -- ${{ secrets.SONARQUBE_HOST }} ${{ secrets.SONARQUBE_TOKEN }}
 #      - name: SonarQube Scan Backend # Not yet supporting Java 15
 #        run: ./gradlew sonarqube -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 #      - name: Publish API Documentation # Not yet supporting Gradle 7.0

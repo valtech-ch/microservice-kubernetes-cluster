@@ -43,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Bean
   public GrpcAuthenticationReader grpcAuthenticationReader() {
-    return new BearerAuthenticationReader(token -> new BearerTokenAuthenticationToken(token));
+    return new BearerAuthenticationReader(BearerTokenAuthenticationToken::new);
   }
 
 }
