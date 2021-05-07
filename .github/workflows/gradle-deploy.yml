@@ -64,7 +64,7 @@ jobs:
       - name: SonarQube Frontend
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
       - run: npm install
       - run: npm run sonar -- ${{ secrets.SONARQUBE_HOST }} ${{ secrets.SONARQUBE_TOKEN }}
 #      - name: SonarQube Scan Backend # Not yet supporting Java 15
