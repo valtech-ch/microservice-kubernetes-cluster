@@ -11,6 +11,7 @@
 import axios from "axios";
 import UploadFile from "@/components/UploadFile";
 import File from "@/components/File";
+import {SpanStatusCode, trace} from '@opentelemetry/api';
 export default {
   name: 'App',
   components: {
@@ -28,7 +29,9 @@ export default {
 
   methods: {
     loadAllFiles() {
+      const tracer = trace.getTracer("frontend", "0.1.0");
       if (this.token) {
+        const span = tracer.startSpan("loadFiles");
         // http://localhost:8090/api/files - locally
         axios.get('filestorage/api/files', {
           headers: {
@@ -39,10 +42,17 @@ export default {
         })
         .then((res) => {
           this.files = res.data;
+          span.setStatus({ code: SpanStatusCode.OK });
         })
         .catch((error) => {
           this.errorMessage = error.response.data;
-          console.error("*** " + error.response.data)
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: this.errorMessage,
+          });
+        }).finally( () => {
+          // Every span must be ended or it will not be exported
+          span.end();
         })
       }
     }
