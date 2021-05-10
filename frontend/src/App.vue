@@ -1,9 +1,9 @@
 <template>
-  <upload-file v-if="showUpload" @reload="loadAllFiles" ></upload-file>
+  <upload-file v-if="showUpload" @reload="loadAllFiles"></upload-file>
 
   <button @click="showUpload= !showUpload" class="upload-btn"> Upload new File</button>
   ----------
-   <p v-if="errorMessage != null"> {{errorMessage}}</p>
+  <p v-if="errorMessage != null"> {{ errorMessage }}</p>
   <file v-for="file in files" v-bind:key="file" :filename="file.filename" @reload="loadAllFiles"></file>
 </template>
 
@@ -11,7 +11,12 @@
 import axios from "axios";
 import UploadFile from "@/components/UploadFile";
 import File from "@/components/File";
-import {SpanStatusCode, trace} from '@opentelemetry/api';
+import {ConsoleSpanExporter, SimpleSpanProcessor} from '@opentelemetry/tracing';
+import {WebTracerProvider} from '@opentelemetry/web';
+import {XMLHttpRequestInstrumentation} from '@opentelemetry/instrumentation-xml-http-request';
+import {ZoneContextManager} from '@opentelemetry/context-zone';
+import {registerInstrumentations} from '@opentelemetry/instrumentation';
+
 export default {
   name: 'App',
   components: {
@@ -29,9 +34,7 @@ export default {
 
   methods: {
     loadAllFiles() {
-      const tracer = trace.getTracer("frontend", "0.1.0");
       if (this.token) {
-        const span = tracer.startSpan("loadFiles");
         // http://localhost:8090/api/files - locally
         axios.get('filestorage/api/files', {
           headers: {
@@ -40,26 +43,37 @@ export default {
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
           }
         })
-        .then((res) => {
-          this.files = res.data;
-          span.setStatus({ code: SpanStatusCode.OK });
-        })
-        .catch((error) => {
-          this.errorMessage = error.response.data;
-          span.setStatus({
-            code: SpanStatusCode.ERROR,
-            message: this.errorMessage,
-          });
-        }).finally( () => {
-          // Every span must be ended or it will not be exported
-          span.end();
-        })
+            .then((res) => {
+              this.files = res.data;
+            })
+            .catch((error) => {
+              this.errorMessage = error.response.data;
+              console.log("Error: " + this.errorMessage)
+            })
       }
     }
   },
   created() {
     this.token = localStorage.getItem("vue-token");
     this.loadAllFiles();
+
+
+    //OPEN-TELEMETRY INSTRUMENTATION
+    const providerWithZone = new WebTracerProvider();
+    providerWithZone.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+
+    providerWithZone.register({
+      contextManager: new ZoneContextManager(),
+    });
+
+    registerInstrumentations({
+      instrumentations: [
+        new XMLHttpRequestInstrumentation({
+          propagateTraceHeaderCorsUrls: ['https://vtch-aks-demo.duckdns.org/']
+        }),
+      ],
+    });
+
   }
 }
 </script>
@@ -76,7 +90,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
- }
+}
 
 *,
 *::after,
@@ -97,11 +111,11 @@ html {
   margin-bottom: 2rem;
   margin-top: 1rem;
   border-radius: 3rem;
-  background-color:  #393d40;
+  background-color: #393d40;
   font-size: 2.3rem;
   color: #f1edea;
   cursor: pointer;
-  padding: 1rem 1rem ;
+  padding: 1rem 1rem;
   text-align: center;
 }
 </style>
