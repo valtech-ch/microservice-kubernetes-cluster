@@ -12,7 +12,7 @@ metadata:
     prometheus.io/port: '8080'
 spec:
   ports:
-    - name: http
+    - name: http2
       port: 8080
       targetPort: 8080
   selector:

@@ -8,13 +8,15 @@
 </template>
 <script>
 import axios from 'axios';
-
+import {SpanStatusCode, trace} from '@opentelemetry/api';
 export default {
   name: 'File',
   props: ["filename"],
   methods: {
     deleteFile() {
       let token = localStorage.getItem("vue-token");
+      const tracer = trace.getTracer("frontend", "0.1.0");
+      const span = tracer.startSpan("deleteFile");
       axios.delete('filestorage/api/files/' + this.filename, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -24,11 +26,18 @@ export default {
       })
       .then(() => {
         this.$emit('reload');
+        span.setStatus({ code: SpanStatusCode.OK });
       })
       .catch((error) => {
         this.error = true;
-        console.error("=>> " + error.response.data)
-      });
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: error.response.data,
+        });
+      }).finally( () => {
+        // Every span must be ended or it will not be exported
+        span.end();
+      })
     }
   }
 }
