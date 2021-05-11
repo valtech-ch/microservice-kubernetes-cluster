@@ -3,7 +3,7 @@ import App from './App.vue'
 import Keycloak from "keycloak-js";
 
 let initOptions = {
-  url: 'auth', realm: 'master', clientId: 'login-app', onLoad:'login-required'
+  url: 'auth', realm: 'cluster', clientId: 'login-app', onLoad:'login-required'
 }
 let keycloak = Keycloak(initOptions);
 
