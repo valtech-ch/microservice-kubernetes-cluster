@@ -34,8 +34,11 @@ services:
       - services
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - GRPC_CLIENT_PERSISTENCE_ADDRESS=dns:///persistence:9090
       - SERVER_SERVLET_CONTEXT_PATH=/filestorage
+      - APPLICATION_HOSTNAME=http://localhost:3000
       - APPLICATION_UPLOAD_PATH=/etc/file-storage/uploads/
+      - APPLICATION_PERSISTENCE_URL=http://persistence:8081/api/v1/messages
       - APPLICATION_KAFKA_BOOTSTRAPADDRESS=kafka:9092
       - OTEL_JAVAAGENT_ENABLED=false
     ports:
