@@ -9,5 +9,5 @@ spec:
       auth: jwt
   jwtRules:
     - issuer: https://vtch-aks-demo.duckdns.org/auth/realms/cluster
-      jwksUri: http://keycloak-http.default.svc.cluster.local/auth/realms/cluster/protocol/openid-connect/certs
+      jwksUri: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/certs
       forwardOriginalToken: true
