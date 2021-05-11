@@ -11,11 +11,8 @@
 import axios from "axios";
 import UploadFile from "@/components/UploadFile";
 import File from "@/components/File";
-// import {ConsoleSpanExporter, SimpleSpanProcessor} from '@opentelemetry/tracing';
-// import {WebTracerProvider} from '@opentelemetry/web';
-// import {XMLHttpRequestInstrumentation} from '@opentelemetry/instrumentation-xml-http-request';
-// import {ZoneContextManager} from '@opentelemetry/context-zone';
-// import {registerInstrumentations} from '@opentelemetry/instrumentation';
+
+import {context, getSpan, setSpan, trace} from '@opentelemetry/api';
 
 export default {
   name: 'App',
@@ -55,24 +52,15 @@ export default {
   },
   created() {
     this.token = localStorage.getItem("vue-token");
-    this.loadAllFiles();
+    const tracer = trace.getTracer("frontend", "0.1.0");
+    const loadAllSpan = tracer.startSpan("loadAllFiles");
+    context.with(setSpan(context.active(), loadAllSpan), () => {
+      // now returns the load all span
+      console.log("WILL RETURN NOW THE CONTEXT ************** \n");
+      console.log(getSpan(context.active()));
+      this.loadAllFiles();
 
-
-    //OPEN-TELEMETRY INSTRUMENTATION
-    // const providerWithZone = new WebTracerProvider();
-    // providerWithZone.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
-    //
-    // providerWithZone.register({
-    //   contextManager: new ZoneContextManager(),
-    // });
-    //
-    // registerInstrumentations({
-    //   instrumentations: [
-    //     new XMLHttpRequestInstrumentation({
-    //       propagateTraceHeaderCorsUrls: ['https://vtch-aks-demo.duckdns.org/']
-    //     }),
-    //   ],
-    // });
+    });
 
   }
 }
