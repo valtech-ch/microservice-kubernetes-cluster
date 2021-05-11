@@ -8,7 +8,7 @@ metadata:
 data:
   application-prod.yml: |-
     application:
-      token.url: https://vtch-aks-demo.duckdns.org/auth/realms/master/protocol/openid-connect/token
+      token.url: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/token
       kafka:
         bootstrapAddress: kafka-cluster-kafka-brokers.default.svc.cluster.local:9092
         groupId: persistenceApp

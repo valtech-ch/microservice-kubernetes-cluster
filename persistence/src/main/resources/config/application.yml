@@ -44,7 +44,7 @@ logging:
     root: INFO
     ch.valtech: DEBUG
 application:
-  token.url: http://localhost:8180/auth/realms/master/protocol/openid-connect/token
+  token.url: http://localhost:8180/auth/realms/cluster/protocol/openid-connect/token
 ---
 spring:
   config:
