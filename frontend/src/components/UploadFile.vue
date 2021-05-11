@@ -11,7 +11,7 @@
 
 <script>
 import axios from "axios";
-import {SpanStatusCode, trace} from '@opentelemetry/api';
+// import {SpanStatusCode, trace} from '@opentelemetry/api';
 export default {
   name: 'UploadFile',
   data() {
@@ -26,9 +26,9 @@ export default {
     },
     uploadFile() {
       let token = localStorage.getItem("vue-token");
-      const tracer = trace.getTracer("frontend", "0.1.0");
+      // const tracer = trace.getTracer("frontend", "0.1.0");
       if (token && this.file) {
-        const span = tracer.startSpan("uploadFile");
+        // const span = tracer.startSpan("uploadFile");
         let formData = new FormData();
 
         /*
@@ -46,18 +46,18 @@ export default {
         })
         .then(() => {
           this.$emit('reload');
-          span.setStatus({ code: SpanStatusCode.OK });
+          // span.setStatus({ code: SpanStatusCode.OK });
         })
         .catch((error) => {
           this.error = true;
           console.log("error: " + error.response.data)
-          span.setStatus({
-            code: SpanStatusCode.ERROR,
-            message: error.response.data,
-          });
+          // span.setStatus({
+          //   code: SpanStatusCode.ERROR,
+          //   message: error.response.data,
+          // });
         }).finally( () => {
           // Every span must be ended or it will not be exported
-          span.end();
+          // span.end();
         })
       }
     }
