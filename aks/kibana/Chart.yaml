@@ -1,0 +1,7 @@
+apiVersion: v2
+name: kibana
+description: Base Kubernetes Kibana Setup
+
+type: application
+
+version: 0.1.0

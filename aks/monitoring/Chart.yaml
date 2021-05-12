@@ -1,0 +1,7 @@
+apiVersion: v2
+name: monitoring
+description: Base Kubernetes Monitoring Setup
+
+type: application
+
+version: 0.1.0

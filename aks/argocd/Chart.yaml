@@ -1,0 +1,7 @@
+apiVersion: v2
+name: argocd
+description: Base Kubernetes ArgoCD Setup
+
+type: application
+
+version: 0.1.0
