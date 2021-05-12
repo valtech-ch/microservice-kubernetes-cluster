@@ -11,8 +11,32 @@
 import axios from "axios";
 import UploadFile from "@/components/UploadFile";
 import File from "@/components/File";
+import {BatchSpanProcessor} from '@opentelemetry/tracing';
+import {WebTracerProvider} from '@opentelemetry/web';
+import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
+import {XMLHttpRequestInstrumentation} from '@opentelemetry/instrumentation-xml-http-request';
+import {ZoneContextManager} from '@opentelemetry/context-zone';
+import {registerInstrumentations} from '@opentelemetry/instrumentation';
 
-import {context, getSpan, setSpan, trace} from '@opentelemetry/api';
+const zipkinOptions = {
+  serviceName: 'frontend',
+  url: 'https://vtch-aks-demo-monitoring.duckdns.org/api/v2/spans',
+  headers: {}
+};
+
+const providerWithZone = new WebTracerProvider();
+providerWithZone.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter(zipkinOptions)));
+providerWithZone.register({
+  contextManager: new ZoneContextManager()
+});
+
+registerInstrumentations({
+  instrumentations: [
+    new XMLHttpRequestInstrumentation({
+      propagateTraceHeaderCorsUrls: ['http://vtch-aks-demo.duckdns.org/']
+    })
+  ],
+});
 
 export default {
   name: 'App',
@@ -52,16 +76,7 @@ export default {
   },
   created() {
     this.token = localStorage.getItem("vue-token");
-    const tracer = trace.getTracer("frontend", "0.1.0");
-    const loadAllSpan = tracer.startSpan("loadAllFiles");
-    context.with(setSpan(context.active(), loadAllSpan), () => {
-      // now returns the load all span
-      console.log("WILL RETURN NOW THE CONTEXT ************** \n");
-      console.log(getSpan(context.active()));
-      this.loadAllFiles();
-
-    });
-
+    this.loadAllFiles();
   }
 }
 </script>

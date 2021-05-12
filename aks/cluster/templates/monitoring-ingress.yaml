@@ -22,6 +22,10 @@ spec:
             backend:
               serviceName: tracing
               servicePort: 80
+          - path: /api/v2/*
+            backend:
+              serviceName: zipkin
+              servicePort: 9411
           - path: /*
             backend:
               serviceName: grafana
