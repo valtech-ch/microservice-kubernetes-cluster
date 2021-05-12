@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: prometheus-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "vtch-aks-demo-prometheus.duckdns.org"
+      tls:
+        httpsRedirect: true # sends 301 redirect for http requests
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: prometheus-cert # must be the same as secret
+      hosts:
+        - "vtch-aks-demo-prometheus.duckdns.org"
