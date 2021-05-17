@@ -1,6 +1,8 @@
 # Microservice Kubernetes Cluster
 
-![Build](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-build.yml/badge.svg) ![Sonar](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-analyse.yml/badge.svg)
+![Build](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-build.yml/badge.svg)
+![Sonar](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-analyse.yml/badge.svg)
+![Deployment](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-deploy.yml/badge.svg)
 
 ### Requirements
 
@@ -48,7 +50,7 @@ terraform apply
 ### Terraform Cluster
 Provision the cluster by using the azure backend
 
-Set the credentials in [terraform.tfvars](../terraform/backend/terraform.tfvars)
+Set the credentials in [terraform.tfvars](../terraform/cluster/terraform.tfvars)
 
 ```bash
 cd ./terraform/backend
@@ -60,8 +62,12 @@ terraform apply
 
 [Frontend](../frontend/README.md)
 
-## Backend
-TBD
+## Backend Microservices
+```bash
+./gradlew build # Full build including cloud functions
+```
 
-## Cloud functions
-TBD
+## Cloud Functions
+```bash
+./gradlew build # Full build including backend microservices
+```
