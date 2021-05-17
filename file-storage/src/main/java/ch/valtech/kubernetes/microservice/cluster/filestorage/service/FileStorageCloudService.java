@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
+import static ch.valtech.kubernetes.microservice.cluster.filestorage.util.FileNameCleaner.cleanFilename;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -62,7 +63,7 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public String saveFile(MultipartFile file) {
-    String filename = file.getOriginalFilename();
+    String filename = cleanFilename(file.getOriginalFilename());
 
     BlobClient blobClient = containerClient.getBlobClient(filename);
 
@@ -79,8 +80,9 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public URL getResourceUrl(String filename) {
+    String cleanFilename = cleanFilename(filename);
     try {
-      BlobClient blobClient = containerClient.getBlobClient(filename);
+      BlobClient blobClient = containerClient.getBlobClient(cleanFilename);
       if (blobClient.exists()) {
         return new URL(blobClient.getBlobUrl());
       } else {
@@ -102,9 +104,9 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
-    BlobClient blobClient = containerClient.getBlobClient(filename);
+    BlobClient blobClient = containerClient.getBlobClient(cleanFilename(filename));
     if (blobClient.exists()) {
-      return new InputStreamResource(blobClient.openInputStream(), filename);
+      return new InputStreamResource(blobClient.openInputStream(), cleanFilename(filename));
     } else {
       throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
     }
@@ -114,7 +116,7 @@ public class FileStorageCloudService implements FileStorageService {
   public void deleteByFilename(String filename) {
     log.info("Deleting file {} from cloud", filename);
     try {
-      containerClient.getBlobClient(filename).delete();
+      containerClient.getBlobClient(cleanFilename(filename)).delete();
     } catch (BlobStorageException ex) {
       if (ex.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
         throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
@@ -127,7 +129,8 @@ public class FileStorageCloudService implements FileStorageService {
   @Override
   public void deleteAll() {
     try {
-      containerClient.delete();
+      containerClient.listBlobs().stream()
+          .forEach(blobItem -> containerClient.getBlobClient(blobItem.getName()).delete());
     } catch (BlobStorageException ex) {
       throw new FileStorageException("Exception while deleting files");
     }
