@@ -1,0 +1,38 @@
+= Filestorage Service API
+
+
+[[_overview]]
+== Overview
+Filestorage API Description
+
+
+=== Version information
+[%hardbreaks]
+__Version__ : 1.0.0
+
+
+=== Contact information
+[%hardbreaks]
+__Contact__ : Valtech
+__Contact Email__ : lukas.rohner@valtech.com
+
+
+=== License information
+[%hardbreaks]
+__License__ : MIT License
+__License URL__ : https://github.com/valtech-ch/microservice-kubernetes-cluster/blob/main/LICENSE
+__Terms of service__ : null
+
+
+=== URI scheme
+[%hardbreaks]
+__Host__ : localhost
+__BasePath__ : /
+
+
+=== Tags
+
+* file-storage-controller : File Storage Controller
+
+
+

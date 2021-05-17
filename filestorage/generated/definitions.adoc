@@ -1,0 +1,46 @@
+
+[[_definitions]]
+== Definitions
+
+[[_fileartifact]]
+=== FileArtifact
+
+[options="header", cols=".^3a,.^4a"]
+|===
+|Name|Schema
+|**filename** +
+__optional__|string
+|===
+
+
+[[_inputstream]]
+=== InputStream
+__Type__ : object
+
+
+[[_resource]]
+=== Resource
+
+[options="header", cols=".^3a,.^4a"]
+|===
+|Name|Schema
+|**description** +
+__optional__|string
+|**file** +
+__optional__|file
+|**filename** +
+__optional__|string
+|**inputStream** +
+__optional__|<<_inputstream,InputStream>>
+|**open** +
+__optional__|boolean
+|**readable** +
+__optional__|boolean
+|**uri** +
+__optional__|string (uri)
+|**url** +
+__optional__|string (url)
+|===
+
+
+
