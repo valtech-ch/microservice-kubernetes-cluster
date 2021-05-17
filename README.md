@@ -15,6 +15,7 @@
 * [Java 15](https://www.azul.com/downloads/?version=java-15-mts&package=jdk)
 * [Gradle](https://gradle.org/install/)
 * [Docker](https://docs.docker.com/get-docker/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 * [NPM](https://www.npmjs.com/get-npm)
 
 ## Azure
@@ -39,35 +40,61 @@ kubectl apply -f ./aks/cluster/templates/application-peer-authentication.yaml
 
 ## Terraform
 
-### Terraform Backend
-Setup the Azure Backend one time
+* [terraform/README.md](terraform/README.md)
+
+## Local Docker Compose Setup
+For testing the whole cluster locally we added a [docker-compose](scripts/docker-compose/docker-compose.yml) file which runs the FE, BE, Keycloak, Kafka and MariaDB
 ```bash
-cd ./terraform/backend
-terraform init
-terraform apply
-```
-
-### Terraform Cluster
-Provision the cluster by using the azure backend
-
-Set the credentials in [terraform.tfvars](../terraform/cluster/terraform.tfvars)
-
-```bash
-cd ./terraform/backend
-terraform init
-terraform apply
+cd ./scripts/docker-compose
+docker-compose up -d
+docker-compose down
 ```
 
 ## Frontend
+* [frontend/README.md](frontend/README.md)
 
-[Frontend](../frontend/README.md)
+```bash
+npm install # Build
+npm run serve # Run
+```
 
 ## Backend Microservices
+
+* [file-storage/README.md](file-storage/README.md)
+* [persistence/README.md](persistence/README.md)
+
 ```bash
 ./gradlew build # Full build including cloud functions
+
+./gradlew :file-storage:build # Build file storage microservice only
+./gradlew :persistence:build # Build persistence microservice only
+
+# Run locally
+./gradlew :file-storage:bootRun
+./gradlew :persistence:bootRun
 ```
 
 ## Cloud Functions
+
+* [functions/README.md](functions/README.md)
+
 ```bash
 ./gradlew build # Full build including backend microservices
+./gradlew :functions:build # Build functions only
+
+# Run locally
+./gradlew azureFunctionsRun
+```
+
+## Kubeseal Secret Management
+Have a read at https://github.com/bitnami-labs/sealed-secrets
+
+Sample sealing of a secrert.
+
+```bash
+# Replace sealed-secrets-1614621994 by the controller name in the cluster
+kubeseal \
+--controller-name=sealed-secrets-1614621994 \
+--controller-namespace=kube-system \
+--format yaml <xyz-secret.yaml >xyz-secret-sealed.yaml
 ```
