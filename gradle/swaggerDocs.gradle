@@ -41,7 +41,7 @@ gitPublish {
   branch = 'gh-pages'
 
   contents {
-    from(asciidoctor.outputDir.path + '/html5') {
+    from(asciidoctor.outputDir.path + '/index.html') {
       into project.description
     }
   }
