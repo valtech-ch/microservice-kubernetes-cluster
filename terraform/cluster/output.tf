@@ -24,6 +24,7 @@ output "cluster_password" {
 
 output "kube_config" {
   value = azurerm_kubernetes_cluster.k8s.kube_config_raw
+  sensitive = true
 }
 
 output "host" {
@@ -40,6 +41,7 @@ output "admin_username" {
 
 output "admin_password" {
   value = azurerm_container_registry.acr.admin_password
+  sensitive = true
 }
 
 output "configure" {
