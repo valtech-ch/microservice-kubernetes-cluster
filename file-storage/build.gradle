@@ -13,12 +13,10 @@ ext {
 	imageName = 'file-storage'
 	springCloudVersion = '2020.0.2'
 	minimumCoveragePerFile = 0.6
-	filesExcludedFromCoverage = ["*Application.java",
-								 "*Exception.java",
+	filesExcludedFromCoverage = ["*Exception.java",
 								 "*ExceptionTranslator.java",
 								 "*FileStorageCloudService.java",
-								 "*SecurityUtils.java",
-								 "*/config/*.java"]
+								 "*GrpcConfiguration.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"

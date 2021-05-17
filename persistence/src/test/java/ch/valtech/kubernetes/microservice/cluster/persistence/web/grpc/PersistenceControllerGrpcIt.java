@@ -20,7 +20,6 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PersistenceControllerGrpcIt extends AbstractIt {
 
-
   @GrpcClient("inProcess")
   private PersistenceServiceBlockingStub persistenceStub;
 

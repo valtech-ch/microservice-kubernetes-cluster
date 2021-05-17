@@ -9,12 +9,14 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withUnauthorizedRequest;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.config.JwtRestTemplateConfiguration;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -24,7 +26,8 @@ import org.springframework.web.client.RestTemplate;
 @ExtendWith(SpringExtension.class)
 class AuditingServiceRestTest {
 
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate = new JwtRestTemplateConfiguration()
+      .jwtRestTemplate(new RestTemplateBuilder());
   private final String url = "http://localhost:8081/api/v1/messages";
 
   private final AuditingService auditingService = new AuditingServiceRest(url, restTemplate);
