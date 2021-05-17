@@ -66,7 +66,7 @@ jobs:
           app-name: vtch-functions
           package: './functions/build/azure-functions/vtch-functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-      - name: Publish API Documentation # Not yet supporting Gradle 7.0
+      - name: Publish API Documentation
         run: ./gradlew gitPublishPush --no-parallel -Prerun
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
