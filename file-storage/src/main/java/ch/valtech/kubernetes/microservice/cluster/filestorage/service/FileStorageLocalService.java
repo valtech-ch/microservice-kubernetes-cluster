@@ -122,7 +122,7 @@ public class FileStorageLocalService implements FileStorageService {
     try {
       FileUtils.cleanDirectory(new File(uploadPath));
     } catch (IOException ex) {
-      throw new FileStorageException("Exception while deleting files");
+      throw new FileStorageException("Exception while deleting files", ex);
     }
   }
 

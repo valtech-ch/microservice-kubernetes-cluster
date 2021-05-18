@@ -71,7 +71,7 @@ public class FileStorageCloudService implements FileStorageService {
     try (InputStream inputStream = file.getInputStream()) {
       blobClient.upload(inputStream, file.getSize(), true);
       log.info("File {} added successfully to cloud storage", filename);
-    } catch (IOException e) {
+    } catch (Exception e) {
       String message = String.format("Failed to store file %s to cloud", filename);
       throw new FileStorageException(message, e);
     }
@@ -89,7 +89,7 @@ public class FileStorageCloudService implements FileStorageService {
         throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
       }
     } catch (MalformedURLException ex) {
-      throw new FileStorageException("Could not get resource URL");
+      throw new FileStorageException("Could not get resource URL", ex);
     }
   }
 
@@ -132,7 +132,7 @@ public class FileStorageCloudService implements FileStorageService {
       containerClient.listBlobs().stream()
           .forEach(blobItem -> containerClient.getBlobClient(blobItem.getName()).delete());
     } catch (BlobStorageException ex) {
-      throw new FileStorageException("Exception while deleting files");
+      throw new FileStorageException("Exception while deleting files", ex);
     }
   }
 

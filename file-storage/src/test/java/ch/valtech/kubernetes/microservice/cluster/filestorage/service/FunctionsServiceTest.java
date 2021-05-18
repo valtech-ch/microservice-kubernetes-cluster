@@ -19,7 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-@ExtendWith({SpringExtension.class})
+@ExtendWith(SpringExtension.class)
 class FunctionsServiceTest {
 
   private final String url = "https://vtch-functions.azurewebsites.net/api";
