@@ -5,11 +5,40 @@ metadata:
   namespace: argocd
 spec:
   hosts:
-    - "*"
+    - "vtch-aks-demo-argocd.duckdns.org"
   gateways:
     - argocd-gateway
   http:
-    - match:
+    - name: "gradle-cache"
+      match:
+        - uri:
+            prefix: "/gradle/"
+        - uri:
+            prefix: "/gradle"
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            port:
+              number: 80
+            host: gradle-build-cache-gradle-cache
+    - name: "gradle-cache-assets"
+      match:
+        - uri:
+            prefix: "/status"
+        - uri:
+            prefix: "/snapshot"
+        - uri:
+            prefix: "/credentials"
+        - uri:
+            prefix: "/purge"
+      route:
+        - destination:
+            port:
+              number: 80
+            host: gradle-build-cache-gradle-cache
+    - name: "argocd"
+      match:
         - uri:
             prefix: "/"
       route:
