@@ -7,11 +7,11 @@ Have a read at https://docs.microsoft.com/en-us/azure/azure-functions/functions-
 
 Run the function locally
 ```bash
-./gradlew jar --info
-./gradlew azureFunctionsRun
+./gradlew :functions:jar --info
+./gradlew :functions:azureFunctionsRun
 ```
 
 Deploy manually to Azure
 ```bash
-./gradlew azureFunctionsDeploy
+./gradlew :functions:azureFunctionsDeploy
 ```

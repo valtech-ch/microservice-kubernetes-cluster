@@ -39,6 +39,7 @@ services:
       - APPLICATION_HOSTNAME=http://localhost:3000
       - APPLICATION_UPLOAD_PATH=/etc/file-storage/uploads/
       - APPLICATION_PERSISTENCE_URL=http://persistence:8081/api/v1/messages
+      - APPLICATION_FUNCTIONS_URL=http://functions/api
       - APPLICATION_KAFKA_BOOTSTRAPADDRESS=kafka:9092
       - OTEL_JAVAAGENT_ENABLED=false
     ports:
@@ -68,6 +69,18 @@ services:
       - OTEL_JAVAAGENT_ENABLED=false
     ports:
      - 8081:8081
+
+  functions:
+    image: vtchk8sblueprintrg.azurecr.io/microservice-kubernetes-cluster/functions:latest
+    container_name: functions
+    networks:
+      - services
+    environment:
+      - AzureWebJobsSecretStorageType=files
+    ports:
+      - 8088:80
+    volumes:
+      - ./host.json:/azure-functions-host/Secrets/host.json
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
