@@ -5,6 +5,9 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 1MB
 management:
+  security:
+    username: actuator
+    password: actuator
   endpoints:
     web:
       exposure:
@@ -16,6 +19,8 @@ togglz:
     path: /togglz
     use-management-port: false
     feature-admin-authority: ROLE_togglz
+    username: togglz
+    password: togglz
   endpoint:
     enabled: true
 application:
