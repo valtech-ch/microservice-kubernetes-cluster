@@ -33,7 +33,7 @@ bin
 
 # Ignore Node build output directory
 node_modules
-/dist
+dist
 **/.scannerwork/*
 **/coverage/*
 
