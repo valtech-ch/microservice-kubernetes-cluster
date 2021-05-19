@@ -47,6 +47,26 @@ spec:
                 secretKeyRef:
                   key: FUNCTIONS_KEY
                   name: file-storage-cloud-secret
+            - name: ACTUATOR_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: ACTUATOR_USERNAME
+                  name: file-storage-cloud-secret
+            - name: ACTUATOR_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: ACTUATOR_PASSWORD
+                  name: file-storage-cloud-secret
+            - name: TOGGLZ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: TOGGLZ_USERNAME
+                  name: file-storage-cloud-secret
+            - name: TOGGLZ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: TOGGLZ_PASSWORD
+                  name: file-storage-cloud-secret
           livenessProbe:
             httpGet:
               path: /filestorage/actuator/health/liveness

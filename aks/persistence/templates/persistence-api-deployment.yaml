@@ -43,6 +43,16 @@ spec:
                 configMapKeyRef:
                   name: mariadb-cm
                   key: database-url
+            - name: MANAGEMENT_SECURITY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: persistence-api-secret
+                  key: actuator.username
+            - name: MANAGEMENT_SECURITY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: persistence-api-secret
+                  key: actuator.password
           livenessProbe:
             httpGet:
               path: /persistence/actuator/health/liveness

@@ -43,6 +43,10 @@ logging:
   level:
     root: INFO
     ch.valtech: DEBUG
+management:
+  security:
+    username: actuator
+    password: actuator
 application:
   token.url: http://localhost:8180/auth/realms/cluster/protocol/openid-connect/token
 ---

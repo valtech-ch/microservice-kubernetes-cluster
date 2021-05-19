@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.info.InfoEndpoint;
@@ -18,6 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private final String actuatorUsername;
+  private final String actuatorPassword;
+
+  public ActuatorSecurityConfiguration(
+      @Value("${management.security.username}") String actuatorUsername,
+      @Value("${management.security.password}") String actuatorPassword) {
+    this.actuatorUsername = actuatorUsername;
+    this.actuatorPassword = actuatorPassword;
+  }
+
   @Override
   public void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint()
@@ -30,8 +41,8 @@ public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
-        .withUser("actuator")
-        .password(passwordEncoder().encode("actuator"))
+        .withUser(actuatorUsername)
+        .password(passwordEncoder().encode(actuatorPassword))
         .roles("actuator");
   }
 

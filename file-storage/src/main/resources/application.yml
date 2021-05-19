@@ -50,6 +50,14 @@ logging:
   level:
     root: INFO
     ch.valtech: DEBUG
+management:
+  security:
+    username: actuator
+    password: actuator
+togglz:
+  console:
+    username: togglz
+    password: togglz
 application:
   hostname: http://localhost:8080
   upload.path: /tmp/internal/kubernetes/uploads/
