@@ -1,5 +1,8 @@
-package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
+package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -7,33 +10,29 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Order(2)
+@Order(1)
 @Configuration
 @EnableWebSecurity
-public class TogglzSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-        .antMatcher("/togglz/**")
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+  public void configure(HttpSecurity http) throws Exception {
+    http.requestMatcher(EndpointRequest.toAnyEndpoint()
+        .excluding(InfoEndpoint.class, HealthEndpoint.class))
+        .authorizeRequests().anyRequest().hasRole("actuator")
         .and()
-        .httpBasic().realmName("togglz")
-        .and()
-        .authorizeRequests()
-        .anyRequest().hasRole("togglz");
+        .httpBasic().realmName("actuator");
   }
 
   @Override
-  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
-        .withUser("admin")
-        .password(passwordEncoder().encode("admin"))
-        .roles("togglz");
+        .withUser("actuator")
+        .password(passwordEncoder().encode("actuator"))
+        .roles("actuator");
   }
 
   @Bean
