@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class TogglzSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private final String ROLE_TOGGLZ = "togglz";
+  private final String TOGGLZ_REALM = "Togglz";
+
   private final String consoleUsername;
   private final String consolePassword;
 
@@ -33,10 +36,10 @@ public class TogglzSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatcher("/togglz/**")
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .httpBasic().realmName("togglz")
+        .httpBasic().realmName(TOGGLZ_REALM)
         .and()
         .authorizeRequests()
-        .anyRequest().hasRole("togglz");
+        .anyRequest().hasRole(ROLE_TOGGLZ);
   }
 
   @Override
@@ -44,7 +47,7 @@ public class TogglzSecurityConfiguration extends WebSecurityConfigurerAdapter {
     auth.inMemoryAuthentication()
         .withUser(consoleUsername)
         .password(passwordEncoder().encode(consolePassword))
-        .roles("togglz");
+        .roles(ROLE_TOGGLZ);
   }
 
   @Bean
