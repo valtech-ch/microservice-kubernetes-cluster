@@ -17,8 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class TogglzSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private final String ROLE_TOGGLZ = "togglz";
-  private final String TOGGLZ_REALM = "Togglz";
+  private static final String ROLE_TOGGLZ = "togglz";
+  private static final String TOGGLZ_REALM = "Togglz";
 
   private final String consoleUsername;
   private final String consolePassword;

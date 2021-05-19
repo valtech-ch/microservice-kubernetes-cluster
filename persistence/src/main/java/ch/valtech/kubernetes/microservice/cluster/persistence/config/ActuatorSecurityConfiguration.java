@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  private final String ROLE_ACTUATOR = "actuator";
-  private final String ACTUATOR_REALM = "Actuator";
+  private static final String ROLE_ACTUATOR = "actuator";
+  private static final String ACTUATOR_REALM = "Actuator";
 
   private final String actuatorUsername;
   private final String actuatorPassword;
