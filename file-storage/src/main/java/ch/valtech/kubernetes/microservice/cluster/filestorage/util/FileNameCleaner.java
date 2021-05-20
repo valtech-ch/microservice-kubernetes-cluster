@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.util;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.exception.FileStorageException;
 import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,16 +17,21 @@ public final class FileNameCleaner {
   }
 
   public static String cleanFilename(String badFileName) {
-    String nullBytesStripped = FilenameUtils.getName(badFileName);
-    StringBuilder cleanName = new StringBuilder();
-    int len = nullBytesStripped.codePointCount(0, nullBytesStripped.length());
-    for (int i = 0; i < len; i++) {
-      int c = nullBytesStripped.codePointAt(i);
-      if (Arrays.binarySearch(ILLEGAL_CHARS, c) < 0) {
-        cleanName.appendCodePoint(c);
+    try {
+      String nullBytesStripped = FilenameUtils.getName(badFileName);
+      nullBytesStripped = nullBytesStripped.replace("'", "\"");
+      StringBuilder cleanName = new StringBuilder();
+      int len = nullBytesStripped.codePointCount(0, nullBytesStripped.length());
+      for (int i = 0; i < len; i++) {
+        int c = nullBytesStripped.codePointAt(i);
+        if (Arrays.binarySearch(ILLEGAL_CHARS, c) < 0) {
+          cleanName.appendCodePoint(c);
+        }
       }
+      return cleanName.toString();
+    } catch (IllegalArgumentException ex) {
+      throw new FileStorageException("Unable to upload file at current time", ex);
     }
-    return cleanName.toString();
   }
 
 }

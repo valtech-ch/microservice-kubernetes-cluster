@@ -21,6 +21,9 @@ management:
       exposure:
         include: "*"
 application:
+  cors:
+   allowed.origins: "*"
+   allowed.methods: "*"
   kafka:
     bootstrapAddress: localhost:9092
     groupId: persistenceApp
