@@ -19,8 +19,8 @@ management:
         include: "*"
 application:
   cors:
-   allowed.origins: *
-   allowed.methods: *
+   allowed.origins: "*"
+   allowed.methods: "*"
   kafka:
     bootstrapAddress: localhost:9092
     groupId: persistenceApp
