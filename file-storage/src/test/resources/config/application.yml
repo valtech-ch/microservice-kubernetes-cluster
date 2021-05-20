@@ -41,3 +41,6 @@ application:
     topic: auditing
     stream:
       topic: reverseAuditing
+  cors:
+    allowed.origins: "*"
+    allowed.methods: "*"
