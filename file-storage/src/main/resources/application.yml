@@ -70,6 +70,9 @@ application:
       container.name: filestorage
       account.key: secret
       connection: secret
+  cors:
+    allowed.origins: "*"
+    allowed.methods: "*"
 ---
 spring:
   config:

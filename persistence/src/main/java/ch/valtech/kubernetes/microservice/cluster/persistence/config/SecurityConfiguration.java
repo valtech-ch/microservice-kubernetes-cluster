@@ -1,8 +1,11 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
+import java.util.Collections;
+import java.util.List;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,6 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Order(0)
 @Configuration
@@ -22,12 +29,30 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private final List<String> allowedOrigins;
+  private final List<String> allowedMethods;
+
+  public SecurityConfiguration(@Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
+      @Value("${application.cors.allowed.methods}") List<String> allowedMethods) {
+    this.allowedOrigins = allowedOrigins;
+    this.allowedMethods = allowedMethods;
+  }
+
   @Override
   public void configure(HttpSecurity http) throws Exception {
     JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
     jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
 
     http.csrf().disable()
+        .headers()
+        .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+        .and()
+        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+        .and()
+        .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'")
+        .and()
+        .frameOptions().deny()
+        .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .antMatcher("/api/**")
@@ -46,6 +71,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Bean
   public GrpcAuthenticationReader grpcAuthenticationReader() {
     return new BearerAuthenticationReader(BearerTokenAuthenticationToken::new);
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(allowedOrigins);
+    configuration.setAllowedMethods(allowedMethods);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/api/**", configuration);
+    source.registerCorsConfiguration("/v2/api-docs", configuration);
+    return source;
   }
 
 }
