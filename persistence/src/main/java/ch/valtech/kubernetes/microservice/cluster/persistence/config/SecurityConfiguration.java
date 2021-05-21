@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
         .headers()
         .contentSecurityPolicy("default-src 'self'; "
-            + "connect-src 'https://vtch-aks-demo-monitoring.duckdns.org'; "
+            + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
             + "frame-src 'self' data:; "
             + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
             + "style-src 'self' 'unsafe-inline'; "
