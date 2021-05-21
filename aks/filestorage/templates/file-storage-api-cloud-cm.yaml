@@ -38,5 +38,10 @@ data:
         stream:
           topic: reverse-auditing
       cors:
-        allowed.origins: "https://vtch-aks-demo.duckdns.org"
-        allowed.methods: "GET", "POST", "PUT", "DELETE"
+        allowed.origins:
+          - https://vtch-aks-demo.duckdns.org
+        allowed.methods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
