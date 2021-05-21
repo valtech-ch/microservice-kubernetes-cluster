@@ -13,7 +13,8 @@ ext {
 	imageName = 'file-storage'
 	springCloudVersion = '2020.0.2'
 	minimumCoveragePerFile = 0.6
-	filesExcludedFromCoverage = ["*ExceptionTranslator.java",
+	filesExcludedFromCoverage = ["*FileStorageApplication.java",
+								 "*ExceptionTranslator.java",
 								 "*GrpcConfiguration.java"]
 }
 

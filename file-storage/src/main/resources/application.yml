@@ -12,6 +12,8 @@ server:
   port: 8080
   http2:
     enabled: true
+  ssl:
+    enabled: false
   compression:
     enabled: true
     mime-types: text/html,text/plain,text/css,application/javascript,application/json

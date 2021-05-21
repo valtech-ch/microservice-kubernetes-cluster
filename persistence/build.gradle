@@ -15,7 +15,8 @@ ext {
     imageName = 'persistence'
     springCloudVersion = '2020.0.2'
     minimumCoveragePerFile = 0.6
-    filesExcludedFromCoverage = ["*GrpcExceptionTranslator.java",
+    filesExcludedFromCoverage = ["*PersistenceApplication.java",
+                                 "*GrpcExceptionTranslator.java",
                                  "*ConsumerService.java"]
 }
 

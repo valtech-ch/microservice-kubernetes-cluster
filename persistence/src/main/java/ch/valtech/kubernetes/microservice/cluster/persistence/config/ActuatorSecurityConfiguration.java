@@ -3,7 +3,6 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
-import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -35,7 +34,7 @@ public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter 
   @Override
   public void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint()
-        .excluding(InfoEndpoint.class, HealthEndpoint.class))
+        .excluding(HealthEndpoint.class))
         .authorizeRequests().anyRequest().hasRole(ROLE_ACTUATOR)
         .and()
         .httpBasic().realmName(ACTUATOR_REALM);

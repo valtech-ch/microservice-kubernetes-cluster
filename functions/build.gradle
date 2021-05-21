@@ -37,6 +37,7 @@ azurefunctions {
 }
 
 jar {
+	archiveClassifier = ''
 	enabled = true
 	manifest {
 		attributes 'Main-Class': 'ch.valtech.kubernetes.microservice.cluster.function.Config'
