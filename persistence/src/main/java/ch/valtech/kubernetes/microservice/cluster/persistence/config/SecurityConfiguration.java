@@ -1,7 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
-import java.util.Collections;
 import java.util.List;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
@@ -47,11 +46,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.csrf().disable()
         .cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
         .headers()
-        .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+        .contentSecurityPolicy("default-src 'self'; "
+            + "connect-src 'https://vtch-aks-demo-monitoring.duckdns.org'; "
+            + "frame-src 'self' data:; "
+            + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
+            + "style-src 'self' 'unsafe-inline'; "
+            + "img-src 'self' data:; "
+            + "font-src 'self' data:")
         .and()
         .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
-        .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'")
+        .featurePolicy(
+            "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; fullscreen 'self'; payment 'none'")
         .and()
         .frameOptions().deny()
         .and()
