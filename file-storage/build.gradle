@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.5'
+	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'java-library'
@@ -13,7 +13,8 @@ ext {
 	imageName = 'file-storage'
 	springCloudVersion = '2020.0.2'
 	minimumCoveragePerFile = 0.6
-	filesExcludedFromCoverage = ["*ExceptionTranslator.java",
+	filesExcludedFromCoverage = ["*FileStorageApplication.java",
+								 "*ExceptionTranslator.java",
 								 "*GrpcConfiguration.java"]
 }
 

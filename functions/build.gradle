@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.5'
+	id 'org.springframework.boot' version '2.5.0'
 	id 'com.microsoft.azure.azurefunctions'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
@@ -37,6 +37,7 @@ azurefunctions {
 }
 
 jar {
+	archiveClassifier = ''
 	enabled = true
 	manifest {
 		attributes 'Main-Class': 'ch.valtech.kubernetes.microservice.cluster.function.Config'
