@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+  private static final String ROLE_ACTUATOR = "actuator";
+  private static final String ACTUATOR_REALM = "Actuator";
+
   private final PasswordEncoder passwordEncoder;
   private final String actuatorUsername;
   private final String actuatorPassword;
@@ -34,9 +37,9 @@ public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter 
   public void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint()
         .excluding(InfoEndpoint.class, HealthEndpoint.class))
-        .authorizeRequests().anyRequest().hasRole("actuator")
+        .authorizeRequests().anyRequest().hasRole(ROLE_ACTUATOR)
         .and()
-        .httpBasic().realmName("actuator");
+        .httpBasic().realmName(ACTUATOR_REALM);
   }
 
   @Override
@@ -44,7 +47,7 @@ public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter 
     auth.inMemoryAuthentication()
         .withUser(actuatorUsername)
         .password(passwordEncoder.encode(actuatorPassword))
-        .roles("actuator");
+        .roles(ROLE_ACTUATOR);
   }
 
 }

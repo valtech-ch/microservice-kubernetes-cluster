@@ -8,7 +8,7 @@
 </template>
 <script>
 import axios from 'axios';
- export default {
+export default {
   name: 'File',
   props: ["filename"],
   methods: {

@@ -9,6 +9,9 @@ server:
   port: 8081
   http2:
     enabled: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json
 grpc:
   server:
     port: 9090
