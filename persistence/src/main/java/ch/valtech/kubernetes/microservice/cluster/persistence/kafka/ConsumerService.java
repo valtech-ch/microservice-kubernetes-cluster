@@ -1,5 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.kafka;
 
+import static ch.valtech.kubernetes.microservice.cluster.persistence.util.SecurityUtils.getUsername;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -35,7 +39,9 @@ public final class ConsumerService {
           .authenticate(new BearerTokenAuthenticationToken(token));
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
-    persistenceService.saveNewMessage(message);
+    String username = getUsername().orElseThrow(() ->
+        new ResponseStatusException(FORBIDDEN, "Username not found"));
+    persistenceService.saveNewMessage(message, username);
   }
 
   @KafkaListener(topics = "${application.kafka.stream.topic}", groupId = "${application.kafka.groupId}")

@@ -1,13 +1,18 @@
 spring:
   datasource:
-    url: jdbc:tc:mariadb:10.3:///
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
-    hibernate:
-      use-new-id-generator-mappings: false
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  r2dbc:
+    url: ${R2DBC_URL}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
   flyway:
     enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     locations: classpath:db/migration/mariadb
 management:
   security:

@@ -5,6 +5,12 @@ spring:
     name: persistence
   flyway:
     enabled: true
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  r2dbc:
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
 server:
   port: 8081
   http2:
@@ -38,10 +44,12 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:h2:mem:messaging
+    url: jdbc:h2:mem:messaging;DB_CLOSE_DELAY=-1
     username: sa
     password: password
     driver-class-name: org.h2.Driver
+  r2dbc:
+    url: r2dbc:h2:mem:///messaging;DB_CLOSE_DELAY=-1
   h2:
     console:
       enabled: true
@@ -68,8 +76,8 @@ spring:
     username: root
     password: root
     driver-class-name: org.mariadb.jdbc.Driver
-    hikari:
-      max-lifetime: 480000
+  r2dbc:
+    url: r2dbc:mariadb://localhost:3306/messaging
   flyway:
     locations: classpath:db/migration/mariadb
 server:
