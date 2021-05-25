@@ -11,8 +11,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SecurityUtils {
 
-  public static final String KEYCLOAK_USERNAME = "preferred_username";
-
   public static Optional<String> getUsername() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
     return Optional.ofNullable(securityContext.getAuthentication())

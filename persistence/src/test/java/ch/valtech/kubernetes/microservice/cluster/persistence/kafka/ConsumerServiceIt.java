@@ -18,7 +18,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,8 +31,8 @@ import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import reactor.core.publisher.Mono;
 
-@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConsumerServiceIt extends AbstractIt {
 
@@ -59,12 +58,14 @@ class ConsumerServiceIt extends AbstractIt {
   @Test
   public void shouldCheckMessageIsProduced() {
     //given
+    String username = "username";
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)
         .action(Action.UPLOAD)
         .build();
-    when(persistenceService.saveNewMessage(eq(auditingRequestDto))).thenReturn(MessageDto.builder().build());
-    JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken("username"));
+    when(persistenceService.saveNewMessage(eq(auditingRequestDto), eq(username)))
+        .thenReturn(Mono.just(MessageDto.builder().build()));
+    JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(username));
     when(authenticationManager.authenticate(any())).thenReturn(jwtAuthenticationToken);
 
     Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
@@ -75,10 +76,10 @@ class ConsumerServiceIt extends AbstractIt {
     producer.flush();
 
     //when
-    consumerService.consumeTopic(auditingRequestDto, null);
+    consumerService.consumeTopic(auditingRequestDto, jwtAuthenticationToken.getToken().getTokenValue());
 
     //then
-    verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto);
+    verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto, username);
   }
 
   public static Jwt createToken(String username) {

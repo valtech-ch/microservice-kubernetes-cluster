@@ -1,48 +1,43 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.domain;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * Audits the changes made to the filesystem.
  */
 @Data
+@Builder
 @ToString
-@Entity
-@Table(name = "auditing")
+@Table("auditing")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Auditing {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "modification_date")
+  @Column("modification_date")
   private LocalDate modificationDate;
 
   @NonNull
-  @Column(name = "username")
+  @Column("username")
   private String username;
 
   @NonNull
-  @Column(name = "filename")
+  @Column("filename")
   private String filename;
 
   @NonNull
-  @Enumerated
-  @Column(name = "action")
+  @Column("action")
   private Action action;
 
 }

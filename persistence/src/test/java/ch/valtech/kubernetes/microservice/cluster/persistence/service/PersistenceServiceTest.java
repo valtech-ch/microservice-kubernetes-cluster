@@ -3,6 +3,7 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.service;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action.DOWNLOAD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @ExtendWith(SpringExtension.class)
 public class PersistenceServiceTest {
@@ -40,21 +43,16 @@ public class PersistenceServiceTest {
   @WithMockUser
   void shouldStoreNewMessage() {
     String filename = "test.txt";
-    LocalDate modificationDate = LocalDate.now();
-    Auditing auditing = new Auditing();
-    auditing.setUsername("user");
-    auditing.setFilename(filename);
-    auditing.setAction(Action.DOWNLOAD);
-    auditing.setModificationDate(modificationDate);
+    Auditing auditing = createAuditing(filename);
 
-    given(auditingRepository.save(auditing)).willReturn(auditing);
+    given(auditingRepository.save(auditing)).willReturn(Mono.just(auditing));
 
     MessageDto message =
         persistenceService.saveNewMessage(AuditingRequestDto
             .builder()
             .filename(filename)
             .action(DOWNLOAD)
-            .build());
+            .build(), "user").block();
 
     assertNotNull(message);
     assertEquals("User user downloaded " + filename, message.getMessage());
@@ -64,8 +62,33 @@ public class PersistenceServiceTest {
   @WithMockUser
   void getMessages() {
     String filename = "test.txt";
-    List<MessageDto> messages = persistenceService.getMessages(10);
-    assertEquals(0, messages.size());
+    given(auditingRepository.findBy(any()))
+        .willReturn(Flux.just(createAuditing(filename)));
+
+    List<MessageDto> messages = persistenceService.getMessages(10).collectList().block();
+    assertEquals(1, messages.size());
+    assertEquals("User user downloaded test.txt", messages.get(0).getMessage());
+  }
+
+  @Test
+  @WithMockUser
+  void getMessagesWithFilename() {
+    String filename = "test.txt";
+    given(auditingRepository.findByFilename(any(), any()))
+        .willReturn(Flux.just(createAuditing(filename)));
+
+    List<MessageDto> messages = persistenceService.getMessagesWithFilename(filename, 10).collectList().block();
+    assertEquals(1, messages.size());
+    assertEquals("User user downloaded test.txt", messages.get(0).getMessage());
+  }
+
+  private Auditing createAuditing(String filename) {
+    return Auditing.builder()
+        .username("user")
+        .filename(filename)
+        .action(Action.DOWNLOAD)
+        .modificationDate(LocalDate.now())
+        .build();
   }
 
 }

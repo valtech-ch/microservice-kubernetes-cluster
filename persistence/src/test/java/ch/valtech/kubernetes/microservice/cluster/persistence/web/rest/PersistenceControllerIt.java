@@ -65,6 +65,14 @@ class PersistenceControllerIt extends AbstractIt {
         .andExpect(status().isOk());
   }
 
+  @Test
+  @SneakyThrows
+  @WithMockUser(roles = "admin")
+  void shouldGetMessagesByFilename() {
+    mockMvc.perform(get("/api/v1/messages/test.txt"))
+        .andExpect(status().isOk());
+  }
+
   private static String convertObjectToJsonBytes(Object object) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper()
         .setSerializationInclusion(JsonInclude.Include.NON_NULL)
