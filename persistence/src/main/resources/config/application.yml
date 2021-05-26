@@ -80,6 +80,8 @@ spring:
     url: r2dbc:mariadb://localhost:3306/messaging
     pool:
       max-life-time: 8m
+    properties:
+      sslMode: ENABLE
   flyway:
     locations: classpath:db/migration/mariadb
 server:
