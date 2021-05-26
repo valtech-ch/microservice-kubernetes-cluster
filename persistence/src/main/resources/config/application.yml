@@ -81,7 +81,7 @@ spring:
     pool:
       max-life-time: 8m
     properties:
-      sslMode: ENABLE_WITHOUT_HOSTNAME_VERIFICATION
+      sslMode: ENABLE_TRUST
   flyway:
     locations: classpath:db/migration/mariadb
 server:
