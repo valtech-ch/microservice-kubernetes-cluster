@@ -10,7 +10,6 @@ plugins {
 project.description = 'functions'
 
 ext {
-	springCloudVersion = '2020.0.2'
 	azureFunctionsVersion = '1.4.2'
 	minimumCoveragePerFile = 0.6
 	filesExcludedFromCoverage = ["*Handler.java"]
@@ -45,14 +44,13 @@ jar {
 }
 
 dependencies {
-	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure'
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web'
+	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure:3.1.2'
+	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web:3.1.2'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         mavenBom "com.microsoft.azure.functions:azure-functions-java-library:${azureFunctionsVersion}"
     }
 }
