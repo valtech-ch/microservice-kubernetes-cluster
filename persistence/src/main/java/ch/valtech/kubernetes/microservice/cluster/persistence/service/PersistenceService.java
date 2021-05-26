@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
-@Transactional
 public class PersistenceService {
 
   private final AuditingRepository auditingRepository;
@@ -27,10 +26,10 @@ public class PersistenceService {
     this.persistenceMapper = persistenceMapper;
   }
 
+  @Transactional
   public Mono<MessageDto> saveNewMessage(AuditingRequestDto requestDto, String username) {
     return auditingRepository.save(persistenceMapper.toAuditing(requestDto, username))
         .map(PersistenceUtils::createMessage)
-        .log()
         .map(message -> MessageDto.builder().message(message).build());
   }
 
