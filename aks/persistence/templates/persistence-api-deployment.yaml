@@ -43,6 +43,11 @@ spec:
                 configMapKeyRef:
                   name: mariadb-cm
                   key: database-url
+            - name: SPRING_R2DBC_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mariadb-cm
+                  key: r2dbc-url
             - name: MANAGEMENT_SECURITY_USERNAME
               valueFrom:
                 secretKeyRef:
