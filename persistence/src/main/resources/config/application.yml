@@ -8,9 +8,6 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
-  r2dbc:
-    username: ${spring.datasource.username}
-    password: ${spring.datasource.password}
 server:
   port: 8081
   http2:
@@ -50,6 +47,8 @@ spring:
     driver-class-name: org.h2.Driver
   r2dbc:
     url: r2dbc:h2:mem:///messaging;DB_CLOSE_DELAY=-1
+    username: sa
+    password: password
   h2:
     console:
       enabled: true
@@ -82,6 +81,7 @@ spring:
       max-life-time: 8m
     properties:
       sslMode: ENABLE_TRUST
+      tlsProtocol: TLSv1.2
   flyway:
     locations: classpath:db/migration/mariadb
 server:
