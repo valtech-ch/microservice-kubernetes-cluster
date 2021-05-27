@@ -3,6 +3,7 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Flux;
 
 @Slf4j
 @Service("auditingServiceRest")
@@ -36,6 +38,11 @@ public class AuditingServiceRest implements AuditingService {
         .action(action).build();
     HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, populateHeaders());
     return postForEntity(request).getBody();
+  }
+
+  @Override
+  public Flux<MessageDto> search(SearchRequest searchRequest) {
+    throw new UnsupportedOperationException();
   }
 
   private HttpHeaders populateHeaders() {

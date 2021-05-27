@@ -8,8 +8,9 @@ import static org.mockito.Mockito.when;
 
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc.PersistenceServiceBlockingStub;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +20,14 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 @ExtendWith(SpringExtension.class)
 class AuditingServiceGrpcTest {
 
   private final AuditingService auditingService = new AuditingServiceGrpc();
 
-  private final PersistenceServiceBlockingStub persistenceService = Mockito.mock(PersistenceServiceBlockingStub.class);
+  private final ReactorPersistenceServiceStub persistenceService = Mockito.mock(ReactorPersistenceServiceStub.class);
 
   @BeforeEach
   void setup() {
@@ -35,9 +37,9 @@ class AuditingServiceGrpcTest {
   @Test
   void testSuccessfulAudit() {
     String message = "Test";
-    when(persistenceService.audit(any())).thenReturn(MessageResponse.newBuilder()
+    when(persistenceService.audit(any(AuditingRequest.class))).thenReturn(Mono.just(MessageResponse.newBuilder()
         .setMessage(message)
-        .build());
+        .build()));
     MessageDto response = auditingService.audit("test.txt", Action.UPLOAD);
     assertNotNull(response.getMessage());
     assertEquals(message, response.getMessage());
@@ -45,7 +47,7 @@ class AuditingServiceGrpcTest {
 
   @Test
   void testSuccessfulAuditFailed() {
-    when(persistenceService.audit(any()))
+    when(persistenceService.audit(any(AuditingRequest.class)))
         .thenThrow(new StatusRuntimeException(Status.PERMISSION_DENIED.withDescription("Permission denied")));
     assertThrows(ResponseStatusException.class, () -> {
       auditingService.audit("test.txt", Action.UPLOAD);
