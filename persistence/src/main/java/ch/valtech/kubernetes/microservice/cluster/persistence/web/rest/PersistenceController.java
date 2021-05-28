@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,13 +40,11 @@ public class PersistenceController {
 
   @GetMapping("/messages/{filename}")
   @PreAuthorize("hasAnyRole('admin')")
-  public ResponseEntity<List<MessageDto>> getMessagesByFilename(
+  public Flux<MessageDto> getMessagesByFilename(
       @PathVariable String filename,
       @RequestParam(name = "limit", defaultValue = "10") int limit) {
     log.info("Get last {} messages of file {}", limit, filename);
-    List<MessageDto> messages = persistenceService.getMessagesWithFilename(filename, limit)
-        .collectList().block();
-    return ResponseEntity.ok(messages);
+    return persistenceService.getMessagesWithFilename(filename, limit);
   }
 
   @PostMapping("/messages")
