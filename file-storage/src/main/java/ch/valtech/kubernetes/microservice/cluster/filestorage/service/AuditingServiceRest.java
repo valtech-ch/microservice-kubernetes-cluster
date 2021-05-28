@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.util.SecurityUtils;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.ClientRequest;
+import org.springframework.web.reactive.function.client.ClientRequest.Builder;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 @Slf4j
@@ -24,11 +28,19 @@ public class AuditingServiceRest implements AuditingService {
 
   private final String persistenceUrl;
   private final RestTemplate restTemplate;
+  private final WebClient webClient;
 
   public AuditingServiceRest(@Value("${application.persistence.url}") String persistenceUrl,
       @Qualifier("jwtRestTemplate") RestTemplate restTemplate) {
     this.persistenceUrl = persistenceUrl;
     this.restTemplate = restTemplate;
+    this.webClient = WebClient.builder()
+        .baseUrl(persistenceUrl)
+        .filter((request, next) -> {
+          Builder requestBuilder = ClientRequest.from(request);
+          SecurityUtils.getJwt().ifPresent(token -> requestBuilder.headers((headers) -> headers.setBearerAuth(token)));
+          return next.exchange(requestBuilder.build());
+        }).build();
   }
 
   @Override
@@ -42,7 +54,14 @@ public class AuditingServiceRest implements AuditingService {
 
   @Override
   public Flux<MessageDto> search(SearchRequest searchRequest) {
-    throw new UnsupportedOperationException();
+    return webClient.get()
+        .uri(uriBuilder -> uriBuilder
+            .path("/{filename}")
+            .queryParam("limit", searchRequest.getLimit())
+            .build(searchRequest.getFilename()))
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .bodyToFlux(MessageDto.class);
   }
 
   private HttpHeaders populateHeaders() {

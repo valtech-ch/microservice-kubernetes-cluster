@@ -52,6 +52,9 @@ dependencies {
 		exclude module: "spring-boot-starter-tomcat"
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
+	implementation ('org.springframework.boot:spring-boot-starter-webflux') {
+		exclude module: "spring-boot-starter-reactor-netty"
+	}
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -84,6 +87,9 @@ dependencies {
 	testImplementation 'io.grpc:grpc-testing:1.38.0'
 	testImplementation 'org.testcontainers:testcontainers:1.15.3'
 	testImplementation 'org.testcontainers:junit-jupiter:1.15.3'
+	testImplementation 'io.projectreactor:reactor-test:3.4.6'
+	testImplementation("com.squareup.okhttp3:okhttp:4.9.1")
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
