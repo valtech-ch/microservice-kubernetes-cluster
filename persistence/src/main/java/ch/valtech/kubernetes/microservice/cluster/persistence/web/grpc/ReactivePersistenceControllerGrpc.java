@@ -3,9 +3,6 @@ package ch.valtech.kubernetes.microservice.cluster.persistence.web.grpc;
 import static ch.valtech.kubernetes.microservice.cluster.persistence.util.SecurityUtils.getUsername;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;

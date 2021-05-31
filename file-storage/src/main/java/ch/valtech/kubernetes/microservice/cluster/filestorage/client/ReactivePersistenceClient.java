@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientRequest;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.ClientRequest.Builder;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 @Component
@@ -22,8 +22,7 @@ public class ReactivePersistenceClient {
     this.client = WebClient.builder()
         .baseUrl(persistenceUrl)
         .filter((request, next) -> {
-          Builder requestBuilder;
-          requestBuilder = ClientRequest.from(request);
+          Builder requestBuilder = ClientRequest.from(request);
           SecurityUtils.getJwt().ifPresent(token -> requestBuilder.headers((headers) -> headers.setBearerAuth(token)));
           return next.exchange(requestBuilder.build());
         }).build();
@@ -31,7 +30,7 @@ public class ReactivePersistenceClient {
 
   public Flux<MessageDto> getMessagesByFilename(SearchRequest searchRequest) {
     return client.get()
-        .uri("/"+ searchRequest.getFilename(), searchRequest.getFilename(), searchRequest.getLimit())
+        .uri("/" + searchRequest.getFilename(), searchRequest.getFilename(), searchRequest.getLimit())
         .accept(MediaType.APPLICATION_JSON)
         .exchangeToFlux(clientResponse -> clientResponse.bodyToFlux(MessageDto.class))
         .log("Messages fetched : ");
