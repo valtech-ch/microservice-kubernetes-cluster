@@ -56,7 +56,6 @@ export default {
   methods: {
     loadAllFiles() {
       if (this.token) {
-        // http://localhost:8090/api/files - locally
         axios.get('filestorage/api/files', {
           headers: {
             'Authorization': `Bearer ${this.token}`,
@@ -64,13 +63,13 @@ export default {
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
           }
         })
-            .then((res) => {
-              this.files = res.data;
-            })
-            .catch((error) => {
-              this.errorMessage = error.response.data;
-              console.log("Error: " + this.errorMessage)
-            })
+        .then((res) => {
+          this.files = res.data;
+        })
+        .catch((error) => {
+          this.errorMessage = error.response.data;
+          console.log("Error: " + this.errorMessage)
+        })
       }
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="file">
-    <h3 class="file-name">{{ filename }}</h3>
+    <h3 class="file-name" @click.prevent="downloadFile()">{{ filename }}</h3>
     <svg class="file-delete" v-on:click="deleteFile">
       <use xlink:href="../assets/images/sprite.svg#icon-trash"></use>
     </svg>
@@ -12,6 +12,25 @@ export default {
   name: 'File',
   props: ["filename"],
   methods: {
+    downloadFile () {
+      let token = localStorage.getItem("vue-token");
+      axios.get('filestorage/api/files/' + this.filename, {
+        responseType: 'blob',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+        }
+      })
+      .then(response => {
+        const blob = new Blob([response.data])
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = this.filename
+        link.click()
+        URL.revokeObjectURL(link.href)
+      }).catch(console.error)
+    },
     deleteFile() {
       let token = localStorage.getItem("vue-token");
       axios.delete('filestorage/api/files/' + this.filename, {
