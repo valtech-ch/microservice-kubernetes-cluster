@@ -30,7 +30,7 @@ public interface PersistenceMapper {
 
   Action toDomainAction(ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action action);
 
-  default MessageResponse toMessageResponse(MessageDto messageDto){
+  default MessageResponse toMessageResponse(MessageDto messageDto) {
     return MessageResponse.newBuilder()
         .setMessage(messageDto.getMessage())
         .build();
@@ -40,7 +40,8 @@ public interface PersistenceMapper {
     return AuditingRequestDto.builder()
         .filename(auditingRequest.getFilename())
         .action(
-            ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action.valueOf(auditingRequest.getAction().toString()))
+            ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action
+                .valueOf(auditingRequest.getAction().toString()))
         .build();
   }
 
