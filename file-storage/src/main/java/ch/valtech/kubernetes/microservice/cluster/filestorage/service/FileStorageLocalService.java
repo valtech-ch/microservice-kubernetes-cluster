@@ -29,6 +29,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 
 @Profile("!cloud")
 @Slf4j
@@ -84,6 +85,19 @@ public class FileStorageLocalService implements FileStorageService {
       return paths.filter(Files::isRegularFile)
           .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build())
           .collect(Collectors.toList());
+    } catch (IOException ex) {
+      throw new FileStorageException("Files not found ", ex);
+    }
+  }
+
+  public Flux<FileArtifact> loadAllReactive() {
+    log.info("Loading all files in: {}", uploadPath);
+    try (Stream<Path> paths = Files.walk(Paths.get(uploadPath))) {
+      return Flux.fromIterable(paths.filter(Files::isRegularFile)
+          .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build())
+          .collect(Collectors.toList()));
+//      return Flux.fromStream(paths.filter(Files::isRegularFile))
+//          .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build());
     } catch (IOException ex) {
       throw new FileStorageException("Files not found ", ex);
     }

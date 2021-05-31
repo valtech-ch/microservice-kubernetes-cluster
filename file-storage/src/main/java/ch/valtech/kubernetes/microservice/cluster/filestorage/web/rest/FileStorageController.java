@@ -5,6 +5,8 @@ import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.ProducerServ
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.FileStorageService;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
 import java.net.URL;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Flux;
 
 /**
  * REST controller for managing Files.
@@ -75,6 +78,21 @@ public class FileStorageController {
   @PreAuthorize("hasAnyRole('admin', 'user')")
   public ResponseEntity<List<FileArtifact>> listUploadedFiles() {
     return ResponseEntity.ok(fileStorageService.loadAll());
+  }
+
+  /**
+   * {@code GET  /api/files/changes} : get a list of all the changes done to a file using Flux.
+   *
+   * @return stream of MessageDto
+   */
+  @GetMapping("/files/changes/{filename}")
+  @PreAuthorize("hasAnyRole('admin', 'user')")
+  public Flux<MessageDto> searchFileChanges(@PathVariable String filename,
+      @RequestParam(name = "limit", defaultValue = "10") int limit) {
+    return auditingServiceRest.search(SearchRequest.newBuilder()
+        .setFilename(filename)
+        .setLimit(limit)
+        .build());
   }
 
   @GetMapping("/files/{filename}")

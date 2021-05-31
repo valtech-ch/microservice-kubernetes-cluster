@@ -8,6 +8,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingR
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
+import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class PersistenceControllerGrpc extends PersistenceServiceGrpc.PersistenceServiceImplBase {
 
   private final PersistenceService persistenceService;
+  private final PersistenceMapper persistenceMapper;
 
-  public PersistenceControllerGrpc(PersistenceService persistenceService) {
+  public PersistenceControllerGrpc(PersistenceService persistenceService,
+      PersistenceMapper persistenceMapper) {
     this.persistenceService = persistenceService;
+    this.persistenceMapper = persistenceMapper;
   }
 
   @Override
@@ -30,10 +34,10 @@ public class PersistenceControllerGrpc extends PersistenceServiceGrpc.Persistenc
     String username = getUsername().orElseThrow(() ->
         new ResponseStatusException(FORBIDDEN, "Username not found"));
     MessageDto newMessage = persistenceService
-        .saveNewMessage(ReactivePersistenceControllerGrpc.toAuditingRequestDto(request), username)
+        .saveNewMessage(persistenceMapper.toAuditingRequestDto(request), username)
         .block();
 
-    responseObserver.onNext(ReactivePersistenceControllerGrpc.toMessageRespone(newMessage));
+    responseObserver.onNext(persistenceMapper.toMessageResponse(newMessage));
     responseObserver.onCompleted();
   }
 
@@ -41,7 +45,7 @@ public class PersistenceControllerGrpc extends PersistenceServiceGrpc.Persistenc
   @PreAuthorize("hasAnyRole('admin')")
   public void search(SearchRequest request, StreamObserver<MessageResponse> responseObserver) {
     persistenceService.getMessagesWithFilename(request.getFilename(), request.getLimit())
-        .map(ReactivePersistenceControllerGrpc::toMessageRespone)
+        .map(persistenceMapper::toMessageResponse)
         .doOnNext(responseObserver::onNext)
         .doOnComplete(responseObserver::onCompleted)
         .subscribe();
