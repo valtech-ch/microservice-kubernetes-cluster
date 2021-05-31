@@ -90,19 +90,6 @@ public class FileStorageLocalService implements FileStorageService {
     }
   }
 
-  public Flux<FileArtifact> loadAllReactive() {
-    log.info("Loading all files in: {}", uploadPath);
-    try (Stream<Path> paths = Files.walk(Paths.get(uploadPath))) {
-      return Flux.fromIterable(paths.filter(Files::isRegularFile)
-          .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build())
-          .collect(Collectors.toList()));
-//      return Flux.fromStream(paths.filter(Files::isRegularFile))
-//          .map(path -> FileArtifact.builder().filename(path.getFileName().toString()).build());
-    } catch (IOException ex) {
-      throw new FileStorageException("Files not found ", ex);
-    }
-  }
-
   @Override
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from: {}", filename, uploadPath);
