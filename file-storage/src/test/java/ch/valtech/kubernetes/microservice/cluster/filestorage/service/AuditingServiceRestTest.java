@@ -9,6 +9,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withUnauthorizedRequest;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.client.ReactivePersistenceClient;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.config.JwtRestTemplateConfiguration;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -41,7 +43,9 @@ class AuditingServiceRestTest {
   private final RestTemplate restTemplate = new JwtRestTemplateConfiguration()
       .jwtRestTemplate(new RestTemplateBuilder());
 
-  private final AuditingService auditingService = new AuditingServiceRest(url, restTemplate);
+  private final ReactivePersistenceClient reactivePersistenceClient = new ReactivePersistenceClient(url);
+
+  private final AuditingService auditingService = new AuditingServiceRest(url, restTemplate, reactivePersistenceClient);
 
   private MockRestServiceServer mockRestServiceServer;
 

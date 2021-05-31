@@ -10,6 +10,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingR
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
+import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -23,9 +24,12 @@ import reactor.core.publisher.Mono;
 public class ReactivePersistenceControllerGrpc extends ReactorPersistenceServiceGrpc.PersistenceServiceImplBase {
 
   private final PersistenceService persistenceService;
+  private final PersistenceMapper persistenceMapper;
 
-  public ReactivePersistenceControllerGrpc(PersistenceService persistenceService) {
+  public ReactivePersistenceControllerGrpc(PersistenceService persistenceService,
+      PersistenceMapper persistenceMapper) {
     this.persistenceService = persistenceService;
+    this.persistenceMapper = persistenceMapper;
   }
 
   @Override
@@ -34,9 +38,9 @@ public class ReactivePersistenceControllerGrpc extends ReactorPersistenceService
     log.info("gRPC Received!");
     String username = getUsername().orElseThrow(() ->
         new ResponseStatusException(FORBIDDEN, "Username not found"));
-    return request.map(ReactivePersistenceControllerGrpc::toAuditingRequestDto)
+    return request.map(persistenceMapper::toAuditingRequestDto)
         .flatMap(auditingRequestDto -> persistenceService.saveNewMessage(auditingRequestDto, username))
-        .map(ReactivePersistenceControllerGrpc::toMessageRespone);
+        .map(persistenceMapper::toMessageResponse);
   }
 
   @Override
@@ -44,20 +48,7 @@ public class ReactivePersistenceControllerGrpc extends ReactorPersistenceService
   public Flux<MessageResponse> search(Mono<SearchRequest> request) {
     return request.flatMapMany(searchRequest -> persistenceService
         .getMessagesWithFilename(searchRequest.getFilename(), searchRequest.getLimit()))
-        .map(ReactivePersistenceControllerGrpc::toMessageRespone);
-  }
-
-  public static final AuditingRequestDto toAuditingRequestDto(AuditingRequest auditingRequest) {
-    return AuditingRequestDto.builder()
-        .filename(auditingRequest.getFilename())
-        .action(Action.valueOf(auditingRequest.getAction().toString()))
-        .build();
-  }
-
-  public static final MessageResponse toMessageRespone(MessageDto messageDto) {
-    return MessageResponse.newBuilder()
-        .setMessage(messageDto.getMessage())
-        .build();
+        .map(persistenceMapper::toMessageResponse);
   }
 
 }

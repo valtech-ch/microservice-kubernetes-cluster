@@ -41,7 +41,7 @@ public final class ConsumerService {
     }
     String username = getUsername().orElseThrow(() ->
         new ResponseStatusException(FORBIDDEN, "Username not found"));
-    persistenceService.saveNewMessage(message, username);
+    persistenceService.saveNewMessage(message, username).block();
   }
 
   @KafkaListener(topics = "${application.kafka.stream.topic}", groupId = "${application.kafka.groupId}")
