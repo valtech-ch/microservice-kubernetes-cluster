@@ -12,7 +12,7 @@ import org.testcontainers.containers.MariaDBContainer;
     "grpc.client.inProcess.address=in-process:test"
 }, webEnvironment = WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1, topics = {"auditing",
-    "reverseAuditing"}, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+    "reverseAuditing"}, brokerProperties = {"listeners=PLAINTEXT://localhost:9092", "port=9092"})
 @DirtiesContext
 public abstract class AbstractIt {
 
