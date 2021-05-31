@@ -1,8 +1,11 @@
 <template>
   <div class="file">
-    <h3 class="file-name" @click.prevent="downloadFile()">{{ filename }}</h3>
+    <h3 class="file-name" @click.prevent="downloadFile">{{ filename }}</h3>
     <svg class="file-delete" v-on:click="deleteFile">
       <use xlink:href="../assets/images/sprite.svg#icon-trash"></use>
+    </svg>
+    <svg class="file-changes" v-on:click="listChanges">
+      <use xlink:href="../assets/images/log-file.svg#icon-logs"></use>
     </svg>
   </div>
 </template>
@@ -22,14 +25,34 @@ export default {
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
         }
       })
-      .then(response => {
-        const blob = new Blob([response.data])
+      .then(res => {
+        const blob = new Blob([res.data])
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
         link.download = this.filename
         link.click()
         URL.revokeObjectURL(link.href)
-      }).catch(console.error)
+      }).catch((error) => {
+        this.error = true;
+        console.log("Error: " + error.response.data)
+      })
+    },
+    listChanges () {
+      let token = localStorage.getItem("vue-token");
+      axios.get('filestorage/api/files/changes/' + this.filename, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+        }
+      })
+      .then(res => {
+        res.data;
+      })
+      .catch((error) => {
+        this.error = true;
+        console.log("Error: " + error.response.data)
+      })
     },
     deleteFile() {
       let token = localStorage.getItem("vue-token");
@@ -54,13 +77,13 @@ export default {
 
 <style>
 .file {
-  width: 30%;
+  width: 50%;
   /*width: 100%;*/
   height: 6rem;
   background-color: #95cbdb;
   margin: 1rem auto;
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 80% 10% 10%;
   align-items: center;
   justify-items: center;
 }
@@ -78,6 +101,14 @@ export default {
   height: 4rem;
   fill: #393d40;
   grid-column: 2;
+  cursor: pointer;
+}
+
+.file-changes {
+  width: 4rem;
+  height: 4rem;
+  fill: #393d40;
+  grid-column: 3;
   cursor: pointer;
 }
 </style>
