@@ -17,8 +17,7 @@ ext {
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*PersistenceApplication.java",
                                  "*PersistenceControllerGrpc.java",
-                                 "*GrpcExceptionTranslator.java",
-                                 "*ConsumerService.java"]
+                                 "*GrpcExceptionTranslator.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"

@@ -1,8 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.kafka;
 
-import static org.mockito.ArgumentMatchers.any;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,88 +11,100 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Date;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.junit.jupiter.api.BeforeAll;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 
+@ExtendWith({SpringExtension.class, OutputCaptureExtension.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConsumerServiceIt extends AbstractIt {
 
   public static final String FILENAME = "test.txt";
-  private static final String TOPIC = "auditing";
 
-  private ConsumerService consumerService;
+  @Value("${application.kafka.topic}")
+  private String auditingTopic;
+
+  @Value("${application.kafka.stream.topic}")
+  private String auditingReverseTopic;
 
   @Autowired
   private EmbeddedKafkaBroker embeddedKafkaBroker;
 
-  @Mock
+  @Autowired
+  private ConsumerService consumer;
+
+  @MockBean
   private PersistenceService persistenceService;
 
-  @Mock
-  private AuthenticationManager authenticationManager;
+  private String testToken;
 
-  @BeforeAll
-  void setUp() {
-    consumerService = new ConsumerService(persistenceService, authenticationManager);
+  private Producer<String, AuditingRequestDto> producer;
+
+  @BeforeEach
+  @SneakyThrows
+  public void setUpProducer() {
+    testToken = IOUtils.toString(getClass().getResourceAsStream("/test-token"));
+    Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
+    producer = new DefaultKafkaProducerFactory<>(configs, new StringSerializer(),
+        new JsonSerializer<>(new TypeReference<AuditingRequestDto>() {
+        })).createProducer();
   }
 
   @Test
-  public void shouldCheckMessageIsProduced() {
+  public void testConsumeTopic() {
     //given
-    String username = "username";
+    String username = "vtc-keycloakadmin";
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)
         .action(Action.UPLOAD)
         .build();
     when(persistenceService.saveNewMessage(eq(auditingRequestDto), eq(username)))
         .thenReturn(Mono.just(MessageDto.builder().build()));
-    JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(createToken(username));
-    when(authenticationManager.authenticate(any())).thenReturn(jwtAuthenticationToken);
 
-    Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
-    Producer<String, String> producer = new DefaultKafkaProducerFactory<String, String>(configs)
-        .createProducer();
-
-    producer.send(new ProducerRecord<>(TOPIC, null, "{\"filename\":\"test.txt\",\"action\":\"UPLOAD\"}"));
-    producer.flush();
+    ProducerRecord<String, AuditingRequestDto> producerRecord = new ProducerRecord<>(auditingTopic,
+        auditingRequestDto);
+    producerRecord.headers().add("jwt", testToken.getBytes(UTF_8));
 
     //when
-    consumerService.consumeTopic(auditingRequestDto, jwtAuthenticationToken.getToken().getTokenValue());
+    producer.send(producerRecord);
 
     //then
-    verify(persistenceService, times(1)).saveNewMessage(auditingRequestDto, username);
+    verify(persistenceService, timeout(10000).times(1))
+        .saveNewMessage(auditingRequestDto, username);
   }
 
-  public static Jwt createToken(String username) {
-    String token = Jwts.builder()
-        .setSubject(username)
-        .setExpiration(new Date(System.currentTimeMillis() + 50))
-        .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encode("testKey".getBytes(StandardCharsets.UTF_8)))
-        .compact();
-    return Jwt.withTokenValue(token)
-        .header("typ", "JWT")
-        .claim("test", "test")
-        .subject(username)
+  @Test
+  public void consumeStreamTopic(CapturedOutput output) {
+    AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
+        .filename(FILENAME)
+        .action(Action.UPLOAD)
         .build();
+
+    ProducerRecord<String, AuditingRequestDto> producerRecord = new ProducerRecord<>(auditingReverseTopic,
+        auditingRequestDto);
+    producerRecord.headers().add("jwt", testToken.getBytes(UTF_8));
+
+    producer.send(producerRecord);
   }
 
 }
