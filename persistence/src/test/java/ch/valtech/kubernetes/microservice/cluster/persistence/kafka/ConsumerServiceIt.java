@@ -57,7 +57,7 @@ class ConsumerServiceIt extends AbstractIt {
 
   @BeforeEach
   @SneakyThrows
-  public void setUpProducer() {
+  void setUpProducer() {
     testToken = IOUtils.toString(getClass().getResourceAsStream("/test-token"));
     Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
     producer = new DefaultKafkaProducerFactory<>(configs, new StringSerializer(),
