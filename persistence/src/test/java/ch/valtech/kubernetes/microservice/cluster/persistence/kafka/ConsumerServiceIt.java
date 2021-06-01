@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.kafka;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
@@ -45,7 +47,7 @@ class ConsumerServiceIt extends AbstractIt {
   @Autowired
   private EmbeddedKafkaBroker embeddedKafkaBroker;
 
-  @Autowired
+  @SpyBean
   private ConsumerService consumer;
 
   @MockBean
@@ -90,6 +92,7 @@ class ConsumerServiceIt extends AbstractIt {
 
   @Test
   public void consumeStreamTopic() {
+    //given
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)
         .action(Action.UPLOAD)
@@ -99,7 +102,14 @@ class ConsumerServiceIt extends AbstractIt {
         auditingRequestDto);
     producerRecord.headers().add("jwt", testToken.getBytes(UTF_8));
 
+    //when
     producer.send(producerRecord);
+
+    //then
+    verify(consumer, timeout(10000).times(1))
+        .consumeStreamTopic(auditingRequestDto, testToken);
+    verify(persistenceService, timeout(10000).times(0))
+        .saveNewMessage(eq(auditingRequestDto), anyString());
   }
 
 }

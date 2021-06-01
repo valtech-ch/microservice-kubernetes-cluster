@@ -23,7 +23,7 @@ public class ReactivePersistenceClient {
         .baseUrl(persistenceUrl)
         .filter((request, next) -> {
           Builder requestBuilder = ClientRequest.from(request);
-          SecurityUtils.getJwt().ifPresent(token -> requestBuilder.headers((headers) -> headers.setBearerAuth(token)));
+          SecurityUtils.getJwt().ifPresent(token -> requestBuilder.headers(headers -> headers.setBearerAuth(token)));
           return next.exchange(requestBuilder.build());
         }).build();
   }
