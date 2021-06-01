@@ -33,7 +33,7 @@ providerWithZone.register({
 registerInstrumentations({
   instrumentations: [
     new XMLHttpRequestInstrumentation({
-      propagateTraceHeaderCorsUrls: ['http://vtch-aks-demo.duckdns.org/']
+      propagateTraceHeaderCorsUrls: ['https://vtch-aks-demo.duckdns.org/']
     })
   ],
 });

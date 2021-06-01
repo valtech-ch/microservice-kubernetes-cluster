@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
-    - "*"
+    - "vtch-aks-demo-prometheus.duckdns.org"
   gateways:
     - prometheus-gateway
   http:
