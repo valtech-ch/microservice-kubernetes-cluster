@@ -11,7 +11,7 @@ project.description = 'filestorage'
 
 ext {
 	imageName = 'file-storage'
-	springCloudVersion = '2020.0.2'
+	springCloudVersion = '2020.0.3'
 	minimumCoveragePerFile = 0.6
 	filesExcludedFromCoverage = ["*FileStorageApplication.java",
 								 "*ExceptionTranslator.java",
@@ -68,21 +68,21 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus:latest.release'
 	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
 	implementation 'org.springframework.kafka:spring-kafka:2.7.1'
-	implementation 'org.apache.kafka:kafka-clients:2.7.0'
-	implementation 'org.apache.kafka:kafka-streams:2.7.0'
+	implementation 'org.apache.kafka:kafka-clients:2.8.0'
+	implementation 'org.apache.kafka:kafka-streams:2.8.0'
 	implementation 'org.togglz:togglz-spring-boot-starter:2.9.8'
 	implementation 'org.togglz:togglz-spring-security:2.9.8'
 	implementation 'org.togglz:togglz-console:2.9.8'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.12.0.RELEASE'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
 	testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.1'
 	testImplementation 'org.apache.kafka:kafka-clients:2.7.0:test'
-	testImplementation 'org.apache.kafka:kafka_2.13:2.7.0'
-	testImplementation 'org.apache.kafka:kafka_2.13:2.7.0:test'
+	testImplementation 'org.apache.kafka:kafka_2.13:2.8.0'
+	testImplementation 'org.apache.kafka:kafka_2.13:2.8.0:test'
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
 	testImplementation 'io.grpc:grpc-testing:1.38.0'
 	testImplementation 'org.testcontainers:testcontainers:1.15.3'
@@ -90,8 +90,8 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test:3.4.6'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.9.1'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.1'
-	testCompileOnly 'org.projectlombok:lombok:1.18.16'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+	testCompileOnly 'org.projectlombok:lombok:1.18.20'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
 dependencyManagement {
