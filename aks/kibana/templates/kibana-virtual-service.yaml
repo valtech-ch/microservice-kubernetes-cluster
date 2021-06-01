@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kibana
+  namespace: logging
+spec:
+  hosts:
+    - "vtch-aks-demo-kibana.duckdns.org"
+  gateways:
+    - kibana-gateway
+  http:
+    - match:
+        - uri:
+            prefix: "/"
+      route:
+        - destination:
+            port:
+              number: 5601
+            host: kibana-kibana
