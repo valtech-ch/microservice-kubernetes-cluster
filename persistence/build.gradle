@@ -13,7 +13,7 @@ project.description = 'persistence'
 
 ext {
     imageName = 'persistence'
-    springCloudVersion = '2020.0.2'
+    springCloudVersion = '2020.0.3'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*PersistenceApplication.java",
                                  "*PersistenceControllerGrpc.java",
@@ -63,7 +63,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'io.vavr:vavr:0.10.3'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-core:7.9.1'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -71,12 +71,12 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
     implementation 'org.springframework.kafka:spring-kafka:2.7.1'
     implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
-    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.0.1'
     runtimeOnly 'io.r2dbc:r2dbc-h2:0.8.4.RELEASE'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     runtimeOnly 'com.h2database:h2:1.4.200'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -89,8 +89,8 @@ dependencies {
     testImplementation 'net.devh:grpc-client-spring-boot-starter:2.12.0.RELEASE'
     testImplementation 'io.projectreactor:reactor-test:3.4.6'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
-    testCompileOnly 'org.projectlombok:lombok:1.18.16'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 dependencyManagement {
     imports {
