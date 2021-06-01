@@ -7,6 +7,11 @@
     <svg class="file-changes" v-on:click="listChanges">
       <use xlink:href="../assets/images/log-file.svg#icon-logs"></use>
     </svg>
+    <ul class="messages">
+      <li v-for="item in messages" :key="item.message">
+        {{ item.message }}
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -14,6 +19,11 @@ import axios from 'axios';
 export default {
   name: 'File',
   props: ["filename"],
+  data() {
+    return {
+      messages: [],
+    }
+  },
   methods: {
     downloadFile () {
       let token = localStorage.getItem("vue-token");
@@ -47,7 +57,7 @@ export default {
         }
       })
       .then(res => {
-        res.data;
+        this.messages = res.data;
       })
       .catch((error) => {
         this.error = true;
@@ -110,5 +120,11 @@ export default {
   fill: #393d40;
   grid-column: 3;
   cursor: pointer;
+}
+
+.messages {
+  width: 50rem;
+  fill: #393d40;
+  grid-column: 4;
 }
 </style>

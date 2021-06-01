@@ -52,7 +52,6 @@ export default {
       token: ''
     }
   },
-
   methods: {
     loadAllFiles() {
       if (this.token) {
