@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
-public final class ConsumerService {
+public class ConsumerService {
 
   private final PersistenceService persistenceService;
 
