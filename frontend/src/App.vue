@@ -1,16 +1,8 @@
 <template>
-  <upload-file v-if="showUpload" @reload="loadAllFiles"></upload-file>
-
-  <button @click="showUpload= !showUpload" class="upload-btn"> Upload new File</button>
-  ----------
-  <p v-if="errorMessage != null"> {{ errorMessage }}</p>
-  <file v-for="file in files" v-bind:key="file" :filename="file.filename" @reload="loadAllFiles"></file>
+  <router-view></router-view>
 </template>
 
 <script>
-import axios from "axios";
-import UploadFile from "@/components/UploadFile";
-import File from "@/components/File";
 import {BatchSpanProcessor} from '@opentelemetry/tracing';
 import {WebTracerProvider} from '@opentelemetry/web';
 import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
@@ -39,43 +31,7 @@ registerInstrumentations({
 });
 
 export default {
-  name: 'App',
-  components: {
-    UploadFile,
-    File
-  },
-  data() {
-    return {
-      files: [],
-      showUpload: false,
-      errorMessage: null,
-      token: ''
-    }
-  },
-  methods: {
-    loadAllFiles() {
-      if (this.token) {
-        axios.get('filestorage/api/files', {
-          headers: {
-            'Authorization': `Bearer ${this.token}`,
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-          }
-        })
-        .then((res) => {
-          this.files = res.data;
-        })
-        .catch((error) => {
-          this.errorMessage = error.response.data;
-          console.log("Error: " + this.errorMessage)
-        })
-      }
-    }
-  },
-  created() {
-    this.token = localStorage.getItem("vue-token");
-    this.loadAllFiles();
-  }
+  name: 'App'
 }
 </script>
 
@@ -105,18 +61,5 @@ html {
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
   font-size: 62.5%;
-}
-
-.upload-btn {
-  /*grid-row: 2;*/
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-  border-radius: 3rem;
-  background-color: #393d40;
-  font-size: 2.3rem;
-  color: #f1edea;
-  cursor: pointer;
-  padding: 1rem 1rem;
-  text-align: center;
 }
 </style>
