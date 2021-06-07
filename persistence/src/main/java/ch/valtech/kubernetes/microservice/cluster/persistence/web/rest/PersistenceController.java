@@ -39,7 +39,7 @@ public class PersistenceController {
   }
 
   @GetMapping("/messages/{filename}")
-  @PreAuthorize("hasAnyRole('admin')")
+  @PreAuthorize("hasAnyRole('admin', 'user')")
   public Flux<MessageDto> getMessagesByFilename(
       @PathVariable String filename,
       @RequestParam(name = "limit", defaultValue = "10") int limit) {
