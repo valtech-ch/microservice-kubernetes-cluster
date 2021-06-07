@@ -15,7 +15,7 @@
 import Keycloak from "keycloak-js";
 
 let initOptions = {
-  url: 'https://vtch-aks-demo.duckdns.org/auth',
+  url: 'auth',
   realm: 'cluster',
   clientId: 'login-app',
   onLoad: 'login-required'
@@ -52,7 +52,7 @@ export default {
     },
     onRegister() {
       keycloak.logout();
-      keycloak.register({redirectUri: "http://localhost:3000/"}).catch(() => {
+      keycloak.register({redirectUri: "/"}).catch(() => {
         console.log("Registration Failed");
       });
       localStorage.clear();
