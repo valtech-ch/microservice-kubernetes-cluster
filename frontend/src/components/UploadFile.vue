@@ -11,7 +11,7 @@
 
 <script>
 import axios from "axios";
-// import {SpanStatusCode, trace} from '@opentelemetry/api';
+
 export default {
   name: 'UploadFile',
   data() {
