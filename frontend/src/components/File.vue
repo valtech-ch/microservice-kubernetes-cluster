@@ -88,13 +88,15 @@ export default {
 
 <style>
 .file {
-  width: 50%;
-  /*width: 100%;*/
-  height: 6rem;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem;
   background-color: #95cbdb;
   margin: 1rem auto;
-  display: grid;
-  grid-template-columns: 80% 10% 10%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row;
+  flex-grow: 2;
   align-items: center;
   justify-items: center;
 }
@@ -104,14 +106,13 @@ export default {
   text-transform: capitalize;
   color: #f1edea;
   display: inline;
-  grid-column: 1;
+  flex-grow: 2;
 }
 
 .file-delete {
   width: 4rem;
   height: 4rem;
   fill: #393d40;
-  grid-column: 2;
   cursor: pointer;
 }
 
@@ -119,13 +120,11 @@ export default {
   width: 4rem;
   height: 4rem;
   fill: #393d40;
-  grid-column: 3;
   cursor: pointer;
 }
 
 .messages {
-  width: 50rem;
+  width: fit-content;
   fill: #393d40;
-  grid-column: 4;
 }
 </style>

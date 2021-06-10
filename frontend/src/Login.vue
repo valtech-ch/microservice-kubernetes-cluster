@@ -16,6 +16,7 @@ import Keycloak from "keycloak-js";
 
 let initOptions = {
   url: 'https://vtch-aks-demo.duckdns.org/auth',
+  // url: 'auth',
   realm: 'cluster',
   clientId: 'login-app',
   onLoad: 'login-required'
@@ -39,8 +40,6 @@ export default {
       });
     },
     onLogin() {
-      //eslint-disable-next-line
-      // debugger
       if (localStorage.getItem("vue-token") === null) {
         keycloak.logout();
       }
@@ -52,7 +51,7 @@ export default {
     },
     onRegister() {
       keycloak.logout();
-      keycloak.register({redirectUri: "http://localhost:3000/"}).catch(() => {
+      keycloak.register().catch(() => {
         console.log("Registration Failed");
       });
       localStorage.clear();

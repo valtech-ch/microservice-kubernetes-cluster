@@ -54,9 +54,28 @@ export default {
       }
     },
     onLogout() {
-      console.log("Logged out");
-      localStorage.clear();
-      this.$router.push('/')
+      //todo fixme
+      axios.get('https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/logout', {
+        headers: {
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'client_id': 'login-app',
+          'refresh_token': localStorage.getItem("vue-refresh-token")
+        }
+      })
+      .then(() => {
+        localStorage.clear();
+
+        this.$cookies.add("test", "test");
+        this.$cookies.remove("JSESSIONID")
+
+        console.log("Logged out");
+        this.$router.push('/');
+      })
+      .catch((error) => {
+        this.error = true;
+        console.log("Error: " + error.response.data)
+      })
     }
   },
   created() {
