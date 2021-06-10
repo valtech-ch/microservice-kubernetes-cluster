@@ -15,8 +15,7 @@
 import Keycloak from "keycloak-js";
 
 let initOptions = {
-  url: 'https://vtch-aks-demo.duckdns.org/auth',
-  // url: 'auth',
+  url: 'auth',
   realm: 'cluster',
   clientId: 'login-app',
   onLoad: 'login-required'
