@@ -7,7 +7,7 @@ variable "agent_min_count" {
 }
 
 variable "agent_max_count" {
-  default = 3
+  default = 4
 }
 
 variable "dns_prefix" {
