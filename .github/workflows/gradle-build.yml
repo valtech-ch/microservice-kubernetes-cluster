@@ -24,4 +24,4 @@ jobs:
       env:
         CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
     - name: Build Frontend
-      run: cd ./frontend && npm install
+      run: cd ./frontend && npm install && npm run build
