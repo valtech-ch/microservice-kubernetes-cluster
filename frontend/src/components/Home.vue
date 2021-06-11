@@ -53,7 +53,6 @@ export default {
       }
     },
     onLogout() {
-      //todo fixme
       axios.get('auth/realms/cluster/protocol/openid-connect/logout', {
         headers: {
           'Authorization': `Bearer ${this.token}`,
@@ -64,8 +63,6 @@ export default {
       })
       .then(() => {
         localStorage.clear();
-        console.log(this.$cookie.keys());
-        console.log("Logged out");
         this.$router.push('/');
       })
       .catch((error) => {
