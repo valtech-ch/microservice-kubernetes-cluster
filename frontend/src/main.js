@@ -1,16 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { router } from './routes';
-import VueCookies from 'vue3-cookies';
+import { router } from './routes'
+import { VueCookieNext } from 'vue-cookie-next'
 
-
-const app = createApp(App);
-app.use(router);
-app.use(VueCookies, {
-  expireTimes: "30d",
-  path: "/",
-  domain: "",
-  secure: true,
-  sameSite: "None"
-});
+const app = createApp(App)
+app.use(VueCookieNext)
+app.use(router)
 app.mount('#app')

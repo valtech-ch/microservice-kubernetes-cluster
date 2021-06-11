@@ -18,7 +18,6 @@ import axios from "axios";
 import UploadFile from "@/components/UploadFile";
 import File from "@/components/File";
 
-
 export default {
   name: 'Home',
   components: {
@@ -55,7 +54,7 @@ export default {
     },
     onLogout() {
       //todo fixme
-      axios.get('https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/logout', {
+      axios.get('auth/realms/cluster/protocol/openid-connect/logout', {
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -65,10 +64,7 @@ export default {
       })
       .then(() => {
         localStorage.clear();
-
-        this.$cookies.add("test", "test");
-        this.$cookies.remove("JSESSIONID")
-
+        console.log(this.$cookie.keys());
         console.log("Logged out");
         this.$router.push('/');
       })
