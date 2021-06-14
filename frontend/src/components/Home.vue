@@ -13,12 +13,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
-import UploadFile from "@/components/UploadFile";
-import File from "@/components/File";
+import {defineComponent} from "vue";
+import UploadFile from "./UploadFile.vue";
+import File from "./File.vue";
 
-export default {
+export default defineComponent({
   name: 'Home',
   components: {
     UploadFile,
@@ -66,17 +67,16 @@ export default {
         this.$router.push('/');
       })
       .catch((error) => {
-        this.error = true;
         console.log("Error: " + error.response.data)
       })
     }
   },
   created() {
-    this.token = localStorage.getItem("vue-token");
+    this.token = localStorage.getItem("vue-token") ?? '';
     if (this.token) this.isLoggedIn = true;
     this.loadAllFiles();
   }
-}
+})
 </script>
 
 <style>
@@ -130,7 +130,7 @@ html {
 }
 
 .logout-btn {
-  margin: 0rem 1rem;
+  margin: 0 1rem;
   border-radius: 3rem;
   background-color: #95cbdb;
   font-size: 1.5rem;

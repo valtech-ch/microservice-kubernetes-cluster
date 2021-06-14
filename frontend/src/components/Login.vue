@@ -11,28 +11,31 @@
   </div>
 </template>
 
-<script>
-import Keycloak from "keycloak-js";
+<script lang="ts">
+import Keycloak, {KeycloakInitOptions} from "keycloak-js";
+import {defineComponent} from "vue";
 
-let initOptions = {
-  url: 'auth',
-  realm: 'cluster',
-  clientId: 'login-app',
+let initOptions: KeycloakInitOptions = {
   onLoad: 'login-required'
 }
 
-const keycloak = new Keycloak(initOptions)
+const keycloak = Keycloak({
+  url: 'auth',
+  realm: 'cluster',
+  clientId: 'login-app' })
 
-export default {
+export default defineComponent({
   methods: {
     refreshToken() {
-      keycloak.updateToken(70).then((refreshed) => {
+      keycloak.updateToken(70).then((refreshed: boolean) => {
         if (refreshed) {
           console.log('Token refreshed' + refreshed);
         } else {
-          console.log('Token not refreshed, valid for '
-              + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000)
-              + ' seconds');
+          if (keycloak.tokenParsed?.exp && keycloak.timeSkew) {
+            console.log('Token not refreshed, valid for '
+                + Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000)
+                + ' seconds');
+          }
         }
       }).catch(() => {
         console.log('Failed to refresh token');
@@ -57,8 +60,8 @@ export default {
     }
   },
   mounted() {
-    keycloak.init().then((auth) => {
-      if (auth) {
+    keycloak.init(initOptions).then((auth: boolean) => {
+      if (auth && keycloak.token) {
         localStorage.setItem("vue-token", keycloak.token);
         localStorage.setItem("vue-refresh-token", keycloak.token);
         this.$router.push("/home");
@@ -66,7 +69,7 @@ export default {
       this.refreshToken()
     })
   }
-}
+})
 </script>
 
 <style>
@@ -84,7 +87,7 @@ export default {
 }
 
 .login-btn {
-  margin: 0rem 1rem;
+  margin: 0 1rem;
   border-radius: 3rem;
   background-color: #393d40;
   font-size: 2.3rem;

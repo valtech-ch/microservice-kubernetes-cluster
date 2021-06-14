@@ -15,11 +15,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import axios from 'axios';
-export default {
+
+export default defineComponent({
   name: 'File',
-  props: ["filename"],
+  props: {
+    filename: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       messages: [],
@@ -44,7 +51,6 @@ export default {
         link.click()
         URL.revokeObjectURL(link.href)
       }).catch((error) => {
-        this.error = true;
         console.log("Error: " + error.response.data)
       })
     },
@@ -61,7 +67,6 @@ export default {
         this.messages = res.data;
       })
       .catch((error) => {
-        this.error = true;
         console.log("Error: " + error.response.data)
       })
     },
@@ -78,12 +83,11 @@ export default {
         this.$emit('reload');
       })
       .catch((error) => {
-        this.error = true;
         console.log("Error: " + error.response.data)
       })
     }
   }
-}
+})
 </script>
 
 <style>

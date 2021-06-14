@@ -9,10 +9,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: 'UploadFile',
   data() {
     return {
@@ -22,7 +23,8 @@ export default {
   },
   methods: {
     handleFileUpload() {
-      this.file = this.$refs.file.files[0];
+      let inputElement = this.$refs.file as HTMLInputElement;
+      this.file = inputElement.files?.item(0)?.name ?? '';
     },
     uploadFile() {
       let token = localStorage.getItem("vue-token");
@@ -62,7 +64,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>
