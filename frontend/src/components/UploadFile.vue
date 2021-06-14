@@ -18,24 +18,19 @@ export default defineComponent({
   data() {
     return {
       error: false,
-      file: ''
+      file: {} as File
     }
   },
   methods: {
     handleFileUpload() {
       let inputElement = this.$refs.file as HTMLInputElement;
-      this.file = inputElement.files?.item(0)?.name ?? '';
+      this.file = inputElement.files?.item(0) ?? {} as File;
     },
     uploadFile() {
       let token = localStorage.getItem("vue-token");
-      // const tracer = trace.getTracer("frontend", "0.1.0");
       if (token && this.file) {
-        // const span = tracer.startSpan("uploadFile");
         let formData = new FormData();
-
-        /*
-            Add the form data we need to submit
-        */
+        // Add the form data we need to submit
         formData.append('file', this.file);
 
         axios.post('filestorage/api/files', formData, {
@@ -48,18 +43,10 @@ export default defineComponent({
         })
         .then(() => {
           this.$emit('reload');
-          // span.setStatus({ code: SpanStatusCode.OK });
         })
         .catch((error) => {
           this.error = true;
           console.log("error: " + error.response.data)
-          // span.setStatus({
-          //   code: SpanStatusCode.ERROR,
-          //   message: error.response.data,
-          // });
-        }).finally( () => {
-          // Every span must be ended or it will not be exported
-          // span.end();
         })
       }
     }
@@ -113,5 +100,4 @@ export default defineComponent({
   cursor: pointer;
   color: #f1edea;
 }
-
 </style>

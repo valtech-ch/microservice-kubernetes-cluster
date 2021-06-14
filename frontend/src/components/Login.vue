@@ -22,7 +22,8 @@ let initOptions: KeycloakInitOptions = {
 const keycloak = Keycloak({
   url: 'auth',
   realm: 'cluster',
-  clientId: 'login-app' })
+  clientId: 'login-app'
+})
 
 export default defineComponent({
   methods: {

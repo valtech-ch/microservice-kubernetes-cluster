@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Login from '@/components/Login.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -24,7 +24,7 @@ const router = createRouter({
 
 export default router
 
-router.beforeEach(function(to, _, next) {
+router.beforeEach(function (to, _, next) {
   console.log(to);
   if (to.fullPath === "/" && localStorage.getItem("vue-token") !== null) {
     next("/home");

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import axios from 'axios';
 
 export default defineComponent({
@@ -33,7 +33,7 @@ export default defineComponent({
     }
   },
   methods: {
-    downloadFile () {
+    downloadFile() {
       let token = localStorage.getItem("vue-token");
       axios.get('filestorage/api/files/' + this.filename, {
         responseType: 'blob',
@@ -54,7 +54,7 @@ export default defineComponent({
         console.log("Error: " + error.response.data)
       })
     },
-    listChanges () {
+    listChanges() {
       let token = localStorage.getItem("vue-token");
       axios.get('filestorage/api/files/changes/' + this.filename, {
         headers: {
