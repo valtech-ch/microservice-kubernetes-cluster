@@ -54,12 +54,16 @@ export default defineComponent({
       }
     },
     onLogout() {
-      axios.get('auth/realms/cluster/protocol/openid-connect/logout', {
+      const params = new URLSearchParams()
+      params.append('client_id', 'login-app')
+      let refreshToken = localStorage.getItem("vue-refresh-token");
+      if (refreshToken !== null) {
+        params.append('refresh_token', refreshToken);
+      }
+      axios.post('auth/realms/cluster/protocol/openid-connect/logout', params,{
         headers: {
           'Authorization': `Bearer ${this.token}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'client_id': 'login-app',
-          'refresh_token': localStorage.getItem("vue-refresh-token")
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       })
       .then(() => {

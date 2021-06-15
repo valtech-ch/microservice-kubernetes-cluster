@@ -44,9 +44,6 @@ export default defineComponent({
       });
     },
     onLogin() {
-      if (localStorage.getItem("vue-token") === null) {
-        keycloak.logout();
-      }
       keycloak.login().then(() => {
         this.$router.push("/home");
       }).catch(() => {
@@ -54,7 +51,6 @@ export default defineComponent({
       });
     },
     onRegister() {
-      keycloak.logout();
       keycloak.register().catch(() => {
         console.log("Registration Failed");
       });
@@ -63,9 +59,9 @@ export default defineComponent({
   },
   mounted() {
     keycloak.init(initOptions).then((auth: boolean) => {
-      if (auth && keycloak.token) {
+      if (auth && keycloak.token && keycloak.refreshToken) {
         localStorage.setItem("vue-token", keycloak.token);
-        localStorage.setItem("vue-refresh-token", keycloak.token);
+        localStorage.setItem("vue-refresh-token", keycloak.refreshToken);
         this.$router.push("/home");
       }
       this.refreshToken()
