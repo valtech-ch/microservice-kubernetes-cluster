@@ -17,8 +17,7 @@ import {defineComponent} from "vue";
 
 let initOptions: KeycloakInitOptions = {
   onLoad: 'check-sso',
-  silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-  checkLoginIframe: false
+  silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
 }
 
 const keycloak = Keycloak({
@@ -63,9 +62,6 @@ export default defineComponent({
     }
   },
   mounted() {
-    if (localStorage.getItem("vue-token") !== null) {
-      this.$router.push("/home");
-    }
     keycloak.init(initOptions).then((auth: boolean) => {
       if (auth && keycloak.token) {
         localStorage.setItem("vue-token", keycloak.token);

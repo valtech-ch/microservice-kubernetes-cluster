@@ -20,11 +20,3 @@ const router = createRouter({
 })
 
 export default router
-
-router.beforeEach(function (to, _, next) {
-  if (to.name != 'Home' && localStorage.getItem("vue-token") !== null) {
-    next("/home");
-  } else {
-    next();
-  }
-})
