@@ -29,15 +29,15 @@ jacocoTestCoverageVerification {
 
 jacocoTestReport {
   reports {
-    xml.enabled true
+    csv.required = false
+    xml.required = true
     xml.destination file("${buildDir}/reports/coverage/coverage.xml")
-    csv.enabled false
     html.destination file("${buildDir}/reports/coverage")
   }
 }
 
 jacoco {
-  toolVersion = "0.8.6"
+  toolVersion = "0.8.7"
 }
 
 test {
