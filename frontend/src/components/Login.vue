@@ -16,7 +16,9 @@ import Keycloak, {KeycloakInitOptions} from "keycloak-js";
 import {defineComponent} from "vue";
 
 let initOptions: KeycloakInitOptions = {
-  onLoad: 'login-required'
+  onLoad: 'check-sso',
+  silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+  checkLoginIframe: false
 }
 
 const keycloak = Keycloak({
