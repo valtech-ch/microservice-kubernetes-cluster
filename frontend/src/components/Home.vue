@@ -64,6 +64,7 @@ export default defineComponent({
       })
       .then(() => {
         localStorage.clear();
+        this.isLoggedIn = false;
         this.$router.push('/');
       })
       .catch((error) => {
@@ -75,6 +76,11 @@ export default defineComponent({
     this.token = localStorage.getItem("vue-token") ?? '';
     if (this.token) this.isLoggedIn = true;
     this.loadAllFiles();
+  },
+  mounted() {
+    if (localStorage.getItem("vue-token") === null) {
+      this.$router.push('/');
+    }
   }
 })
 </script>

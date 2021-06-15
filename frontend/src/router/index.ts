@@ -1,13 +1,10 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import {createRouter, createWebHashHistory, RouteRecordRaw} from 'vue-router'
 import Login from '@/components/Login.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '/:login*',
     name: 'Login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: Login
   },
   {
@@ -18,17 +15,16 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 
 export default router
 
 router.beforeEach(function (to, _, next) {
-  console.log(to);
-  if (to.fullPath === "/" && localStorage.getItem("vue-token") !== null) {
+  if (to.name != 'Home' && localStorage.getItem("vue-token") !== null) {
     next("/home");
   } else {
     next();
   }
-});
+})

@@ -61,6 +61,9 @@ export default defineComponent({
     }
   },
   mounted() {
+    if (localStorage.getItem("vue-token") !== null) {
+      this.$router.push("/home");
+    }
     keycloak.init(initOptions).then((auth: boolean) => {
       if (auth && keycloak.token) {
         localStorage.setItem("vue-token", keycloak.token);
