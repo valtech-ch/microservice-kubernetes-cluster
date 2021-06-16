@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -50,6 +52,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     http.csrf()
         .csrfTokenRepository(csrfRepo)
+        .withObjectPostProcessor(new ObjectPostProcessor<CsrfFilter>() {
+          /**
+           * Overrides required csrf protection matcher because of OAuth2 registering a wrong ignore matcher.
+           * https://github.com/spring-projects/spring-security/issues/8668
+           */
+          @Override
+          public <O extends CsrfFilter> O postProcess(O object) {
+            object.setRequireCsrfProtectionMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER);
+            return object;
+          }
+        })
         .and()
         .cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
         .headers()
