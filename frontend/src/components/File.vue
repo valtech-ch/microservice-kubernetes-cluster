@@ -18,6 +18,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import axios from 'axios';
+import {VueCookieNext as $cookie} from 'vue-cookie-next'
 
 export default defineComponent({
   name: 'File',
@@ -76,7 +77,8 @@ export default defineComponent({
         headers: {
           'Authorization': `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+          'X-XSRF-TOKEN': $cookie.getCookie('XSRF-TOKEN')
         }
       })
       .then(() => {

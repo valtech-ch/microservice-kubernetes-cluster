@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
+import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -26,11 +28,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private final List<String> allowedOrigins;
   private final List<String> allowedMethods;
+  private final String cookieDomain;
 
-  public SecurityConfiguration(@Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
-      @Value("${application.cors.allowed.methods}") List<String> allowedMethods) {
+  public SecurityConfiguration(
+      @Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
+      @Value("${application.cors.allowed.methods}") List<String> allowedMethods,
+      @Value("${application.hostname}") String hostname) {
     this.allowedOrigins = allowedOrigins;
     this.allowedMethods = allowedMethods;
+    this.cookieDomain = URI.create(hostname).getHost();
   }
 
   @Override
@@ -38,7 +44,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
     jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
 
-    http.csrf().disable()
+    CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+    csrfRepo.setCookieDomain(cookieDomain);
+    csrfRepo.setCookiePath("/");
+
+    http.csrf()
+        .csrfTokenRepository(csrfRepo)
+        .and()
         .cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
         .headers()
         .contentSecurityPolicy("default-src 'self'; "

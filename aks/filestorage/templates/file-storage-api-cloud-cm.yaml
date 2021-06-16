@@ -23,6 +23,7 @@ data:
         username: ${TOGGLZ_USERNAME}
         password: ${TOGGLZ_PASSWORD}
     application:
+      hostname: https://vtch-aks-demo.duckdns.org
       persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/token
       functions.key: ${FUNCTIONS_KEY}
