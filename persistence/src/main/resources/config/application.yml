@@ -63,6 +63,7 @@ management:
     username: actuator
     password: actuator
 application:
+  hostname: http://localhost:8081
   token.url: http://localhost:8180/auth/realms/cluster/protocol/openid-connect/token
 ---
 spring:

@@ -12,6 +12,7 @@
 <script lang="ts">
 import axios from "axios";
 import {defineComponent} from "vue";
+import {VueCookieNext as $cookie} from 'vue-cookie-next'
 
 export default defineComponent({
   name: 'UploadFile',
@@ -38,7 +39,8 @@ export default defineComponent({
             'Authorization': `Bearer ${token}`,
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'X-XSRF-TOKEN': $cookie.getCookie('XSRF-TOKEN')
           }
         })
         .then(() => {
