@@ -18,7 +18,7 @@
     "axios": "0.21.1",
     "core-js": "3.14.0",
     "keycloak-js": "13.0.1",
-    "postcss": "8.3.4",
+    "postcss": "8.3.5",
     "vue": "3.1.1",
     "vue-axios": "3.2.4",
     "vue-class-component": "8.0.0-rc.1",
