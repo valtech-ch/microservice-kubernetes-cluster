@@ -70,7 +70,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
             + "frame-src 'self' data:; "
             + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
-            + "style-src 'self' 'unsafe-inline'; "
+            + "style-src 'self'; "
+            + "form-action 'self' data:; "
+            + "frame-ancestors 'self'; "
             + "img-src 'self' data:; "
             + "font-src 'self' data:")
         .and()
