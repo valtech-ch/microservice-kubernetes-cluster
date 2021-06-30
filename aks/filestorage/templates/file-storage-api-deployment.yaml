@@ -93,6 +93,41 @@ spec:
               mountPath: "/etc/config/cloud/"
 #            - name: file-storage-pv
 #              mountPath: "/etc/file-storage/uploads"
+        - name: hazelcast
+          imagePullPolicy: IfNotPresent
+          image: hazelcast/hazelcast:4.2
+          env:
+            - name: JAVA_OPTS
+              value: >-
+                -Dhazelcast.rest.enabled=true
+                -Dhazelcast.config=/data/hazelcast/hazelcast.yaml
+                -Dhazelcast.shutdownhook.policy=GRACEFUL
+                -Dhazelcast.shutdownhook.enabled=true
+                -Dhazelcast.graceful.shutdown.max.wait=600
+          ports:
+            - name: hazelcast
+              containerPort: 5701
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /hazelcast/health/node-state
+              port: 5701
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /hazelcast/health/node-state
+              port: 5701
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          volumeMounts:
+            - name: hazelcast-storage
+              mountPath: /data/hazelcast
       volumes:
 #        - name: file-storage-pv
 #          persistentVolumeClaim:
@@ -109,3 +144,6 @@ spec:
             items:
               - key: application-cloud.yml
                 path: application-cloud.yml
+        - name: hazelcast-storage
+          configMap:
+            name: file-storage-hazelcast-config
