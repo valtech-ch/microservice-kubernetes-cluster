@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: file-storage
+  name: file-storage-hazelcast-config
+  namespace: default
+data:
+  hazelcast.yaml: |-
+    hazelcast:
+      network:
+        rest-api:
+          enabled: true
+        join:
+          multicast:
+            enabled: false
+          kubernetes:
+            enabled: true
+            service-dns: file-storage-hazelcast.default.svc.cluster.local
+      map:
+        default:
+          time-to-live-seconds: 60
+          eviction:
+            eviction-policy: LRU
+            max-size-policy: PER_NODE
+            size: 10000
+      management-center:
+        scripting-enabled: true
