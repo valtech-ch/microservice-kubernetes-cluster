@@ -84,7 +84,7 @@ dependencies {
 	testImplementation 'org.apache.kafka:kafka_2.13:2.8.0'
 	testImplementation 'org.apache.kafka:kafka_2.13:2.8.0:test'
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
-	testImplementation 'io.grpc:grpc-testing:1.38.1'
+	testImplementation 'io.grpc:grpc-testing:1.39.0'
 	testImplementation 'org.testcontainers:testcontainers:1.15.3'
 	testImplementation 'org.testcontainers:junit-jupiter:1.15.3'
 	testImplementation 'io.projectreactor:reactor-test:3.4.7'
