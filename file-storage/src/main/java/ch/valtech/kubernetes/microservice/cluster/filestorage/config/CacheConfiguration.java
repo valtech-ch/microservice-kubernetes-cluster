@@ -27,7 +27,7 @@ public class CacheConfiguration {
   }
 
   @Bean
-  @Profile("!dev")
+  @Profile("prod")
   public ClientConfig clientConfig() {
     ClientConfig clientConfig = new ClientConfig();
     ClientNetworkConfig networkConfig = clientConfig.getNetworkConfig();
@@ -38,20 +38,20 @@ public class CacheConfiguration {
   }
 
   @Bean
-  @Profile("!dev")
+  @Profile("prod")
   public HazelcastInstance hazelcastInstance(ClientConfig clientConfig) {
     return HazelcastClient.newHazelcastClient(clientConfig);
   }
 
   @Bean
-  @Profile("!dev")
+  @Profile("prod")
   public CacheManager cacheManager(HazelcastInstance hazelcastInstance) {
     log.debug("Starting HazelcastCacheManager");
     return new HazelcastCacheManager(hazelcastInstance);
   }
 
   @Bean
-  @Profile("dev")
+  @Profile("!prod")
   public CacheManager noOpCacheManager() {
     return new NoOpCacheManager();
   }
