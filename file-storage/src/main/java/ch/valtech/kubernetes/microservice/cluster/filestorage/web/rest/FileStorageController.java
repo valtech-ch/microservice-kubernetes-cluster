@@ -43,7 +43,7 @@ public class FileStorageController {
   private final AuditingService auditingServiceGrpc;
   private final ProducerService producerService;
 
-  public FileStorageController(FileStorageService fileStorageService,
+  public FileStorageController(@Qualifier("cacheable") FileStorageService fileStorageService,
       @Qualifier("auditingServiceRest") AuditingService auditingServiceRest,
       @Qualifier("auditingServiceGrpc") AuditingService auditingServiceGrpc,
       ProducerService producerService) {
