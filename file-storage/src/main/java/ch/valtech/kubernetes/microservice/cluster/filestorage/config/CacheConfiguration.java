@@ -52,7 +52,7 @@ public class CacheConfiguration {
 
   @Bean
   @Profile("dev")
-  public CacheManager getNoOpCacheManager() {
+  public CacheManager noOpCacheManager() {
     return new NoOpCacheManager();
   }
 
