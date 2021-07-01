@@ -1,5 +1,9 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import static ch.valtech.kubernetes.microservice.cluster.filestorage.config.SpringProfiles.CLOUD;
+import static ch.valtech.kubernetes.microservice.cluster.filestorage.config.SpringProfiles.PROD;
+
+import ch.valtech.kubernetes.microservice.cluster.filestorage.annotation.OnProfile;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
@@ -27,7 +31,7 @@ public class CacheConfiguration {
   }
 
   @Bean
-  @Profile("prod")
+  @OnProfile(any = {PROD, CLOUD})
   public ClientConfig clientConfig() {
     ClientConfig clientConfig = new ClientConfig();
     ClientNetworkConfig networkConfig = clientConfig.getNetworkConfig();
@@ -38,20 +42,20 @@ public class CacheConfiguration {
   }
 
   @Bean
-  @Profile("prod")
+  @OnProfile(any = {PROD, CLOUD})
   public HazelcastInstance hazelcastInstance(ClientConfig clientConfig) {
     return HazelcastClient.newHazelcastClient(clientConfig);
   }
 
   @Bean
-  @Profile("prod")
+  @OnProfile(any = {PROD, CLOUD})
   public CacheManager cacheManager(HazelcastInstance hazelcastInstance) {
     log.debug("Starting HazelcastCacheManager");
     return new HazelcastCacheManager(hazelcastInstance);
   }
 
   @Bean
-  @Profile("!prod")
+  @Profile("!prod & !cloud")
   public CacheManager noOpCacheManager() {
     return new NoOpCacheManager();
   }

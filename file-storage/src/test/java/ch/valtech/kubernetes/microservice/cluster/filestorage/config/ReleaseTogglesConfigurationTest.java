@@ -27,7 +27,7 @@ import org.togglz.spring.boot.actuate.autoconfigure.TogglzAutoConfiguration;
     ReleaseToggleConfiguration.class,
     ReleaseTogglesConfigurationTest.class})
 @DirtiesContext(classMode = AFTER_CLASS)
-@ActiveProfiles("release-toggles")
+@ActiveProfiles(SpringProfiles.RELEASE_TOGGLES)
 class ReleaseTogglesConfigurationTest {
 
   @Autowired
