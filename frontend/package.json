@@ -10,11 +10,11 @@
     "test": "jest --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@opentelemetry/context-zone": "0.22.0",
-    "@opentelemetry/exporter-zipkin": "0.22.0",
-    "@opentelemetry/instrumentation-xml-http-request": "0.22.0",
-    "@opentelemetry/tracing": "0.22.0",
-    "@opentelemetry/web": "0.22.0",
+    "@opentelemetry/context-zone": "0.23.0",
+    "@opentelemetry/exporter-zipkin": "0.23.0",
+    "@opentelemetry/instrumentation-xml-http-request": "0.23.0",
+    "@opentelemetry/tracing": "0.23.0",
+    "@opentelemetry/web": "0.23.0",
     "axios": "0.21.1",
     "core-js": "3.15.2",
     "keycloak-js": "14.0.0",
