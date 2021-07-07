@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - base/argocd-gateway.yaml
+  - base/argocd-virtual-service.yaml
+  - base/argocd-policy.yaml
+  - base/vtch-aks-demo-argocd-certificate.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.0.4/manifests/install.yaml
+
+# changes to config maps
+patchesStrategicMerge:
+  - overlays/argocd-cm.yaml
+  - overlays/argocd-rbac-cm.yaml
+
+patchesJson6902:
+  - path: overlays/argocd-server-deploy-command.yaml
+    target:
+      group: apps
+      kind: Deployment
+      name: argocd-server
+      version: v1
