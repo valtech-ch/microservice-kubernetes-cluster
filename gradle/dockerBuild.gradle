@@ -7,16 +7,27 @@ ext {
 }
 
 tasks.register('downloadOpentelemetryAgent') {
+  def agentDir = new File(buildscript.sourceFile.parentFile.parentFile, 'agent')
+  mkdir agentDir
+  def lockFile = new File(agentDir, "opentelemetry-javaagent-all.lock")
+  doFirst {
+    if (!lockFile.exists()) {
+      lockFile.text = "adf"
+    } else {
+      while (lockFile.exists()) {
+        Thread.sleep(100)
+      }
+    }
+  }
   doLast {
     println('Check OpenTelemetry agent')
-    def agentDir = new File(buildscript.sourceFile.parentFile.parentFile, 'agent')
-    mkdir agentDir
     def opentelemetryAgent = new File(agentDir, 'opentelemetry-javaagent-all.jar')
     if (!opentelemetryAgent.exists()) {
       println('Download OpenTelemetry agent')
       new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.1.0/opentelemetry-javaagent-all.jar')
               .withInputStream{ i -> opentelemetryAgent.withOutputStream{ it << i }}
     }
+    lockFile.delete()
   }
 }
 
