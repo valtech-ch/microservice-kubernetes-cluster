@@ -51,13 +51,13 @@ gitPublish {
 test {
   outputs.upToDateWhen {
     if (project.hasProperty('rerun')) {
+      filter {
+        includeTestsMatching "*ControllerTest"
+      }
       return false
     } else {
       return true
     }
-  }
-  filter {
-    includeTestsMatching "*ControllerTest"
   }
   systemProperty 'io.springfox.staticdocs.outputDir', swaggerOutputDir
   systemProperty 'io.springfox.staticdocs.snippetsOutputDir', snippetsOutputDir
