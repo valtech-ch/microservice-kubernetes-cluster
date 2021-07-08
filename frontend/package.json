@@ -36,7 +36,7 @@
     "@vue/compiler-sfc": "3.1.4",
     "@vue/eslint-config-typescript": "7.0.0",
     "eslint": "7.30.0",
-    "eslint-plugin-vue": "7.12.1",
+    "eslint-plugin-vue": "7.13.0",
     "jest": "27.0.6",
     "jest-sonar-reporter": "2.0.0",
     "sonarqube-scanner": "2.8.1",
