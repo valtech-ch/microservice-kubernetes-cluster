@@ -51,6 +51,9 @@ gitPublish {
 test {
   outputs.upToDateWhen {
     if (project.hasProperty('rerun')) {
+      filter {
+        includeTestsMatching "*ControllerTest"
+      }
       return false
     } else {
       return true
