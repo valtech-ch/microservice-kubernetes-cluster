@@ -9,21 +9,33 @@ import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
 import {XMLHttpRequestInstrumentation} from '@opentelemetry/instrumentation-xml-http-request';
 import {ZoneContextManager} from '@opentelemetry/context-zone';
 import {registerInstrumentations} from '@opentelemetry/instrumentation';
+import {DocumentLoadInstrumentation} from '@opentelemetry/instrumentation-document-load';
+import {Resource} from '@opentelemetry/resources';
+import {ResourceAttributes} from '@opentelemetry/semantic-conventions';
+import {CompositePropagator, HttpTraceContextPropagator} from '@opentelemetry/core';
 
 const zipkinOptions = {
-  serviceName: 'frontend',
-  url: 'https://vtch-aks-demo-monitoring.duckdns.org/api/v2/spans',
-  headers: {}
+  url: 'https://vtch-aks-demo-monitoring.duckdns.org/api/v2/spans'
 };
 
-const providerWithZone = new WebTracerProvider();
+const providerWithZone = new WebTracerProvider({
+  resource: new Resource({
+    [ResourceAttributes.SERVICE_NAME]: 'frontend',
+  }),
+});
 providerWithZone.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter(zipkinOptions)));
 providerWithZone.register({
-  contextManager: new ZoneContextManager()
+  contextManager: new ZoneContextManager(),
+  propagator: new CompositePropagator({
+    propagators: [
+      new HttpTraceContextPropagator(),
+    ],
+  })
 });
 
 registerInstrumentations({
   instrumentations: [
+    new DocumentLoadInstrumentation(),
     new XMLHttpRequestInstrumentation({
       propagateTraceHeaderCorsUrls: ['https://vtch-aks-demo.duckdns.org/']
     })
