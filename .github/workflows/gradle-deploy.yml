@@ -67,7 +67,7 @@ jobs:
           package: './functions/build/azure-functions/vtch-functions'
           publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
       - name: Publish API Documentation
-        run: ./gradlew gitPublishPush --no-parallel -Prerun
+        run: ./gradlew gitPublishPush --no-parallel -Prerun -x jacocoTestReport
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
           GRGIT_USER: ${{ secrets.GIT_USER }}
