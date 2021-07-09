@@ -31,6 +31,7 @@ application:
    allowed.methods: "*"
   kafka:
     bootstrapAddress: localhost:9092
+    autoOffsetReset: latest
     groupId: persistenceApp
     topic: auditing
     stream:

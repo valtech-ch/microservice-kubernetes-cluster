@@ -23,6 +23,7 @@ application:
   token.url: http://localhost:8090/oauth/token
   kafka:
     bootstrapAddress: ${spring.embedded.kafka.brokers}
+    autoOffsetReset: earliest
     groupId: persistenceApp
     topic: auditing
     stream:

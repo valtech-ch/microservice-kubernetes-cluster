@@ -108,6 +108,8 @@ class ConsumerServiceIt extends AbstractIt {
     producer.send(producerRecord);
 
     //then
+    verify(consumer, timeout(10000).times(1))
+        .consumeStreamTopic(auditingRequestDto, testToken);
     verify(persistenceService, timeout(10000).times(0))
         .saveNewMessage(eq(auditingRequestDto), anyString());
   }
