@@ -1,6 +1,8 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.net.URL;
 import java.util.List;
 import org.springframework.cache.CacheManager;
@@ -16,9 +18,13 @@ public class CacheableFileStorageServiceDecorator extends FileStorageServiceDeco
 
   private final CacheManager cacheManager;
 
-  public CacheableFileStorageServiceDecorator(FileStorageService fileStorageService, CacheManager cacheManager) {
+  public CacheableFileStorageServiceDecorator(FileStorageService fileStorageService, CacheManager cacheManager,
+      MeterRegistry meterRegistry) {
     super(fileStorageService);
     this.cacheManager = cacheManager;
+    Gauge.builder("files.size", () -> loadAll().size())
+        .description("The current number of files")
+        .register(meterRegistry);
   }
 
   @Override
