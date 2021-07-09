@@ -142,6 +142,9 @@ data:
         cert_file: /etc/prom-certs/cert-chain.pem
         key_file: /etc/prom-certs/key.pem
         insecure_skip_verify: true
+      basic_auth:
+        username: actuator
+        password_file: /etc/secrets/actuator.password
     - job_name: kubernetes-service-endpoints-slow
       kubernetes_sd_configs:
       - role: endpoints
@@ -474,6 +477,8 @@ spec:
           name: storage-volume
         - mountPath: /etc/prom-certs/
           name: istio-certs
+        - mountPath: /etc/secrets
+          name: secrets-volume
       - args:
         - proxy
         - sidecar
@@ -685,6 +690,12 @@ spec:
       - configMap:
           name: prometheus
         name: config-volume
+      - secret:
+          secretName: prometheus-secrets
+          items:
+          - key: ACTUATOR_PASSWORD
+            path: actuator.password
+        name: secrets-volume
       - emptyDir: {}
         name: storage-volume
       - emptyDir:
