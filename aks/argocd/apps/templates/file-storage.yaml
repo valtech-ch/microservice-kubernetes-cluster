@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: file-storage
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    helm:
+      parameters:
+        - name: image.tag
+          value: latest
+        - name: releaseToggles
+      valueFiles:
+        - values.yaml
+    path: aks/filestorage
+    repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster.git'
+    targetRevision: main

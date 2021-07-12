@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-kibana
+  namespace: argocd
+spec:
+  destination:
+    namespace: logging
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: aks/kibana
+    repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster.git'
+    targetRevision: main

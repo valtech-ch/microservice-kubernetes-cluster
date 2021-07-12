@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  destination:
+    namespace: istio-system
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: aks/monitoring
+    repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster.git'
+    targetRevision: main
