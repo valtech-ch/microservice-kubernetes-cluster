@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elasticsearch
+  namespace: argocd
+spec:
+  destination:
+    namespace: logging
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    chart: elasticsearch
+    helm:
+      parameters:
+        - name: resources.limits.cpu
+          value: 500m
+        - name: resources.requests.cpu
+          value: 200m
+        - name: replicas
+          value: '2'
+    repoURL: 'https://helm.elastic.co'
+    targetRevision: 7.13.2

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kiali
+  namespace: argocd
+spec:
+  destination:
+    namespace: istio-system
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    chart: kiali-server
+    helm:
+      parameters:
+        - name: auth.strategy
+          value: anonymous
+        - name: deployment.ingress_enabled
+          value: 'false'
+        - name: istio_namespace
+          value: istio-system
+    repoURL: 'https://kiali.org/helm-charts'
+    targetRevision: 1.36.0

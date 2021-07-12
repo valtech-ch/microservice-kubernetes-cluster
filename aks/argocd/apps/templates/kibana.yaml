@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kibana
+  namespace: argocd
+spec:
+  destination:
+    namespace: logging
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    chart: kibana
+    helm:
+      parameters:
+        - name: resources.requests.cpu
+          value: 500m
+        - name: resources.requests.memory
+          value: 1Gi
+    repoURL: 'https://helm.elastic.co'
+    targetRevision: 7.13.2

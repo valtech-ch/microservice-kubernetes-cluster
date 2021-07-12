@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+spec:
+  destination:
+    namespace: istio-system
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: aks/prometheus
+    repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster'
+    targetRevision: main

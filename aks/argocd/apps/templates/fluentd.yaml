@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluentd
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: 'https://kubernetes.default.svc'
+  project: default
+  revisionHistoryLimit: 3
+  source:
+    chart: fluentd-elasticsearch
+    helm:
+      parameters:
+        - name: 'elasticsearch.hosts[0]'
+          value: 'elasticsearch-master-headless.logging.svc.cluster.local:9200'
+      valueFiles:
+        - values.yaml
+    repoURL: 'https://kokuwaio.github.io/helm-charts'
+    targetRevision: 11.13.0
