@@ -12,10 +12,8 @@ spec:
     helm:
       parameters:
         - name: image.tag
-          value: latest
+          value: {{ .Values.image.tag }}
         - name: releaseToggles
-      valueFiles:
-        - values.yaml
     path: aks/filestorage
     repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster.git'
     targetRevision: main
