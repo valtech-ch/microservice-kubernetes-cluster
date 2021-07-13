@@ -83,7 +83,7 @@ jobs:
           chmod +x argocd &&
           ./argocd app set applications -p image.tag=${GITHUB_SHA} -p releaseToggles=$releaseToggles --plaintext --grpc-web &&
           ./argocd app sync applications --plaintext --grpc-web &&
-          ./argocd app sync -l app.kubernetes.io/instance=apps --plaintext --grpc-web
+          ./argocd app sync -l app.kubernetes.io/instance=applications --plaintext --grpc-web
   docs:
     needs: argocd
     environment: Demo
