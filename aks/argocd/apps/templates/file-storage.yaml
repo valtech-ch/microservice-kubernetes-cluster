@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: file-storage
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: default
@@ -14,6 +16,9 @@ spec:
         - name: image.tag
           value: {{ .Values.image.tag }}
         - name: releaseToggles
+          {{ if .Values.releaseToggles }}
+          value: {{ .Values.releaseToggles }}
+          {{ end }}
     path: aks/filestorage
     repoURL: 'https://github.com/valtech-ch/microservice-kubernetes-cluster.git'
     targetRevision: main

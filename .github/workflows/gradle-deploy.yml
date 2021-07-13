@@ -81,18 +81,9 @@ jobs:
           echo "Release Toggles are $releaseToggles" &&
           curl -sSL -o argocd http://vtch-aks-demo-argocd.duckdns.org:80/download/argocd-linux-amd64 &&
           chmod +x argocd &&
-          ./argocd app set file-storage -p image.tag=${GITHUB_SHA} -p releaseToggles=$releaseToggles --plaintext --grpc-web &&
-          ./argocd app set persistence -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
-          ./argocd app set frontend -p image.tag=${GITHUB_SHA} --plaintext --grpc-web &&
-          ./argocd app sync file-storage --plaintext --grpc-web &&
-          ./argocd app sync persistence --plaintext --grpc-web &&
-          ./argocd app sync frontend --plaintext --grpc-web &&
-          ./argocd app sync bootstrap-cluster --plaintext --grpc-web &&
-          ./argocd app sync argocd --plaintext --grpc-web &&
-          ./argocd app sync cluster-kibana --plaintext --grpc-web &&
-          ./argocd app sync kibana --plaintext --grpc-web &&
-          ./argocd app sync monitoring --plaintext --grpc-web &&
-          ./argocd app sync prometheus --plaintext --grpc-web
+          ./argocd app set applications -p image.tag=${GITHUB_SHA} -p releaseToggles=$releaseToggles --plaintext --grpc-web &&
+          ./argocd app sync applications --plaintext --grpc-web &&
+          ./argocd app sync -l app.kubernetes.io/instance=apps --plaintext --grpc-web
   docs:
     needs: argocd
     environment: Demo

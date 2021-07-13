@@ -3,3 +3,5 @@ project: default
 
 image:
   tag: latest
+
+releaseToggles:
