@@ -21,6 +21,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import reactor.core.publisher.Mono;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReactivePersistenceControllerGrpcIt extends AbstractIt {
@@ -52,8 +53,9 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setAction(Action.UPLOAD)
         .setFilename("some-file.txt")
         .build();
+    Mono<MessageResponse> responseMono = persistenceStub.audit(request);
     assertThrows(StatusRuntimeException.class, () -> {
-      persistenceStub.audit(request).block();
+      responseMono.block();
     });
   }
 
@@ -83,8 +85,9 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setFilename("test.txt")
         .setLimit(2)
         .build();
+    Mono<List<MessageResponse>> monoResponse = persistenceStub.search(request).collectList();
     assertThrows(StatusRuntimeException.class, () -> {
-      persistenceStub.search(request).collectList().block();
+      monoResponse.block();
     });
   }
 

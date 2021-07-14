@@ -42,7 +42,8 @@ public class KafkaConsumerConfiguration {
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     ErrorHandlingDeserializer<AuditingRequestDto> errorHandlingDeserializer =
         new ErrorHandlingDeserializer<>(new JsonDeserializer<>(AuditingRequestDto.class));
-    return new DefaultKafkaConsumerFactory(props, new StringDeserializer(), errorHandlingDeserializer);
+    return new DefaultKafkaConsumerFactory<String, AuditingRequestDto>(props, new StringDeserializer(),
+        errorHandlingDeserializer);
   }
 
   @Bean

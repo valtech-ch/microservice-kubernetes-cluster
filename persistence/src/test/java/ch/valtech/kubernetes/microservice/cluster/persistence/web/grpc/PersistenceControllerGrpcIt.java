@@ -13,18 +13,17 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.Persisten
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import io.grpc.StatusRuntimeException;
+import java.util.Iterator;
 import java.util.List;
 import lombok.SneakyThrows;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PersistenceControllerGrpcIt extends AbstractIt {
 
@@ -86,8 +85,9 @@ class PersistenceControllerGrpcIt extends AbstractIt {
         .setFilename("test.txt")
         .setLimit(2)
         .build();
+    Iterator<MessageResponse> responseIterator = persistenceStub.search(request);
     assertThrows(StatusRuntimeException.class, () -> {
-      persistenceStub.search(request).next();
+      responseIterator.next();
     });
   }
 
