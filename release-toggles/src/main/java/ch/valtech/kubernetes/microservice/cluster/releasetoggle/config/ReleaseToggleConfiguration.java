@@ -40,7 +40,7 @@ public class ReleaseToggleConfiguration {
       @Qualifier(RELEASE_TOGGLE_BEAN) Class<E> releaseToggle) {
     StateRepository inMemoryStateRepository = new InMemoryStateRepository();
     List<String> releaseToggles = Stream.ofAll(Strings.splitAndTrim(releaseTogglesList, RELEASE_TOGGLE_SEPARATOR))
-        .map(rt -> rt.replaceAll("-", "_"))
+        .map(rt -> rt.replace("-", "_"))
         .asJava();
     if (releaseToggles.isEmpty()) {
       return inMemoryStateRepository;

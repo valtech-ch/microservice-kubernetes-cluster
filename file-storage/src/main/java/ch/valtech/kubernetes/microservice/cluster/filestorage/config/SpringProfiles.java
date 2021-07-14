@@ -4,12 +4,12 @@
 
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
-public interface SpringProfiles {
+public final class SpringProfiles {
 
-  String CLOUD = "cloud";
-  String NOT_CLOUD = "!cloud";
-  String PROD = "prod";
-  String NOT_PROD = "!prod";
-  String RELEASE_TOGGLES = "release-toggles";
+  public static final String CLOUD = "cloud";
+  public static final String NOT_CLOUD = "!cloud";
+  public static final String PROD = "prod";
+  public static final String NOT_PROD = "!prod";
+  public static final String RELEASE_TOGGLES = "release-toggles";
 
 }

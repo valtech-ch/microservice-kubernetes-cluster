@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
 @EmbeddedKafka
-class FileStorageControllerIt {
+class FileStorageControllerIT {
 
   public static final String FILENAME = "test.txt";
 
@@ -134,6 +134,7 @@ class FileStorageControllerIt {
     String content = mvcResult.getResponse().getContentAsString();
     List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
     });
+    assertThat(files).isEmpty();
     assertThat(files).doesNotContain(FileArtifact.builder().filename(FILENAME).build());
     verify(auditingServiceRest, times(1)).audit(FILENAME, Action.DELETE);
   }

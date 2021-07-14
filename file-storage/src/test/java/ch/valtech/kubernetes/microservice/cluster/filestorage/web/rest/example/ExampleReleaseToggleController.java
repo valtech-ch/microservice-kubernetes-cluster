@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Profile("test")
 @RestController
 @RequestMapping("/example")
-public class ExampleReleaseToggleController {
+class ExampleReleaseToggleController {
 
   @RequestMapping("/statement")
   public ResponseEntity<?> statement() {

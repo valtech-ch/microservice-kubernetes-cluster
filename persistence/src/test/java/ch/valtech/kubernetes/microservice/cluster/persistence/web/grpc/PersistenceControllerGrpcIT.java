@@ -9,24 +9,27 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.AbstractIt;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
-import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc.PersistenceServiceBlockingStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
 import io.grpc.StatusRuntimeException;
 import java.util.List;
 import lombok.SneakyThrows;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ReactivePersistenceControllerGrpcIt extends AbstractIt {
+class PersistenceControllerGrpcIT extends AbstractIt {
 
   @GrpcClient("inProcess")
-  private ReactorPersistenceServiceStub persistenceStub;
+  private PersistenceServiceBlockingStub persistenceStub;
 
   @Autowired
   private AuditingRepository repository;
@@ -53,7 +56,7 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setFilename("some-file.txt")
         .build();
     assertThrows(StatusRuntimeException.class, () -> {
-      persistenceStub.audit(request).block();
+      persistenceStub.audit(request);
     });
   }
 
@@ -69,9 +72,9 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setLimit(2)
         .build();
 
-    List<MessageResponse> list = persistenceStub
+    List<MessageResponse> list = IteratorUtils.toList(persistenceStub
         .withCallCredentials(authorizationHeader("Bearer " + testToken))
-        .search(request).collectList().block();
+        .search(request));
 
     assertEquals(1, list.size());
     assertEquals("User vtc-keycloakadmin uploaded some-file.txt", list.get(0).getMessage());
@@ -84,7 +87,7 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setLimit(2)
         .build();
     assertThrows(StatusRuntimeException.class, () -> {
-      persistenceStub.search(request).collectList().block();
+      persistenceStub.search(request).next();
     });
   }
 
@@ -95,7 +98,7 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .build();
     return persistenceStub
         .withCallCredentials(authorizationHeader("Bearer " + testToken))
-        .audit(request).block();
+        .audit(request);
   }
 
 }

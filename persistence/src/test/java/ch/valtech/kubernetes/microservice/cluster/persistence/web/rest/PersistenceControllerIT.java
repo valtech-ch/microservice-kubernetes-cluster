@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc(addFilters = false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PersistenceControllerIt extends AbstractIt {
+class PersistenceControllerIT extends AbstractIt {
 
   @Autowired
   private ServletWebServerApplicationContext webServerAppCtx;

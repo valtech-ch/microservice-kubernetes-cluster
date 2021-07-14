@@ -22,10 +22,10 @@ final class KafkaErrorHandler implements ContainerAwareErrorHandler {
       MessageListenerContainer container) {
     doSeeks(records, consumer);
     if (!records.isEmpty()) {
-      ConsumerRecord<?, ?> record = records.get(0);
-      String topic = record.topic();
-      long offset = record.offset();
-      int partition = record.partition();
+      ConsumerRecord<?, ?> consumerRecord = records.get(0);
+      String topic = consumerRecord.topic();
+      long offset = consumerRecord.offset();
+      int partition = consumerRecord.partition();
       if (thrownException instanceof DeserializationException) {
         DeserializationException exception = (DeserializationException) thrownException;
         String malformedMessage = new String(exception.getData());
@@ -43,11 +43,13 @@ final class KafkaErrorHandler implements ContainerAwareErrorHandler {
   private void doSeeks(List<ConsumerRecord<?, ?>> records, Consumer<?, ?> consumer) {
     Map<TopicPartition, Long> partitions = new LinkedHashMap<>();
     AtomicBoolean first = new AtomicBoolean(true);
-    records.forEach(record -> {
+    records.forEach(consumerRecord -> {
       if (first.get()) {
-        partitions.put(new TopicPartition(record.topic(), record.partition()), record.offset() + 1);
+        partitions.put(new TopicPartition(consumerRecord.topic(),
+            consumerRecord.partition()), consumerRecord.offset() + 1);
       } else {
-        partitions.computeIfAbsent(new TopicPartition(record.topic(), record.partition()), offset -> record.offset());
+        partitions.computeIfAbsent(new TopicPartition(consumerRecord.topic(),
+            consumerRecord.partition()), offset -> consumerRecord.offset());
       }
       first.set(false);
     });

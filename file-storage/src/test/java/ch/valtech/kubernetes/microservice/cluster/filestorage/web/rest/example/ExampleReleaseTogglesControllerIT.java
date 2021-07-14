@@ -23,7 +23,7 @@ import org.togglz.junit5.AllEnabled;
 @DirtiesContext
 @EmbeddedKafka
 @AutoConfigureMockMvc
-class ExampleReleaseTogglesControllerIt {
+class ExampleReleaseTogglesControllerIT {
 
   private static final String STATEMENT_PATH = "/example/statement";
   private static final String ASPECT_PATH = "/example/aspect";

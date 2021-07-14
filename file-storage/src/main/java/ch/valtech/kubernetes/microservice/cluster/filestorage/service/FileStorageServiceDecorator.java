@@ -4,7 +4,7 @@ public abstract class FileStorageServiceDecorator implements FileStorageService 
 
   protected final FileStorageService fileStorageService;
 
-  public FileStorageServiceDecorator(FileStorageService fileStorageService) {
+  protected FileStorageServiceDecorator(FileStorageService fileStorageService) {
     this.fileStorageService = fileStorageService;
   }
 

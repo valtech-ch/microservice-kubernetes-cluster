@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.function.adapter.azure.FunctionInvoker;
 
-public class FunctionTest {
+class FunctionTest {
 
   @Test
   void echo() {

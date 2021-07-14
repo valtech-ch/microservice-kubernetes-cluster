@@ -34,7 +34,7 @@ import org.springframework.kafka.test.utils.KafkaTestUtils;
 import reactor.core.publisher.Mono;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ConsumerServiceIt extends AbstractIt {
+class ConsumerServiceIT extends AbstractIt {
 
   public static final String FILENAME = "test.txt";
 
@@ -68,14 +68,14 @@ class ConsumerServiceIt extends AbstractIt {
   }
 
   @Test
-  public void testConsumeTopic() {
+  void testConsumeTopic() {
     //given
     String username = "vtc-keycloakadmin";
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)
         .action(Action.UPLOAD)
         .build();
-    when(persistenceService.saveNewMessage(eq(auditingRequestDto), eq(username)))
+    when(persistenceService.saveNewMessage(auditingRequestDto, username))
         .thenReturn(Mono.just(MessageDto.builder().build()));
 
     ProducerRecord<String, AuditingRequestDto> producerRecord = new ProducerRecord<>(auditingTopic,
@@ -89,11 +89,11 @@ class ConsumerServiceIt extends AbstractIt {
     verify(consumer, timeout(10000).times(1))
         .consumeTopic(auditingRequestDto, testToken);
     verify(persistenceService, timeout(10000).times(1))
-        .saveNewMessage(eq(auditingRequestDto), eq(username));
+        .saveNewMessage(auditingRequestDto, username);
   }
 
   @Test
-  public void consumeStreamTopic() {
+  void consumeStreamTopic() {
     //given
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)

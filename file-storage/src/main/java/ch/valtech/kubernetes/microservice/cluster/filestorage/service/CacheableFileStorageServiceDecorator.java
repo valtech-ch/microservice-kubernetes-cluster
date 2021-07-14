@@ -5,6 +5,7 @@ import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import java.net.URL;
 import java.util.List;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
@@ -63,7 +64,10 @@ public class CacheableFileStorageServiceDecorator extends FileStorageServiceDeco
   }
 
   private void evictCache() {
-    cacheManager.getCache(FILES_CACHE_NAME).clear();
+    Cache cache = cacheManager.getCache(FILES_CACHE_NAME);
+    if (cache != null) {
+      cache.clear();
+    }
   }
 
 }
