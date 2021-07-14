@@ -16,7 +16,8 @@ ext {
 	filesExcludedFromCoverage = ["*FileStorageApplication.java",
 								 "*ExceptionTranslator.java",
 								 "*GrpcConfiguration.java",
-	                             "*CacheConfiguration.java"]
+	                             "*CacheConfiguration.java",
+								 "*SpringProfiles.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"

@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MvcResult;
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
 @EmbeddedKafka
-class FileStorageControllerIT {
+class FileStorageControllerIt {
 
   public static final String FILENAME = "test.txt";
 

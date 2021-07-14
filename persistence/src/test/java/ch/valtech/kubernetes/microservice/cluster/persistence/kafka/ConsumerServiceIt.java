@@ -34,7 +34,7 @@ import org.springframework.kafka.test.utils.KafkaTestUtils;
 import reactor.core.publisher.Mono;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ConsumerServiceIT extends AbstractIt {
+class ConsumerServiceIt extends AbstractIt {
 
   public static final String FILENAME = "test.txt";
 
