@@ -3,6 +3,7 @@
 ![Build](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-build.yml/badge.svg)
 ![Sonar](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-analyse.yml/badge.svg)
 ![Deployment](https://github.com/valtech-ch/microservice-kubernetes-cluster/actions/workflows/gradle-deploy.yml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=valtech-ch_microservice-kubernetes-cluster&metric=alert_status)](https://sonarcloud.io/dashboard?id=valtech-ch_microservice-kubernetes-cluster)
 
 ### Requirements
 
