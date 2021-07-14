@@ -12,4 +12,6 @@ public final class SpringProfiles {
   public static final String NOT_PROD = "!prod";
   public static final String RELEASE_TOGGLES = "release-toggles";
 
+  private SpringProfiles() {
+  }
 }
