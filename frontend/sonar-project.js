@@ -6,6 +6,7 @@ sonarqubeScanner(
       serverUrl:  process.argv[2],
       token : process.argv[3],
       options : {
+        'sonar.organization': 'valtech-ch',
         'sonar.projectKey': 'microservice-kubernetes-cluster-frontend',
         'sonar.projectName': 'Microservice Kubernetes Cluster Frontend',
         'sonar.sourceEncoding': 'UTF-8',

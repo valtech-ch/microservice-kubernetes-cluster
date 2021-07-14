@@ -32,6 +32,7 @@ allprojects {
 
 sonarqube {
     properties {
+        property 'sonar.organization', 'valtech-ch'
         property 'sonar.projectKey', 'microservice-kubernetes-cluster'
         property 'sonar.projectName', 'Microservice Kubernetes Cluster'
     }
