@@ -3,11 +3,10 @@
 const sonarqubeScanner = require('sonarqube-scanner');
 sonarqubeScanner(
     {
-      serverUrl:  process.argv[2],
-      token : process.argv[3],
+      serverUrl: 'https://sonarcloud.io',
       options : {
         'sonar.organization': 'valtech-ch',
-        'sonar.projectKey': 'microservice-kubernetes-cluster-frontend',
+        'sonar.projectKey': 'valtech-ch_microservice-kubernetes-cluster',
         'sonar.projectName': 'Microservice Kubernetes Cluster Frontend',
         'sonar.sourceEncoding': 'UTF-8',
         'sonar.sources':  'src',
