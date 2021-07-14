@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import static ch.valtech.kubernetes.microservice.cluster.filestorage.util.FileNameCleaner.cleanFilename;
+import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -82,7 +83,7 @@ public class FileStorageCloudService implements FileStorageService {
     String cleanFilename = cleanFilename(filename);
     try {
       BlobClient blobClient = containerClient.getBlobClient(cleanFilename);
-      if (blobClient.exists()) {
+      if (TRUE.equals(blobClient.exists())) {
         return new URL(blobClient.getBlobUrl());
       } else {
         throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));
@@ -104,7 +105,7 @@ public class FileStorageCloudService implements FileStorageService {
   public Resource loadAsResource(String filename) {
     log.info("Loading file {} from cloud", filename);
     BlobClient blobClient = containerClient.getBlobClient(cleanFilename(filename));
-    if (blobClient.exists()) {
+    if (TRUE.equals(blobClient.exists())) {
       return new InputStreamResource(blobClient.openInputStream(), cleanFilename(filename));
     } else {
       throw new ResponseStatusException(NOT_FOUND, format(FILE_NOT_FOUND, filename));

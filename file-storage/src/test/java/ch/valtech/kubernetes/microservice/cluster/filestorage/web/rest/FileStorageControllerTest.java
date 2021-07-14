@@ -19,7 +19,7 @@ import org.springframework.util.MimeTypeUtils;
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
 @EmbeddedKafka
-public class FileStorageControllerTest {
+class FileStorageControllerTest {
 
   private static final String API_URI = "/v2/api-docs";
 

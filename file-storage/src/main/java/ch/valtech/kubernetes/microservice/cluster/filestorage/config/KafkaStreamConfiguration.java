@@ -49,9 +49,9 @@ public class KafkaStreamConfiguration {
 
   @Bean("auditingRequestSerde")
   public Serde<AuditingRequestDto> auditingSerde() {
-    TypeReference typeReference = new TypeReference<AuditingRequestDto>() {
+    TypeReference<AuditingRequestDto> typeReference = new TypeReference<>() {
     };
-    return Serdes.serdeFrom(new JsonSerializer(typeReference), new JsonDeserializer(typeReference));
+    return Serdes.serdeFrom(new JsonSerializer<>(typeReference), new JsonDeserializer<>(typeReference));
   }
 
 }

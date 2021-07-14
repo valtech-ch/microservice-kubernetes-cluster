@@ -134,7 +134,9 @@ class FileStorageControllerIt {
     String content = mvcResult.getResponse().getContentAsString();
     List<FileArtifact> files = objectMapper.readValue(content, new TypeReference<List<FileArtifact>>() {
     });
-    assertThat(files).doesNotContain(FileArtifact.builder().filename(FILENAME).build());
+    assertThat(files)
+        .doesNotContain(FileArtifact.builder().filename(FILENAME).build())
+        .isEmpty();
     verify(auditingServiceRest, times(1)).audit(FILENAME, Action.DELETE);
   }
 

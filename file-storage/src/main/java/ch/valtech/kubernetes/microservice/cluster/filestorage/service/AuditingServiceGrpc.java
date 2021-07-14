@@ -32,7 +32,7 @@ public class AuditingServiceGrpc implements AuditingService {
 
     try {
       return MessageDto.builder()
-          .message(persistenceStub.audit(test).block().getMessage())
+          .message(persistenceStub.audit(test).blockOptional().orElseThrow().getMessage())
           .build();
     } catch (Exception e) {
       Status status = Status.fromThrowable(e);

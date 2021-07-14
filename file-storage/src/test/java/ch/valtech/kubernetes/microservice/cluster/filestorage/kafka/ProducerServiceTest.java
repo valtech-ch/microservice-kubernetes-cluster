@@ -82,7 +82,7 @@ class ProducerServiceTest {
   }
 
   @Test
-  public void shouldCheckMessageIsProduced() throws InterruptedException, IOException {
+  void shouldCheckMessageIsProduced() throws InterruptedException, IOException {
     //given
     AuditingRequestDto auditingRequestDto = AuditingRequestDto.builder()
         .filename(FILENAME)
