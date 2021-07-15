@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.client.ReactivePersistenceClient;
+import ch.valtech.kubernetes.microservice.cluster.filestorage.mapper.AuditingMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
@@ -26,20 +27,21 @@ public class AuditingServiceRest implements AuditingService {
   private final String persistenceUrl;
   private final RestTemplate restTemplate;
   private final ReactivePersistenceClient reactivePersistenceClient;
+  private final AuditingMapper auditingMapper;
 
   public AuditingServiceRest(@Value("${application.persistence.url}") String persistenceUrl,
       @Qualifier("jwtRestTemplate") RestTemplate restTemplate,
-      ReactivePersistenceClient reactivePersistenceClient) {
+      ReactivePersistenceClient reactivePersistenceClient,
+      AuditingMapper auditingMapper) {
     this.persistenceUrl = persistenceUrl;
     this.restTemplate = restTemplate;
     this.reactivePersistenceClient = reactivePersistenceClient;
+    this.auditingMapper = auditingMapper;
   }
 
   @Override
   public MessageDto audit(String filename, Action action) {
-    AuditingRequestDto auditingRequest = AuditingRequestDto.builder()
-        .filename(filename)
-        .action(action).build();
+    AuditingRequestDto auditingRequest = auditingMapper.toAuditingRequestDto(filename, action);
     HttpEntity<AuditingRequestDto> request = new HttpEntity<>(auditingRequest, populateHeaders());
     return postForEntity(request).getBody();
   }

@@ -1,17 +1,19 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.mapper;
 
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
-import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
 import java.time.LocalDate;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.mapstruct.ValueMapping;
 
 @Mapper(componentModel = "spring")
 public interface PersistenceMapper {
@@ -30,20 +32,25 @@ public interface PersistenceMapper {
 
   Action toDomainAction(ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action action);
 
-  default MessageResponse toMessageResponse(MessageDto messageDto) {
-    return MessageResponse.newBuilder()
-        .setMessage(messageDto.getMessage())
-        .build();
-  }
+  // Protobuf fields can be ignored
+  @Mapping(target = "mergeFrom", ignore = true)
+  @Mapping(target = "clearField", ignore = true)
+  @Mapping(target = "clearOneof", ignore = true)
+  @Mapping(target = "messageBytes", ignore = true)
+  @Mapping(target = "unknownFields", ignore = true)
+  @Mapping(target = "mergeUnknownFields", ignore = true)
+  @Mapping(target = "allFields", ignore = true)
+  // Payload fields
+  @Mapping(target = "message", source = "message")
+  MessageResponse toMessageResponse(MessageDto messageDto);
 
-  default AuditingRequestDto toAuditingRequestDto(AuditingRequest auditingRequest) {
-    return AuditingRequestDto.builder()
-        .filename(auditingRequest.getFilename())
-        .action(
-            ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action
-                .valueOf(auditingRequest.getAction().toString()))
-        .build();
-  }
+  @Mapping(target = "filename", source = "filename")
+  @Mapping(target = "action", source = "action")
+  AuditingRequestDto toAuditingRequestDto(AuditingRequest auditingRequest);
+
+  // TODO replace target to MappingConstants.THROW_EXCEPTION in version 1.5
+  @ValueMapping(source = "UNRECOGNIZED", target = MappingConstants.NULL)
+  Action toAction(AuditingRequest.Action action);
 
   @Named("now")
   default LocalDate now() {

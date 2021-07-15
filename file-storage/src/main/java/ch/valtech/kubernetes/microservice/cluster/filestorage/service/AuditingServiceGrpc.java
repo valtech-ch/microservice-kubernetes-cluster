@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.mapper.AuditingMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
@@ -23,17 +24,19 @@ public class AuditingServiceGrpc implements AuditingService {
   @GrpcClient("persistence")
   private ReactorPersistenceServiceStub persistenceStub;
 
+  private final AuditingMapper auditingMapper;
+
+  public AuditingServiceGrpc(AuditingMapper auditingMapper) {
+    this.auditingMapper = auditingMapper;
+  }
+
   @Override
   public MessageDto audit(String filename, Action action) {
-    AuditingRequest test = AuditingRequest.newBuilder()
-        .setFilename(filename)
-        .setAction(AuditingRequest.Action.valueOf(action.toString()))
-        .build();
+    AuditingRequest auditingRequest = auditingMapper.toAuditingRequest(filename, action);
 
     try {
-      return MessageDto.builder()
-          .message(persistenceStub.audit(test).blockOptional().orElseThrow().getMessage())
-          .build();
+      return auditingMapper.toMessageDto(persistenceStub.audit(auditingRequest).blockOptional()
+          .orElseThrow());
     } catch (Exception e) {
       Status status = Status.fromThrowable(e);
       switch (status.getCode()) {
@@ -50,9 +53,8 @@ public class AuditingServiceGrpc implements AuditingService {
 
   @Override
   public Flux<MessageDto> search(SearchRequest searchRequest) {
-    return persistenceStub.search(searchRequest).map(messageResponse -> MessageDto.builder()
-        .message(messageResponse.getMessage())
-        .build());
+    return persistenceStub.search(searchRequest)
+        .map(messageResponse -> auditingMapper.toMessageDto(messageResponse));
   }
 
 }
