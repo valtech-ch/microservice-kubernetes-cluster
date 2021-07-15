@@ -54,8 +54,21 @@ class PersistenceControllerIt extends AbstractIt {
 
   @Test
   @SneakyThrows
+  @WithMockUser(roles = "admin")
+  void shouldFailPostNewMessageValidation() {
+    AuditingRequestDto request = AuditingRequestDto.builder()
+        .action(Action.UPLOAD)
+        .build();
+    mockMvc.perform(post("/api/v1/messages")
+        .content(convertObjectToJsonBytes(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @SneakyThrows
   @WithMockUser(roles = "foo")
-  void shouldFailPostNewMessage() {
+  void shouldFailPostNewMessagePermissions() {
     AuditingRequestDto request = AuditingRequestDto.builder()
         .action(Action.UPLOAD)
         .filename("some file")
