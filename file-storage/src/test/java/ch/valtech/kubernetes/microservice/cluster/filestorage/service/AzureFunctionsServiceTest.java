@@ -20,18 +20,18 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 @ExtendWith(SpringExtension.class)
-class FunctionsServiceTest {
+class AzureFunctionsServiceTest {
 
   private final String url = "https://vtch-functions.azurewebsites.net/api";
   private final String key = "123456";
 
-  private FunctionsService functionsService;
+  private AzureFunctionsService azureFunctionsService;
   private MockRestServiceServer mockRestServiceServer;
 
   @BeforeEach
   void mockAuditingCall() {
-    functionsService = new FunctionsService(url, key, new RestTemplateBuilder());
-    RestTemplate restTemplate = (RestTemplate) ReflectionTestUtils.getField(functionsService, "restTemplate");
+    azureFunctionsService = new AzureFunctionsService(url, key, new RestTemplateBuilder());
+    RestTemplate restTemplate = (RestTemplate) ReflectionTestUtils.getField(azureFunctionsService, "restTemplate");
     mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
   }
 
@@ -40,9 +40,9 @@ class FunctionsServiceTest {
     mockRestServiceServer.expect(requestTo(url + "/echo"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().string("test"))
-        .andExpect(header(FunctionsService.FUNCTION_KEY_HEADER, key))
+        .andExpect(header(AzureFunctionsService.FUNCTION_KEY_HEADER, key))
         .andRespond(withSuccess("test", MediaType.TEXT_PLAIN));
-    String response = functionsService.echo("test");
+    String response = azureFunctionsService.echo("test");
     assertNotNull(response);
     assertEquals("test", response);
   }
@@ -52,9 +52,9 @@ class FunctionsServiceTest {
     mockRestServiceServer.expect(requestTo(url + "/reverse"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().string("test"))
-        .andExpect(header(FunctionsService.FUNCTION_KEY_HEADER, key))
+        .andExpect(header(AzureFunctionsService.FUNCTION_KEY_HEADER, key))
         .andRespond(withSuccess("tset", MediaType.TEXT_PLAIN));
-    String response = functionsService.reverse("test");
+    String response = azureFunctionsService.reverse("test");
     assertNotNull(response);
     assertEquals("tset", response);
   }
