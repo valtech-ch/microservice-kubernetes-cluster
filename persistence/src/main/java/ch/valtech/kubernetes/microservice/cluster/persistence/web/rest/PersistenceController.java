@@ -7,6 +7,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRe
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +50,7 @@ public class PersistenceController {
 
   @PostMapping("/messages")
   @PreAuthorize("hasAnyRole('admin', 'user')")
-  public ResponseEntity<MessageDto> saveNewMessage(@RequestBody AuditingRequestDto requestDto) {
+  public ResponseEntity<MessageDto> saveNewMessage(@Valid @RequestBody AuditingRequestDto requestDto) {
     String username = getUsername().orElseThrow(() ->
         new ResponseStatusException(FORBIDDEN, "Username not found"));
     MessageDto newMessage = persistenceService.saveNewMessage(requestDto, username).block();

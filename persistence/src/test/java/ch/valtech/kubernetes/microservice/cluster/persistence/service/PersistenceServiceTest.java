@@ -18,6 +18,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,7 +33,7 @@ class PersistenceServiceTest {
   @Mock
   private AuditingRepository auditingRepository;
 
-  private final PersistenceMapper persistenceMapper = new PersistenceMapperImpl();
+  private final PersistenceMapper persistenceMapper = Mappers.getMapper(PersistenceMapper.class);
 
   @BeforeEach
   public void setUp() {

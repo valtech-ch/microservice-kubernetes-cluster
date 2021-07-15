@@ -1,5 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.web.rest;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.kafka.ProducerService;
 import ch.valtech.kubernetes.microservice.cluster.filestorage.service.AuditingService;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 
 /**
@@ -63,6 +66,9 @@ public class FileStorageController {
   @PreAuthorize("hasAnyRole('admin')")
   public ResponseEntity<Void> saveFile(@RequestParam("file") MultipartFile file) {
     log.debug("REST request to post a new file");
+    if (file.isEmpty()) {
+      throw new ResponseStatusException(BAD_REQUEST, "File must not be empty");
+    }
     String fileName = fileStorageService.saveFile(file);
     producerService.sendMessage(fileName, Action.UPLOAD);
     URL resourceUrl = fileStorageService.getResourceUrl(fileName);

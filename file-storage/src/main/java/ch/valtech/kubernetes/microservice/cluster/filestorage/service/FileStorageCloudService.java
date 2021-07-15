@@ -3,6 +3,7 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.service;
 import static ch.valtech.kubernetes.microservice.cluster.filestorage.util.FileNameCleaner.cleanFilename;
 import static java.lang.Boolean.TRUE;
 import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import ch.valtech.kubernetes.microservice.cluster.filestorage.domain.FileArtifact;
@@ -63,6 +64,9 @@ public class FileStorageCloudService implements FileStorageService {
 
   @Override
   public String saveFile(MultipartFile file) {
+    if (file.isEmpty()) {
+      throw new ResponseStatusException(BAD_REQUEST, "File should not be empty");
+    }
     String filename = cleanFilename(file.getOriginalFilename());
 
     BlobClient blobClient = containerClient.getBlobClient(filename);

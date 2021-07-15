@@ -6,6 +6,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
 import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing;
+import ch.valtech.kubernetes.microservice.cluster.persistence.domain.Auditing.AuditingBuilder;
 import java.time.LocalDate;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -26,11 +27,10 @@ public interface PersistenceMapper {
   Auditing toAuditing(AuditingRequestDto auditingRequestDto, String username);
 
   @AfterMapping
-  default void toAuditing(@MappingTarget Auditing auditing, AuditingRequestDto auditingRequestDto, String username) {
-    auditing.setModificationDate(now());
+  default void updateAuditingModificationDate(@MappingTarget AuditingBuilder auditingBuilder,
+      AuditingRequestDto auditingRequestDto, String username) {
+    auditingBuilder.modificationDate(now());
   }
-
-  Action toDomainAction(ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action action);
 
   // Protobuf fields can be ignored
   @Mapping(target = "mergeFrom", ignore = true)

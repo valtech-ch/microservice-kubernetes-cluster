@@ -18,13 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ExceptionTranslator extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(value = FileStorageException.class)
+  @ExceptionHandler(FileStorageException.class)
   protected ResponseEntity<Object> handleInternalServerError(RuntimeException ex, WebRequest request) {
     return handleExceptionInternal(ex, ExceptionUtils.getMessage(ex),
         new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
   }
 
-  @ExceptionHandler(value = AccessDeniedException.class)
+  @ExceptionHandler(AccessDeniedException.class)
   protected ResponseEntity<Object> handleInternalForbidden(RuntimeException ex, WebRequest request) {
     return handleExceptionInternal(ex, "Forbidden",
         new HttpHeaders(), HttpStatus.FORBIDDEN, request);
