@@ -23,6 +23,11 @@ spec:
     spec:
       nodeSelector:
         type: app
+      tolerations:
+        - key: "type"
+          operator: Equal
+          value: "app"
+          effect: NoSchedule
       containers:
         - name: persistence-api
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

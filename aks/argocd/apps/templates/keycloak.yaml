@@ -15,7 +15,13 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-      values: 'nodeSelector: {"type": "app"}'
+      values: |-
+        nodeSelector: {"type": "app"}
+        tolerations:
+          - key: "type"
+            operator: Equal
+            value: "app"
+            effect: NoSchedule
       parameters:
         - name: postgresql.enabled
           value: 'false'

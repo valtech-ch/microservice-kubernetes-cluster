@@ -87,6 +87,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "apppool" {
   node_labels = {
     "type": "app"
   }
+  node_taints = [
+    "type=app:NoSchedule"
+  ]
 }
 
 resource "azurerm_mariadb_server" "mariadb_server" {

@@ -22,6 +22,11 @@ spec:
     spec:
       nodeSelector:
         type: app
+      tolerations:
+        - key: "type"
+          operator: Equal
+          value: "app"
+          effect: NoSchedule
       containers:
         - name: frontend
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
