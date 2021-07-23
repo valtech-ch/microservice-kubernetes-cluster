@@ -21,6 +21,8 @@ spec:
         app: persistence-api
         auth: jwt
     spec:
+      nodeSelector:
+        type: app
       containers:
         - name: persistence-api
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

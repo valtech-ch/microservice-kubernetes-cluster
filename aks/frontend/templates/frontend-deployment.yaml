@@ -20,6 +20,8 @@ spec:
       labels:
         app: frontend
     spec:
+      nodeSelector:
+        type: app
       containers:
         - name: frontend
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}

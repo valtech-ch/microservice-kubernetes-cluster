@@ -13,6 +13,9 @@ spec:
   source:
     chart: keycloak
     helm:
+      valueFiles:
+        - values.yaml
+      values: 'nodeSelector: {"type": "app"}'
       parameters:
         - name: postgresql.enabled
           value: 'false'

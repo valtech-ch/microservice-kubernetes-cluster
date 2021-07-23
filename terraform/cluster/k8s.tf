@@ -20,11 +20,12 @@ resource "azurerm_role_assignment" "role_acrpull" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = var.container_registry_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = "Basic"
-  admin_enabled       = true
+  name                    = var.container_registry_name
+  resource_group_name     = var.resource_group_name
+  location                = var.location
+  sku                     = "Basic"
+  admin_enabled           = true
+  zone_redundancy_enabled = false
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
@@ -45,6 +46,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   default_node_pool {
+    fips_enabled = false
     enable_auto_scaling = true
     min_count = var.agent_min_count
     max_count = var.agent_max_count
@@ -76,6 +78,16 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   depends_on = [tls_private_key.ssh_key]
 }
 
+resource "azurerm_kubernetes_cluster_node_pool" "apppool" {
+  name                  = "apppool"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
+  vm_size               = "Standard_B2ms"
+  node_count            = var.app_pool_size
+  fips_enabled          = false
+  node_labels = {
+    "type": "app"
+  }
+}
 
 resource "azurerm_mariadb_server" "mariadb_server" {
   name                = "mariadb-svr"

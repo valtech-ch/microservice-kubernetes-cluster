@@ -21,6 +21,8 @@ spec:
         app: file-storage
         auth: jwt
     spec:
+      nodeSelector:
+        type: app
       containers:
         - name: file-storage
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
