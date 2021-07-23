@@ -13,4 +13,4 @@ spec:
   source:
     chart: gradle-cache
     repoURL: 'https://slamdev.github.io/helm-charts/'
-    targetRevision: 0.0.6
+    targetRevision: 0.0.7
