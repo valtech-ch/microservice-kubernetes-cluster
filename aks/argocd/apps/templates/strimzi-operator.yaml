@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: strimzi-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kafka
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    chart: strimzi-kafka-operator
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |-
+        watchNamespaces:
+          - default
+        nodeSelector:
+          type: app
+        tolerations:
+          - effect: NoSchedule
+            key: type
+            operator: Equal
+            value: app
+    repoURL: 'https://strimzi.io/charts/'
+    targetRevision: 0.24.0
