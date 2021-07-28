@@ -14,10 +14,16 @@ spec:
   source:
     chart: fluentd-elasticsearch
     helm:
+      valueFiles:
+        - values.yaml
+      values: |-
+        tolerations:
+          - key: "type"
+            operator: Equal
+            value: "app"
+            effect: NoSchedule
       parameters:
         - name: 'elasticsearch.hosts[0]'
           value: 'elasticsearch-master-headless.logging.svc.cluster.local:9200'
-      valueFiles:
-        - values.yaml
     repoURL: 'https://kokuwaio.github.io/helm-charts'
     targetRevision: 11.13.0

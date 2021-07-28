@@ -13,6 +13,16 @@ spec:
   source:
     chart: falco
     helm:
+      valueFiles:
+        - values.yaml
+      values: |-
+        tolerations:
+          - effect: NoSchedule
+            key: node-role.kubernetes.io/master
+          - key: "type"
+            operator: Equal
+            value: "app"
+            effect: NoSchedule
       parameters:
         - name: falco.jsonOutput
           value: 'true'
