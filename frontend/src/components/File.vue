@@ -101,7 +101,6 @@ export default defineComponent({
   margin: 1rem auto;
   display: flex;
   flex-direction: row;
-  flex-flow: row;
   flex-grow: 2;
   align-items: center;
   justify-items: center;

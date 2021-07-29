@@ -67,9 +67,6 @@ export default defineComponent({
   height: 15rem;
 }
 
-.form-group {
-}
-
 .form-label {
   font-size: 2rem;
   margin-right: 1rem;

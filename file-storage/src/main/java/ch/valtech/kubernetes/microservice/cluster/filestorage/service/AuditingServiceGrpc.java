@@ -53,8 +53,7 @@ public class AuditingServiceGrpc implements AuditingService {
 
   @Override
   public Flux<MessageDto> search(SearchRequest searchRequest) {
-    return persistenceStub.search(searchRequest)
-        .map(messageResponse -> auditingMapper.toMessageDto(messageResponse));
+    return persistenceStub.search(searchRequest).map(auditingMapper::toMessageDto);
   }
 
 }
