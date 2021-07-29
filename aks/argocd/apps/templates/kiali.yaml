@@ -20,5 +20,10 @@ spec:
           value: 'false'
         - name: istio_namespace
           value: istio-system
+      values: |-
+        external_services:
+          tracing:
+            in_cluster_url: 'http://tracing.istio-system.svc.cluster.local/jaeger'
+            url: 'https://vtch-aks-demo-monitoring.duckdns.org/jaeger'
     repoURL: 'https://kiali.org/helm-charts'
     targetRevision: 1.37.0
