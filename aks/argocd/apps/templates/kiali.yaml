@@ -15,7 +15,7 @@ spec:
     helm:
       parameters:
         - name: auth.strategy
-          value: anonymous
+          value: openid
         - name: deployment.ingress_enabled
           value: 'false'
         - name: istio_namespace
@@ -25,5 +25,12 @@ spec:
           tracing:
             in_cluster_url: 'http://tracing.istio-system.svc.cluster.local/jaeger'
             url: 'https://vtch-aks-demo-monitoring.duckdns.org/jaeger'
+        auth:
+          openid:
+            client_id: "kiali-client"
+            disable_rbac: true
+            issuer_uri: "https://vtch-aks-demo.duckdns.org/auth/realms/cluster"
+            scopes: ["openid"]
+            username_claim: "sub"
     repoURL: 'https://kiali.org/helm-charts'
     targetRevision: 1.37.0

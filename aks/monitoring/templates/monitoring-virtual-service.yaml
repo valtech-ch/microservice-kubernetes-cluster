@@ -9,7 +9,11 @@ spec:
   gateways:
     - monitoring-gateway
   http:
-    - match:
+    - headers:
+        request:
+          set:
+            X-Forwarded-Port: '443'
+      match:
         - uri:
             prefix: "/kiali"
       route:
