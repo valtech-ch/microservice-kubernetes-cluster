@@ -31,6 +31,6 @@ spec:
             disable_rbac: true
             issuer_uri: "https://vtch-aks-demo.duckdns.org/auth/realms/cluster"
             scopes: ["openid"]
-            username_claim: "sub"
+            username_claim: "email"
     repoURL: 'https://kiali.org/helm-charts'
     targetRevision: 1.37.0
