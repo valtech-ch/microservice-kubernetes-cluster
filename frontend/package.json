@@ -20,7 +20,7 @@
     "@opentelemetry/tracing": "0.24.0",
     "@opentelemetry/web": "0.24.0",
     "axios": "0.21.1",
-    "core-js": "3.15.2",
+    "core-js": "3.16.1",
     "keycloak-js": "15.0.1",
     "postcss": "8.3.6",
     "vue": "3.2.1",
