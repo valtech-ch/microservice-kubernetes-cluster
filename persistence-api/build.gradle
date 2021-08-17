@@ -63,8 +63,8 @@ sonarqube {
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-    implementation 'io.grpc:grpc-protobuf:1.39.0'
-    implementation 'io.grpc:grpc-stub:1.39.0'
+    implementation 'io.grpc:grpc-protobuf:1.40.0'
+    implementation 'io.grpc:grpc-stub:1.40.0'
     implementation 'io.projectreactor:reactor-core:3.4.9'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.1.0'
     implementation 'javax.validation:validation-api:2.0.1.Final'
