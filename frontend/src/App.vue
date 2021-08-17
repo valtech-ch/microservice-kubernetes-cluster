@@ -11,7 +11,7 @@ import {ZoneContextManager} from '@opentelemetry/context-zone';
 import {registerInstrumentations} from '@opentelemetry/instrumentation';
 import {DocumentLoadInstrumentation} from '@opentelemetry/instrumentation-document-load';
 import {Resource} from '@opentelemetry/resources';
-import {ResourceAttributes} from '@opentelemetry/semantic-conventions';
+import {SemanticResourceAttributes} from '@opentelemetry/semantic-conventions';
 import {CompositePropagator, HttpTraceContextPropagator} from '@opentelemetry/core';
 
 const zipkinOptions = {
@@ -21,7 +21,7 @@ const zipkinOptions = {
 
 const providerWithZone = new WebTracerProvider({
   resource: new Resource({
-    [ResourceAttributes.SERVICE_NAME]: 'frontend',
+    [SemanticResourceAttributes.SERVICE_NAME]: 'frontend',
   }),
 });
 providerWithZone.addSpanProcessor(new BatchSpanProcessor(new ZipkinExporter(zipkinOptions)));
