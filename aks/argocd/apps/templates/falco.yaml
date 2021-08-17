@@ -33,7 +33,7 @@ spec:
         - name: falco.logLevel
           value: warning
     repoURL: 'https://falcosecurity.github.io/charts'
-    targetRevision: 1.15.3
+    targetRevision: 1.15.7
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
