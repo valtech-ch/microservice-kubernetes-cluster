@@ -79,7 +79,7 @@ dependencies {
 	implementation 'org.apache.kafka:kafka-streams:2.8.0'
 	implementation 'org.togglz:togglz-spring-boot-starter:2.9.8'
 	implementation 'org.togglz:togglz-spring-security:2.9.9'
-	implementation 'org.togglz:togglz-console:2.9.8'
+	implementation 'org.togglz:togglz-console:2.9.9'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.12.0.RELEASE'
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
