@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: mariadb
+  namespace: default
+spec:
+  hosts:
+    - mariadb-svr.mariadb.database.azure.com
+  ports:
+    - number: 3306
+      name: database
+      protocol: TCP
+  resolution: DNS
+  location: MESH_EXTERNAL
