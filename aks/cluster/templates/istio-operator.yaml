@@ -1,0 +1,29 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: default
+  name: istiocontrolplane
+spec:
+  profile: demo
+  meshConfig:
+    outboundTrafficPolicy:
+      mode: REGISTRY_ONLY
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: true
+        k8s:
+          overlays:
+            - kind: Service
+              name: istio-ingressgateway
+              patches:
+                - path: spec.externalTrafficPolicy
+                  value: "Local"
+    egressGateways:
+      - name: istio-egressgateway
+        enabled: true
+  values:
+    global:
+      tracer:
+        zipkin:
+          address: zipkin.istio-system.svc.cluster.local:9411
