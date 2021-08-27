@@ -62,7 +62,7 @@ sonarqube {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
     implementation 'io.grpc:grpc-protobuf:1.40.0'
     implementation 'io.grpc:grpc-stub:1.40.0'
     implementation 'io.projectreactor:reactor-core:3.4.9'
