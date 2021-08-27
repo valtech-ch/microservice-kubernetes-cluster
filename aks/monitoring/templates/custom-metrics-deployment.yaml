@@ -20,7 +20,7 @@ spec:
       - name: kube-metrics-adapter
         image: quay.io/stefanprodan/kube-metrics-adapter:master-478c97d
         args:
-        - --prometheus-server=http://prometheus.istio-system.svc.cluster.local:9090
+        - --prometheus-server=http://prometheus.prometheus.svc.cluster.local:9090
         resources:
           limits:
             cpu: 1000m
