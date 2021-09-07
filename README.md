@@ -19,6 +19,10 @@
 * [Docker Compose](https://docs.docker.com/compose/install/)
 * [NPM](https://www.npmjs.com/get-npm)
 
+## Architecture
+
+* [Diagrams](docs/architecture.md)
+
 ## Azure
 
 ### Setup Kubectl
