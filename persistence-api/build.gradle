@@ -65,7 +65,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
     implementation 'io.grpc:grpc-protobuf:1.40.1'
     implementation 'io.grpc:grpc-stub:1.40.1'
-    implementation 'io.projectreactor:reactor-core:3.4.9'
+    implementation 'io.projectreactor:reactor-core:3.4.10'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.0'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
