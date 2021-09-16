@@ -37,11 +37,6 @@ spec:
             port:
               number: 9411
             host: zipkin
-          corsPolicy:
-            allowOrigins:
-              - exact: https://vtch-aks-demo.duckdns.org
-            allowMethods:
-              - POST
     - match:
         - uri:
             prefix: "/"

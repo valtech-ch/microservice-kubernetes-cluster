@@ -29,7 +29,7 @@ spec:
               value: "elasticsearch"
             - name: ES_SERVER_URLS
               value: "http://elasticsearch-master-headless.logging.svc.cluster.local:9200"
-            - name: COLLECTOR_ZIPKIN_HTTP_PORT
+            - name: COLLECTOR_ZIPKIN_HOST_PORT
               value: "9411"
             - name: MEMORY_MAX_TRACES
               value: "10000"
