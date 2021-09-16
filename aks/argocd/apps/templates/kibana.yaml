@@ -19,4 +19,4 @@ spec:
         - name: resources.requests.memory
           value: 1Gi
     repoURL: 'https://helm.elastic.co'
-    targetRevision: 7.13.4
+    targetRevision: 7.14.0
