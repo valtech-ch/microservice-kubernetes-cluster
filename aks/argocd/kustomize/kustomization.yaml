@@ -6,7 +6,7 @@ resources:
   - base/argocd-virtual-service.yaml
   - base/argocd-policy.yaml
   - base/vtch-aks-demo-argocd-certificate.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.1.0/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.1.2/manifests/install.yaml
 
 # changes to config maps
 patchesStrategicMerge:

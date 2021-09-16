@@ -33,4 +33,4 @@ spec:
             scopes: ["openid"]
             username_claim: "email"
     repoURL: 'https://kiali.org/helm-charts'
-    targetRevision: 1.39.0
+    targetRevision: 1.40.1
