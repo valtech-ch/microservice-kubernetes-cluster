@@ -31,14 +31,6 @@ spec:
             host: tracing
     - match:
         - uri:
-            prefix: "/api/v2"
-      route:
-        - destination:
-            port:
-              number: 9411
-            host: zipkin
-    - match:
-        - uri:
             prefix: "/"
       route:
         - destination:

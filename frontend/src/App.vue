@@ -15,7 +15,7 @@ import {SemanticResourceAttributes} from '@opentelemetry/semantic-conventions';
 import {CompositePropagator, HttpTraceContextPropagator} from '@opentelemetry/core';
 
 const zipkinOptions = {
-  url: 'https://vtch-aks-demo-monitoring.duckdns.org/api/v2/spans',
+  url: 'https://vtch-aks-demo.duckdns.org/api/v2/spans',
   headers: {}
 };
 
