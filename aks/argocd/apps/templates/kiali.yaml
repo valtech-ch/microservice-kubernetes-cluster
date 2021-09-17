@@ -25,6 +25,8 @@ spec:
           tracing:
             in_cluster_url: 'http://tracing.istio-system.svc.cluster.local/jaeger'
             url: 'https://vtch-aks-demo-monitoring.duckdns.org/jaeger'
+          prometheus:
+            url: "http://prometheus.prometheus.svc.cluster.local:9090"
         auth:
           openid:
             client_id: "kiali-client"
