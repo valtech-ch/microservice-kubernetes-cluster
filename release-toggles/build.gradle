@@ -41,7 +41,7 @@ dependencies {
     implementation 'org.springframework:spring-web:5.3.10'
     implementation 'org.springframework.security:spring-security-config:5.5.2'
     implementation 'org.springframework.security:spring-security-web:5.5.2'
-    implementation 'org.togglz:togglz-spring-boot-starter:2.9.9'
+    implementation 'org.togglz:togglz-spring-boot-starter:3.0.0'
     implementation 'org.togglz:togglz-spring-security:3.0.0'
     implementation 'org.togglz:togglz-console:2.9.9'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
