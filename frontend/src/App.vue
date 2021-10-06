@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import {BatchSpanProcessor} from '@opentelemetry/tracing';
-import {WebTracerProvider} from '@opentelemetry/web';
+import {BatchSpanProcessor} from '@opentelemetry/sdk-trace-base';
+import {WebTracerProvider} from '@opentelemetry/sdk-trace-web';
 import {ZipkinExporter} from '@opentelemetry/exporter-zipkin';
 import {XMLHttpRequestInstrumentation} from '@opentelemetry/instrumentation-xml-http-request';
 import {ZoneContextManager} from '@opentelemetry/context-zone';
@@ -12,7 +12,7 @@ import {registerInstrumentations} from '@opentelemetry/instrumentation';
 import {DocumentLoadInstrumentation} from '@opentelemetry/instrumentation-document-load';
 import {Resource} from '@opentelemetry/resources';
 import {SemanticResourceAttributes} from '@opentelemetry/semantic-conventions';
-import {CompositePropagator, HttpTraceContextPropagator} from '@opentelemetry/core';
+import {CompositePropagator, W3CTraceContextPropagator} from '@opentelemetry/core';
 
 const zipkinOptions = {
   url: 'https://vtch-aks-demo-monitoring.duckdns.org/api/v2/spans',
