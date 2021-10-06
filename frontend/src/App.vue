@@ -29,7 +29,7 @@ providerWithZone.register({
   contextManager: new ZoneContextManager(),
   propagator: new CompositePropagator({
     propagators: [
-      new HttpTraceContextPropagator(),
+      new W3CTraceContextPropagator(),
     ],
   })
 });
