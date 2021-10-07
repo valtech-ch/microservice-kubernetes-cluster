@@ -81,8 +81,8 @@ dependencies {
 	implementation 'org.togglz:togglz-spring-security:3.0.0'
 	implementation 'org.togglz:togglz-console:3.0.0'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.12.0.RELEASE'
-	compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -98,8 +98,8 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test:3.4.10'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.9.2'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.2'
-	testCompileOnly 'org.projectlombok:lombok:1.18.20'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+	testCompileOnly 'org.projectlombok:lombok:1.18.22'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 dependencyManagement {
