@@ -36,7 +36,7 @@ export default defineComponent({
   methods: {
     downloadFile() {
       let token = localStorage.getItem("vue-token");
-      axios.get('filestorage/api/files/' + this.filename, {
+      axios.get<Blob>('filestorage/api/files/' + this.filename, {
         responseType: 'blob',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -45,9 +45,8 @@ export default defineComponent({
         }
       })
       .then(res => {
-        const blob = new Blob([res.data])
         const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
+        link.href = URL.createObjectURL(res.data)
         link.download = this.filename
         link.click()
         URL.revokeObjectURL(link.href)
@@ -57,7 +56,7 @@ export default defineComponent({
     },
     listChanges() {
       let token = localStorage.getItem("vue-token");
-      axios.get('filestorage/api/files/changes/' + this.filename, {
+      axios.get<[]>('filestorage/api/files/changes/' + this.filename, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',

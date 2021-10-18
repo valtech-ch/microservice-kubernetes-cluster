@@ -37,7 +37,7 @@ export default defineComponent({
   methods: {
     loadAllFiles() {
       if (this.token) {
-        axios.get('filestorage/api/files', {
+        axios.get<[]>('filestorage/api/files', {
           headers: {
             'Authorization': `Bearer ${this.token}`,
             'Access-Control-Allow-Origin': '*',
