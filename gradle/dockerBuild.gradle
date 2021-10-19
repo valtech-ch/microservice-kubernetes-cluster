@@ -24,7 +24,7 @@ tasks.register('downloadOpentelemetryAgent') {
     def opentelemetryAgent = new File(agentDir, 'opentelemetry-javaagent-all.jar')
     if (!opentelemetryAgent.exists()) {
       println('Download OpenTelemetry agent')
-      new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.4.0/opentelemetry-javaagent-all.jar')
+      new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.6.2/opentelemetry-javaagent-all.jar')
               .withInputStream{ i -> opentelemetryAgent.withOutputStream{ it << i }}
     }
     lockFile.delete()
@@ -48,6 +48,7 @@ jib {
                 '-Dotel.exporter.jaeger.endpoint=http://jaeger-collector.istio-system.svc.cluster.local:14250',
                 '-Dotel.metrics.exporter=none',
                 '-Dotel.resource.attributes=service.name=' + project.description,
+                '-Dotel.javaagent.exclude-classes=org.springframework.boot.actuate.endpoint.*',
                 '-javaagent:/app/opentelemetry-javaagent-all.jar']
   }
   extraDirectories {
