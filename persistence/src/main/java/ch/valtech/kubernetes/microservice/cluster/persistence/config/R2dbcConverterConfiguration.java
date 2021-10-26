@@ -8,6 +8,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.r2dbc.convert.R2dbcCustomConversions;
+import org.springframework.data.r2dbc.dialect.MySqlDialect;
 
 @Configuration
 public class R2dbcConverterConfiguration {
@@ -34,7 +35,8 @@ public class R2dbcConverterConfiguration {
 
   @Bean
   public R2dbcCustomConversions customConversions() {
-    return new R2dbcCustomConversions(List.of(new ActionWritingConverter(), new ActionReadingConverter()));
+    return R2dbcCustomConversions.of(MySqlDialect.INSTANCE,
+        List.of(new ActionWritingConverter(), new ActionReadingConverter()));
   }
 
 }
