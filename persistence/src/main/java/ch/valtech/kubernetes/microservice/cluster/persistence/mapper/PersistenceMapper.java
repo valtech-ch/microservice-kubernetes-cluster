@@ -48,8 +48,7 @@ public interface PersistenceMapper {
   @Mapping(target = "action", source = "action")
   AuditingRequestDto toAuditingRequestDto(AuditingRequest auditingRequest);
 
-  // TODO replace target to MappingConstants.THROW_EXCEPTION in version 1.5
-  @ValueMapping(source = "UNRECOGNIZED", target = MappingConstants.NULL)
+  @ValueMapping(source = "UNRECOGNIZED", target = MappingConstants.THROW_EXCEPTION)
   Action toAction(AuditingRequest.Action action);
 
   @Named("now")
