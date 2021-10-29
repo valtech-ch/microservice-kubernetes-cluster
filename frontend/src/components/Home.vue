@@ -20,6 +20,7 @@ import UploadFile from "./UploadFile.vue";
 import File from "./File.vue";
 
 export default defineComponent({
+  // eslint-disable-next-line
   name: 'Home',
   components: {
     UploadFile,
