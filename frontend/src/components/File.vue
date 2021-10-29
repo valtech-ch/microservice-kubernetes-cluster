@@ -21,6 +21,7 @@ import axios from 'axios';
 import {VueCookieNext as $cookie} from 'vue-cookie-next'
 
 export default defineComponent({
+  // eslint-disable-next-line
   name: 'File',
   props: {
     filename: {
