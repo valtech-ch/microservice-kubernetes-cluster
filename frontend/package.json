@@ -41,7 +41,7 @@
     "@vue/eslint-config-typescript": "9.0.0",
     "cross-env": "7.0.3",
     "eslint": "8.1.0",
-    "eslint-plugin-vue": "7.20.0",
+    "eslint-plugin-vue": "8.0.1",
     "jest": "27.3.1",
     "jest-sonar-reporter": "2.0.0",
     "sonarqube-scanner": "2.8.1",
