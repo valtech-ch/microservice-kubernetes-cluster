@@ -27,6 +27,8 @@ const keycloak = Keycloak({
 })
 
 export default defineComponent({
+  // eslint-disable-next-line
+  name: 'Login',
   methods: {
     refreshToken() {
       keycloak.updateToken(70).then((refreshed: boolean) => {
