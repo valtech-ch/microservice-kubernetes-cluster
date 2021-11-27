@@ -22,7 +22,7 @@
     "axios": "0.24.0",
     "core-js": "3.19.1",
     "keycloak-js": "15.0.2",
-    "postcss": "8.3.11",
+    "postcss": "8.4.4",
     "vue": "3.2.21",
     "vue-axios": "3.4.0",
     "vue-class-component": "8.0.0-rc.1",
