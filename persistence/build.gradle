@@ -78,7 +78,7 @@ dependencies {
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.0.3'
     runtimeOnly 'io.r2dbc:r2dbc-h2:0.8.4.RELEASE'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    runtimeOnly 'com.h2database:h2:1.4.200'
+    runtimeOnly 'com.h2database:h2:2.0.202'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.0.Beta1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
