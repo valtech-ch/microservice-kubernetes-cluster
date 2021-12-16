@@ -77,7 +77,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.0.3'
     runtimeOnly 'io.r2dbc:r2dbc-h2:0.8.4.RELEASE'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
     runtimeOnly 'com.h2database:h2:1.4.200'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.0.Beta1'
@@ -85,7 +85,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.testcontainers:junit-jupiter:1.16.2'
-    testImplementation "org.testcontainers:mariadb:1.16.2"
+    testImplementation 'org.testcontainers:mariadb:1.16.2'
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
     testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.8'
     testImplementation 'io.jsonwebtoken:jjwt:0.9.1'

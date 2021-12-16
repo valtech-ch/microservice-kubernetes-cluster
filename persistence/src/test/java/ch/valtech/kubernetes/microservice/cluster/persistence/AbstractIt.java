@@ -18,7 +18,7 @@ public abstract class AbstractIt {
   static final MariaDBContainer MARIADB_CONTAINER;
 
   static {
-    MARIADB_CONTAINER = new MariaDBContainer("mariadb:10.6")
+    MARIADB_CONTAINER = new MariaDBContainer("mariadb:10.3")
         .withDatabaseName("messaging")
         .withUsername("sa")
         .withPassword("password");
