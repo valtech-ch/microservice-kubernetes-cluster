@@ -66,7 +66,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Python install requests dependency
-        uses: py-actions/py-dependency-install@v2
+        uses: py-actions/py-dependency-install@v3
         with:
           path: "scripts/release-toggles/requirements.txt"
           update-pip: "false"
