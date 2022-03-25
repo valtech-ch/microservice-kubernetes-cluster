@@ -8,6 +8,9 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
+springfox:
+  documentation:
+    enabled: false
 server:
   port: 8081
   http2:
