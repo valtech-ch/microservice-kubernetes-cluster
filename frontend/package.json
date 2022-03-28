@@ -21,7 +21,7 @@
     "@opentelemetry/semantic-conventions": "1.0.1",
     "axios": "0.24.0",
     "core-js": "3.21.1",
-    "keycloak-js": "16.1.0",
+    "keycloak-js": "16.1.1",
     "postcss": "8.4.12",
     "vue": "3.2.26",
     "vue-axios": "3.4.1",
