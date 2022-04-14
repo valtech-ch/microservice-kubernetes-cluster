@@ -95,7 +95,7 @@ dependencies {
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
 	testImplementation 'io.grpc:grpc-testing:1.45.1'
 	testImplementation 'org.testcontainers:testcontainers:1.16.3'
-	testImplementation 'org.testcontainers:junit-jupiter:1.16.3'
+	testImplementation 'org.testcontainers:junit-jupiter:1.17.1'
 	testImplementation 'io.projectreactor:reactor-test:3.4.17'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.9.3'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
