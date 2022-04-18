@@ -9,7 +9,7 @@ plugins {
 project.description = 'Security Config'
 
 ext {
-    lombokVersion = '1.18.22'
+    lombokVersion = '1.18.24'
     springBootVersion = '2.6.6'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = []
