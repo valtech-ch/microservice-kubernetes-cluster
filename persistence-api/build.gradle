@@ -10,7 +10,7 @@ plugins {
 project.description = 'Persistence API'
 
 ext {
-    lombokVersion = '1.18.22'
+    lombokVersion = '1.18.24'
 }
 
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
