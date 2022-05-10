@@ -91,7 +91,7 @@ dependencies {
 	testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
 	testImplementation 'org.springframework.kafka:spring-kafka-test:2.8.5'
 	testImplementation 'org.apache.kafka:kafka-clients:3.0.0:test'
-	testImplementation 'org.apache.kafka:kafka_2.13:3.2.0'
+	testImplementation 'org.apache.kafka:kafka_2.13:3.0.0'
 	testImplementation 'org.apache.kafka:kafka_2.13:3.0.0:test'
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
 	testImplementation 'io.grpc:grpc-testing:1.46.0'
