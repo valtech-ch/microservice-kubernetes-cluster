@@ -13,4 +13,4 @@ spec:
   source:
     chart: mailhog
     repoURL: 'https://codecentric.github.io/helm-charts'
-    targetRevision: 5.0.1
+    targetRevision: 5.0.7
