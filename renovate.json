@@ -2,5 +2,14 @@
   "extends": [
     "config:base"
   ],
-  "baseBranches": ["develop"]
+  "baseBranches": ["develop"],
+  "dependencyDashboard": true,
+  "automerge": true,
+  "platformAutomerge": true,
+  "major": {
+    "automerge": false
+  },
+  "minor": {
+    "automerge": false
+  }
 }
