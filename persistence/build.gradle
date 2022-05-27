@@ -13,7 +13,7 @@ project.description = 'persistence'
 
 ext {
     imageName = 'persistence'
-    springCloudVersion = '2021.0.2'
+    springCloudVersion = '2021.0.3'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*PersistenceApplication.java",
                                  "*PersistenceControllerGrpc.java",
