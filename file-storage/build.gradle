@@ -99,7 +99,7 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter:1.17.2'
 	testImplementation 'io.projectreactor:reactor-test:3.4.18'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.10.0'
-	testImplementation 'com.squareup.okhttp3:mockwebserver:4.9.3'
+	testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
