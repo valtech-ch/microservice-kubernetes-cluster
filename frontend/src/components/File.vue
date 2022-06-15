@@ -36,7 +36,7 @@ export default defineComponent({
   },
   methods: {
     downloadFile() {
-      let token = localStorage.getItem("vue-token");
+      const token = localStorage.getItem("vue-token");
       axios.get<Blob>('filestorage/api/files/' + this.filename, {
         responseType: 'blob',
         headers: {
@@ -56,7 +56,7 @@ export default defineComponent({
       })
     },
     listChanges() {
-      let token = localStorage.getItem("vue-token");
+      const token = localStorage.getItem("vue-token");
       axios.get<[]>('filestorage/api/files/changes/' + this.filename, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -72,7 +72,7 @@ export default defineComponent({
       })
     },
     deleteFile() {
-      let token = localStorage.getItem("vue-token");
+      const token = localStorage.getItem("vue-token");
       axios.delete('filestorage/api/files/' + this.filename, {
         headers: {
           'Authorization': `Bearer ${token}`,

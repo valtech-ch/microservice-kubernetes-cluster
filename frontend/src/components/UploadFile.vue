@@ -24,13 +24,13 @@ export default defineComponent({
   },
   methods: {
     handleFileUpload() {
-      let inputElement = this.$refs.file as HTMLInputElement;
+      const inputElement = this.$refs.file as HTMLInputElement;
       this.file = inputElement.files?.item(0) ?? {} as File;
     },
     uploadFile() {
-      let token = localStorage.getItem("vue-token");
+      const token = localStorage.getItem("vue-token");
       if (token && this.file) {
-        let formData = new FormData();
+        const formData = new FormData();
         // Add the form data we need to submit
         formData.append('file', this.file);
 
