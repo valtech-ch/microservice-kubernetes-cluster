@@ -28,12 +28,12 @@ protobuf {
     // Configure the protoc executable
     protoc {
         // Download from repositories
-        artifact = 'com.google.protobuf:protoc:3.20.1'
+        artifact = 'com.google.protobuf:protoc:3.21.1'
     }
     // Locate the codegen plugins
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.46.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.47.0'
         }
         reactor {
             artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.3"
@@ -63,9 +63,9 @@ sonarqube {
 
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    implementation 'io.grpc:grpc-protobuf:1.46.0'
-    implementation 'io.grpc:grpc-stub:1.46.0'
-    implementation 'io.projectreactor:reactor-core:3.4.18'
+    implementation 'io.grpc:grpc-protobuf:1.47.0'
+    implementation 'io.grpc:grpc-stub:1.47.0'
+    implementation 'io.projectreactor:reactor-core:3.4.19'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
