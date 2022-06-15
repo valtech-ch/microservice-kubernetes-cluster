@@ -57,7 +57,7 @@ export default defineComponent({
     onLogout() {
       const params = new URLSearchParams()
       params.append('client_id', 'login-app')
-      let refreshToken = localStorage.getItem("vue-refresh-token");
+      const refreshToken = localStorage.getItem("vue-refresh-token");
       if (refreshToken !== null) {
         params.append('refresh_token', refreshToken);
       }
