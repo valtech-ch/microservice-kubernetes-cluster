@@ -77,7 +77,7 @@ dependencies {
     implementation 'io.grpc:grpc-protobuf:1.47.0'
     implementation 'net.devh:grpc-server-spring-boot-starter:2.13.1.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.0.3'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.2'
     runtimeOnly 'io.r2dbc:r2dbc-h2:0.9.1.RELEASE'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.5'
     runtimeOnly 'com.h2database:h2:2.1.214'
