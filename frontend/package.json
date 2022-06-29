@@ -42,7 +42,7 @@
     "cross-env": "7.0.3",
     "eslint": "8.18.0",
     "eslint-plugin-vue": "9.1.1",
-    "jest": "28.1.1",
+    "jest": "28.1.2",
     "jest-sonar-reporter": "2.0.0",
     "sonarqube-scanner": "2.8.1",
     "supertest": "6.2.3",
