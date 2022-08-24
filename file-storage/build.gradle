@@ -81,7 +81,7 @@ dependencies {
 	implementation 'org.togglz:togglz-spring-security:3.2.1'
 	implementation 'org.togglz:togglz-console:3.2.1'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.13.1.RELEASE'
-	implementation 'io.grpc:grpc-core:1.48.1'
+	implementation 'io.grpc:grpc-core:1.49.0'
 	implementation 'io.grpc:grpc-protobuf:1.49.0'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
