@@ -82,7 +82,7 @@ dependencies {
 	implementation 'org.togglz:togglz-console:3.2.1'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.13.1.RELEASE'
 	implementation 'io.grpc:grpc-core:1.49.1'
-	implementation 'io.grpc:grpc-protobuf:1.49.0'
+	implementation 'io.grpc:grpc-protobuf:1.49.1'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
