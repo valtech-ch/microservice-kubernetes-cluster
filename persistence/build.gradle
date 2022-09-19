@@ -74,7 +74,7 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
     implementation 'org.springframework.kafka:spring-kafka:2.8.8'
     implementation 'io.grpc:grpc-core:1.49.1'
-    implementation 'io.grpc:grpc-protobuf:1.49.0'
+    implementation 'io.grpc:grpc-protobuf:1.49.1'
     implementation 'net.devh:grpc-server-spring-boot-starter:2.13.1.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.2'
