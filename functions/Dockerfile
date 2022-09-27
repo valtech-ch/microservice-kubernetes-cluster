@@ -1,5 +1,5 @@
-ARG JAVA_VERSION=11
-FROM mcr.microsoft.com/azure-functions/java:3.0-java$JAVA_VERSION
+ARG JAVA_VERSION=17
+FROM mcr.microsoft.com/azure-functions/java:4-java$JAVA_VERSION
 
 COPY /build/azure-functions /functions
 WORKDIR /functions
