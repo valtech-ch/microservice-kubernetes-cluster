@@ -1,6 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "https://repo.spring.io/milestone"
+        }
     }
     dependencies {
         classpath 'org.asciidoctor:asciidoctor-gradle-jvm:3.3.2'
@@ -27,6 +30,9 @@ ext.gitHash = versionDetails().gitHashFull
 allprojects {
     repositories {
         mavenCentral()
+        maven {
+            url "https://repo.spring.io/milestone"
+        }
     }
 }
 
