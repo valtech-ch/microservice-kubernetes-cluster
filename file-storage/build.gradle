@@ -53,7 +53,6 @@ graalvmNative {
 			resources.autodetect()
 		}
 		main {
-			imageName.set('app')
 			buildArgs.add('--verbose')
 			buildArgs.add('--add-opens=java.base/java.nio=ALL-UNNAMED')
 			buildArgs.add('--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED')
@@ -70,6 +69,13 @@ graalvmNative {
 
 nativeBuild {
 	buildArgs('-H:ReflectionConfigurationFiles=../../../src/main/resources/reflection-config.json')
+}
+
+bootBuildImage {
+	builder = "paketobuildpacks/builder:tiny"
+	environment = [
+			"BP_NATIVE_IMAGE" : "true"
+	]
 }
 
 dependencies {
