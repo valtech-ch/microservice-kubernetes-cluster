@@ -25,5 +25,7 @@ spec:
       parameters:
         - name: 'elasticsearch.hosts[0]'
           value: 'elasticsearch-master-headless.logging.svc.cluster.local:9200'
+        - name: image.tag
+          value: v3.4.0
     repoURL: 'https://kokuwaio.github.io/helm-charts'
     targetRevision: 13.7.0
