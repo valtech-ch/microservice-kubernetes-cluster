@@ -17,7 +17,7 @@ spec:
         - name: installCRDs
           value: 'true'
     repoURL: 'https://charts.jetstack.io'
-    targetRevision: v1.8.0
+    targetRevision: v1.9.1
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
