@@ -102,7 +102,7 @@ spec:
 #              mountPath: "/etc/file-storage/uploads"
         - name: hazelcast
           imagePullPolicy: IfNotPresent
-          image: hazelcast/hazelcast:4.2
+          image: hazelcast/hazelcast:4.2.5
           env:
             - name: JAVA_OPTS
               value: >-
