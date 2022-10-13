@@ -24,7 +24,7 @@ tasks.register('downloadOpentelemetryAgent') {
     def opentelemetryAgent = new File(agentDir, 'opentelemetry-javaagent-all.jar')
     if (!opentelemetryAgent.exists()) {
       println('Download OpenTelemetry agent')
-      new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.6.2/opentelemetry-javaagent-all.jar')
+      new URL('https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.18.0/opentelemetry-javaagent.jar')
               .withInputStream{ i -> opentelemetryAgent.withOutputStream{ it << i }}
     }
     lockFile.delete()

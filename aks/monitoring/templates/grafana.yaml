@@ -4,10 +4,10 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    helm.sh/chart: grafana-6.11.0
+    helm.sh/chart: grafana-6.31.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
-    app.kubernetes.io/version: "7.5.5"
+    app.kubernetes.io/version: "9.0.1"
     app.kubernetes.io/managed-by: Helm
   name: grafana
   namespace: istio-system
@@ -19,12 +19,13 @@ metadata:
   name: grafana
   namespace: istio-system
   labels:
-    helm.sh/chart: grafana-6.11.0
+    helm.sh/chart: grafana-6.31.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
-    app.kubernetes.io/version: "7.5.5"
+    app.kubernetes.io/version: "9.0.1"
     app.kubernetes.io/managed-by: Helm
 data:
+  allow-snippet-annotations: "false"
   grafana.ini: |
     [analytics]
     check_for_updates = true
@@ -37,35 +38,36 @@ data:
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
+
   datasources.yaml: |
     apiVersion: 1
     datasources:
-    - access: proxy
-      editable: true
-      isDefault: true
-      jsonData:
-        timeInterval: 5s
-      name: Prometheus
-      orgId: 1
-      type: prometheus
-      url: http://prometheus.prometheus.svc.cluster.local:9090
+      - access: proxy
+        editable: true
+        isDefault: true
+        jsonData:
+          timeInterval: 5s
+        name: Prometheus
+        orgId: 1
+        type: prometheus
+        url: http://prometheus.prometheus.svc.cluster.local:9090
   dashboardproviders.yaml: |
     apiVersion: 1
     providers:
-    - disableDeletion: false
-      folder: istio
-      name: istio
-      options:
-        path: /var/lib/grafana/dashboards/istio
-      orgId: 1
-      type: file
-    - disableDeletion: false
-      folder: istio
-      name: istio-services
-      options:
-        path: /var/lib/grafana/dashboards/istio-services
-      orgId: 1
-      type: file
+      - disableDeletion: false
+        folder: istio
+        name: istio
+        options:
+          path: /var/lib/grafana/dashboards/istio
+        orgId: 1
+        type: file
+      - disableDeletion: false
+        folder: istio
+        name: istio-services
+        options:
+          path: /var/lib/grafana/dashboards/istio-services
+        orgId: 1
+        type: file
 ---
 # Source: grafana/templates/service.yaml
 apiVersion: v1
@@ -74,10 +76,10 @@ metadata:
   name: grafana
   namespace: istio-system
   labels:
-    helm.sh/chart: grafana-6.11.0
+    helm.sh/chart: grafana-6.31.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
-    app.kubernetes.io/version: "7.5.5"
+    app.kubernetes.io/version: "9.0.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -86,6 +88,7 @@ spec:
       port: 3000
       protocol: TCP
       targetPort: 3000
+
   selector:
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
@@ -97,10 +100,10 @@ metadata:
   name: grafana
   namespace: istio-system
   labels:
-    helm.sh/chart: grafana-6.11.0
+    helm.sh/chart: grafana-6.31.1
     app.kubernetes.io/name: grafana
     app.kubernetes.io/instance: grafana
-    app.kubernetes.io/version: "7.5.5"
+    app.kubernetes.io/version: "9.0.1"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -117,20 +120,23 @@ spec:
         app.kubernetes.io/name: grafana
         app.kubernetes.io/instance: grafana
         app: grafana
+        sidecar.istio.io/inject: "false"
       annotations:
-        checksum/config: af4530cc6e67e63b6285f3ceccaf0aaa2a20d322e35c9f0ae48721add3b58eb0
+        checksum/config: 00cbea6713b515cc981941cb5cc4004e842e678e23fbb177bff4d890ac2d71da
         checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
         checksum/sc-dashboard-provider-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
-        sidecar.istio.io/inject: "false"
     spec:
+
       serviceAccountName: grafana
+      automountServiceAccountToken: true
       securityContext:
         fsGroup: 472
         runAsGroup: 472
         runAsUser: 472
+      enableServiceLinks: true
       containers:
         - name: grafana
-          image: "grafana/grafana:7.5.5"
+          image: "grafana/grafana:9.0.1"
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: config
@@ -144,10 +150,10 @@ spec:
               mountPath: "/var/lib/grafana/dashboards/istio-services"
             - name: config
               mountPath: "/etc/grafana/provisioning/datasources/datasources.yaml"
-              subPath: datasources.yaml
+              subPath: "datasources.yaml"
             - name: config
               mountPath: "/etc/grafana/provisioning/dashboards/dashboardproviders.yaml"
-              subPath: dashboardproviders.yaml
+              subPath: "dashboardproviders.yaml"
           ports:
             - name: service
               containerPort: 3000
@@ -191,6 +197,7 @@ spec:
         - name: config
           configMap:
             name: grafana
+
         - name: dashboards-istio
           configMap:
             name: istio-grafana-dashboards
