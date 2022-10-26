@@ -28,7 +28,7 @@ protobuf {
     // Configure the protoc executable
     protoc {
         // Download from repositories
-        artifact = 'com.google.protobuf:protoc:3.21.8'
+        artifact = 'com.google.protobuf:protoc:3.21.9'
     }
     // Locate the codegen plugins
     plugins {
