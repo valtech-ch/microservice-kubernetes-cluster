@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'org.asciidoctor:asciidoctor-gradle-jvm:3.3.2'
