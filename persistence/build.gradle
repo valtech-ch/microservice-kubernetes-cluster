@@ -75,7 +75,7 @@ dependencies {
     implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
     implementation 'io.grpc:grpc-core:1.51.0'
     implementation 'io.grpc:grpc-protobuf:1.51.0'
-    implementation 'net.devh:grpc-server-spring-boot-starter:2.13.1.RELEASE'
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.2'
     runtimeOnly 'io.r2dbc:r2dbc-h2:1.0.0.RELEASE'
