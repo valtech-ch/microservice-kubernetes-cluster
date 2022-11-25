@@ -17,7 +17,7 @@ public class GrpcExceptionTranslator {
 
   @GrpcExceptionHandler(ResponseStatusException.class)
   public Status handleResponseStatusException(ResponseStatusException e) {
-    if (HttpStatus.FORBIDDEN.equals(e.getStatus())) {
+    if (HttpStatus.FORBIDDEN.value() == e.getStatusCode().value()) {
       return Status.PERMISSION_DENIED.withDescription(e.getReason()).withCause(e);
     } else {
       return Status.UNKNOWN.withDescription(e.getReason()).withCause(e);
