@@ -3,50 +3,52 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
-@Order(1)
 @Configuration
 @EnableWebSecurity
-public class ActuatorSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class ActuatorSecurityConfiguration {
 
   private static final String ROLE_ACTUATOR = "actuator";
   private static final String ACTUATOR_REALM = "Actuator";
 
-  private final PasswordEncoder passwordEncoder;
-  private final String actuatorUsername;
-  private final String actuatorPassword;
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers(EndpointRequest.toAnyEndpoint()
+                .excluding(HealthEndpoint.class))
+            .hasRole(ROLE_ACTUATOR)
+            .anyRequest().permitAll()
+        )
+        .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
+    return http.build();
+  }
 
-  public ActuatorSecurityConfiguration(
-      PasswordEncoder passwordEncoder,
+  @Bean
+  public InMemoryUserDetailsManager userDetailsService(
       @Value("${management.security.username}") String actuatorUsername,
       @Value("${management.security.password}") String actuatorPassword) {
-    this.passwordEncoder = passwordEncoder;
-    this.actuatorUsername = actuatorUsername;
-    this.actuatorPassword = actuatorPassword;
+    UserDetails user = User
+        .withUsername(actuatorUsername)
+        .password(passwordEncoder().encode(actuatorPassword))
+        .roles(ROLE_ACTUATOR)
+        .build();
+    return new InMemoryUserDetailsManager(user);
   }
 
-  @Override
-  public void configure(HttpSecurity http) throws Exception {
-    http.requestMatcher(EndpointRequest.toAnyEndpoint()
-        .excluding(HealthEndpoint.class))
-        .authorizeRequests().anyRequest().hasRole(ROLE_ACTUATOR)
-        .and()
-        .httpBasic().realmName(ACTUATOR_REALM);
-  }
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication()
-        .withUser(actuatorUsername)
-        .password(passwordEncoder.encode(actuatorPassword))
-        .roles(ROLE_ACTUATOR);
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
 }
