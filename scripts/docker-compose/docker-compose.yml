@@ -141,7 +141,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:3.2.2
+    image: confluentinc/cp-zookeeper:3.3.1
     container_name: zookeeper
     networks:
       - services
@@ -155,7 +155,7 @@ services:
       - 22181:2181
 
   kafka:
-    image: confluentinc/cp-kafka:3.2.2
+    image: confluentinc/cp-kafka:3.3.1
     container_name: kafka
     networks:
       - services
