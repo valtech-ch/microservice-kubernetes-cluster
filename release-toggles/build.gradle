@@ -39,8 +39,8 @@ sonarqube {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.6'
     implementation 'org.springframework:spring-web:5.3.24'
-    implementation 'org.springframework.security:spring-security-config:5.8.0'
-    implementation 'org.springframework.security:spring-security-web:5.8.0'
+    implementation 'org.springframework.security:spring-security-config:5.8.1'
+    implementation 'org.springframework.security:spring-security-web:5.8.1'
     implementation 'org.togglz:togglz-spring-boot-starter:3.3.2'
     implementation 'org.togglz:togglz-spring-security:3.3.2'
     implementation 'org.togglz:togglz-console:3.3.2'
