@@ -36,7 +36,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
 
   private static final String ROLE_ACTUATOR = "actuator";
+  private static final String ACTUATOR_REALM = "Actuator";
   private static final String ROLE_TOGGLZ = "togglz";
+  private static final String TOGGLZ_REALM = "Togglz";
 
   @Bean
   public InMemoryUserDetailsManager userDetailsService(
@@ -62,109 +64,92 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
+  @Bean
   @Order(0)
-  @Configuration
-  public static class AppSecurityConfiguration {
+  public SecurityFilterChain filterChainApp(HttpSecurity http,
+      @Value("${application.hostname}") String hostname) throws Exception {
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
 
-    @Bean
-    public SecurityFilterChain filterChainApp(HttpSecurity http,
-        @Value("${application.hostname}") String hostname) throws Exception {
-      JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-      jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
+    CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+    csrfRepo.setCookieDomain(URI.create(hostname).getHost());
+    csrfRepo.setCookiePath("/");
 
-      CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
-      csrfRepo.setCookieDomain(URI.create(hostname).getHost());
-      csrfRepo.setCookiePath("/");
-
-      http.csrf()
-          .csrfTokenRepository(csrfRepo)
-          .withObjectPostProcessor(new ObjectPostProcessor<CsrfFilter>() {
-            /**
-             * Overrides required csrf protection matcher because of OAuth2 registering a wrong ignore matcher.
-             * https://github.com/spring-projects/spring-security/issues/8668
-             */
-            @Override
-            public <O extends CsrfFilter> O postProcess(O object) {
-              object.setRequireCsrfProtectionMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER);
-              return object;
-            }
-          })
-          .and()
-          .cors(withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
-          .headers()
-          .contentSecurityPolicy("default-src 'self'; "
-              + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
-              + "frame-src 'self' data:; "
-              + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
-              + "style-src 'self'; "
-              + "form-action 'self' data:; "
-              + "frame-ancestors 'self'; "
-              + "img-src 'self' data:; "
-              + "font-src 'self' data:")
-          .and()
-          .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-          .and()
-          .permissionsPolicy(permissions -> permissions.policy("geolocation=(none); "
-              + "midi=(none); "
-              + "sync-xhr=(none); "
-              + "microphone=(none); "
-              + "camera=(none); "
-              + "magnetometer=(none); "
-              + "gyroscope=(none); "
-              + "fullscreen=(self); "
-              + "payment=(none)"))
-          .and()
-          .frameOptions().deny()
-          .and()
-          .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and()
-          .authorizeHttpRequests(authz -> authz
-              .requestMatchers("/api/**").authenticated()
-              .anyRequest().authenticated()
-          )
-          .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
-      return http.build();
-    }
-
+    http.csrf()
+        .csrfTokenRepository(csrfRepo)
+        .withObjectPostProcessor(new ObjectPostProcessor<CsrfFilter>() {
+          /**
+           * Overrides required csrf protection matcher because of OAuth2 registering a wrong ignore matcher.
+           * https://github.com/spring-projects/spring-security/issues/8668
+           */
+          @Override
+          public <O extends CsrfFilter> O postProcess(O object) {
+            object.setRequireCsrfProtectionMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER);
+            return object;
+          }
+        })
+        .and()
+        .cors(withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
+        .headers()
+        .contentSecurityPolicy("default-src 'self'; "
+            + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
+            + "frame-src 'self' data:; "
+            + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
+            + "style-src 'self'; "
+            + "form-action 'self' data:; "
+            + "frame-ancestors 'self'; "
+            + "img-src 'self' data:; "
+            + "font-src 'self' data:")
+        .and()
+        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+        .and()
+        .permissionsPolicy(permissions -> permissions.policy("geolocation=(none); "
+            + "midi=(none); "
+            + "sync-xhr=(none); "
+            + "microphone=(none); "
+            + "camera=(none); "
+            + "magnetometer=(none); "
+            + "gyroscope=(none); "
+            + "fullscreen=(self); "
+            + "payment=(none)"))
+        .and()
+        .frameOptions().deny()
+        .and()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/api/**").authenticated()
+            .anyRequest().denyAll()
+        )
+        .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
+    return http.build();
   }
 
+  @Bean
   @Order(1)
-  @Configuration
-  public static class ActuatorSecurityConfiguration {
-
-    private static final String ACTUATOR_REALM = "Actuator";
-
-    @Bean
-    public SecurityFilterChain filterChainActuator(HttpSecurity http) throws Exception {
-      http
-          .authorizeHttpRequests(authz -> authz
-              .requestMatchers(EndpointRequest.toAnyEndpoint()
-                  .excluding(HealthEndpoint.class))
-              .hasRole(ROLE_ACTUATOR)
-          )
-          .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
-      return http.build();
-    }
-
+  public SecurityFilterChain filterChainActuator(HttpSecurity http) throws Exception {
+    http
+        .securityMatcher("/actuator/**")
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers(EndpointRequest.toAnyEndpoint()
+                .excluding(HealthEndpoint.class))
+            .hasRole(ROLE_ACTUATOR)
+            .anyRequest().denyAll()
+        )
+        .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
+    return http.build();
   }
 
+  @Bean
   @Order(2)
-  @Configuration
-  public static class TogglzSecurityConfiguration {
-
-    private static final String TOGGLZ_REALM = "Togglz";
-
-    @Bean
-    public SecurityFilterChain filterChainTogglz(HttpSecurity http) throws Exception {
-      http
-          .authorizeHttpRequests(authz -> authz
-              .requestMatchers("/togglz/**")
-              .hasRole(ROLE_TOGGLZ)
-          )
-          .httpBasic(basic -> basic.realmName(TOGGLZ_REALM));
-      return http.build();
-    }
-
+  public SecurityFilterChain filterChainTogglz(HttpSecurity http) throws Exception {
+    http
+        .securityMatcher("/togglz/**")
+        .authorizeHttpRequests(authz -> authz
+            .anyRequest().hasRole(ROLE_TOGGLZ)
+        )
+        .httpBasic(basic -> basic.realmName(TOGGLZ_REALM));
+    return http.build();
   }
 
   @Bean
