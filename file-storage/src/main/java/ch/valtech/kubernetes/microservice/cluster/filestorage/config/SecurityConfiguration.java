@@ -117,9 +117,9 @@ public class SecurityConfiguration {
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+        .securityMatcher("/api/**")
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/api/**").authenticated()
-            .anyRequest().denyAll()
+            .anyRequest().authenticated()
         )
         .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
     return http.build();

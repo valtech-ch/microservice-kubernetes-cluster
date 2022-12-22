@@ -14,16 +14,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -115,9 +113,9 @@ public class SecurityConfiguration {
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+        .securityMatcher("/api/**")
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/api/**").authenticated()
-            .anyRequest().denyAll()
+            .anyRequest().authenticated()
         )
         .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
     return http.build();
@@ -138,14 +136,9 @@ public class SecurityConfiguration {
     return http.build();
   }
 
-  @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-  public AuthenticationManager authenticationManager(HttpSecurity http, UserDetailsService userDetailsService)
-      throws Exception {
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-        .userDetailsService(userDetailsService)
-        .passwordEncoder(passwordEncoder())
-        .and()
-        .build();
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
+    return authConfiguration.getAuthenticationManager();
   }
 
   @Bean
