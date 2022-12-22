@@ -23,6 +23,7 @@ apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
 apply from: "${rootProject.projectDir}/gradle/swaggerDocs.gradle"
 apply from: "${rootProject.projectDir}/gradle/dockerBuild.gradle"
+apply from: "${rootProject.projectDir}/gradle/test.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -95,8 +96,4 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test:3.5.1'
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-}
-
-test {
-    useJUnitPlatform()
 }

@@ -17,6 +17,7 @@ ext {
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+apply from: "${rootProject.projectDir}/gradle/test.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -57,8 +58,4 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-}
-
-test {
-    useJUnitPlatform()
 }
