@@ -79,7 +79,7 @@ dependencies {
 	implementation "org.apache.kafka:kafka-streams:$kafkaVersion"
 	implementation 'org.togglz:togglz-spring-boot-starter:3.3.2'
 	implementation 'org.togglz:togglz-spring-security:3.3.2'
-	implementation 'org.togglz:togglz-console:3.3.2'
+	implementation 'org.togglz:togglz-console:3.3.3'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
 	implementation 'io.grpc:grpc-core:1.51.1'
 	implementation 'io.grpc:grpc-protobuf:1.51.1'
