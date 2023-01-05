@@ -77,7 +77,7 @@ dependencies {
 	implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
 	implementation "org.apache.kafka:kafka-clients:$kafkaVersion"
 	implementation "org.apache.kafka:kafka-streams:$kafkaVersion"
-	implementation 'org.togglz:togglz-spring-boot-starter:3.3.2'
+	implementation 'org.togglz:togglz-spring-boot-starter:3.3.3'
 	implementation 'org.togglz:togglz-spring-security:3.3.2'
 	implementation 'org.togglz:togglz-console:3.3.3'
 	implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
