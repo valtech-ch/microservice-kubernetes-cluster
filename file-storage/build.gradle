@@ -95,7 +95,7 @@ dependencies {
 	testImplementation "org.apache.kafka:kafka-metadata:$kafkaVersion:test"
 	testImplementation "org.apache.kafka:kafka_2.13:$kafkaVersion:test"
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
-	testImplementation 'io.grpc:grpc-testing:1.52.0'
+	testImplementation 'io.grpc:grpc-testing:1.52.1'
 	testImplementation 'org.testcontainers:testcontainers:1.17.6'
 	testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
 	testImplementation 'io.projectreactor:reactor-test:3.5.2'
