@@ -9,7 +9,7 @@ plugins {
 project.description = 'Release Toggles Library'
 
 ext {
-    lombokVersion = '1.18.24'
+    lombokVersion = '1.18.26'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*/config/*.java"]
 }
