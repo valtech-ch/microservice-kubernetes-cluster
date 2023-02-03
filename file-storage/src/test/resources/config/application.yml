@@ -7,6 +7,9 @@ spring:
 springfox:
   documentation:
     enabled: false
+grpc:
+  enabled: false
+  inProcessServerName: testServer
 management:
   security:
     username: actuator

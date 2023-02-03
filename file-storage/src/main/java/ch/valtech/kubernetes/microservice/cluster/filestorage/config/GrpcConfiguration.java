@@ -1,52 +1,34 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
-import static net.devh.boot.grpc.common.security.SecurityConstants.AUTHORIZATION_HEADER;
-
 import ch.valtech.kubernetes.microservice.cluster.filestorage.util.SecurityUtils;
-import io.grpc.CallCredentials;
-import io.grpc.Metadata;
+import java.nio.ByteBuffer;
 import java.util.Optional;
-import java.util.concurrent.Executor;
-import net.devh.boot.grpc.client.inject.StubTransformer;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import java.util.UUID;
+import org.lognet.springboot.grpc.security.AuthClientInterceptor;
+import org.lognet.springboot.grpc.security.AuthHeader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@ImportAutoConfiguration({
-    net.devh.boot.grpc.client.autoconfigure.GrpcClientAutoConfiguration.class,
-    net.devh.boot.grpc.client.autoconfigure.GrpcClientMetricAutoConfiguration.class,
-    net.devh.boot.grpc.client.autoconfigure.GrpcClientHealthAutoConfiguration.class,
-    net.devh.boot.grpc.client.autoconfigure.GrpcClientSecurityAutoConfiguration.class,
-    net.devh.boot.grpc.client.autoconfigure.GrpcClientTraceAutoConfiguration.class,
-    net.devh.boot.grpc.client.autoconfigure.GrpcDiscoveryClientAutoConfiguration.class,
-    net.devh.boot.grpc.common.autoconfigure.GrpcCommonCodecAutoConfiguration.class,
-    net.devh.boot.grpc.common.autoconfigure.GrpcCommonTraceAutoConfiguration.class
-})
 @Configuration
 public class GrpcConfiguration {
 
   @Bean
-  public StubTransformer callCredentialsStubTransformer() {
-    return (name, stub) -> stub.withCallCredentials(new JwtCallCredentials());
+  public AuthClientInterceptor grpcAuthClientInterceptor() {
+    return new AuthClientInterceptor(
+        AuthHeader.builder()
+            .bearer()
+            .binaryFormat(true)
+            .tokenSupplier(this::generateToken)
+    );
   }
 
-  public static class JwtCallCredentials extends CallCredentials {
-
-    @Override
-    public void applyRequestMetadata(RequestInfo requestInfo, Executor appExecutor, MetadataApplier applier) {
-      Optional<String> jwtToken = SecurityUtils.getJwt();
-      if (jwtToken.isPresent()) {
-        Metadata extraHeaders = new Metadata();
-        extraHeaders.put(AUTHORIZATION_HEADER, "Bearer " + jwtToken.get());
-        applier.apply(extraHeaders);
-      }
+  private ByteBuffer generateToken() {
+    Optional<String> jwtToken = SecurityUtils.getJwt();
+    if (jwtToken.isPresent()) {
+      return ByteBuffer.wrap(jwtToken.get().getBytes());
     }
 
-    @Override
-    public void thisUsesUnstableApi() {
-      // API evolution in progress
-    }
-
+    return ByteBuffer.wrap(UUID.randomUUID().toString().getBytes());
   }
 
 }
