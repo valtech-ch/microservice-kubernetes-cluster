@@ -1,6 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.web.grpc;
 
-import static net.devh.boot.grpc.client.security.CallCredentialsHelper.authorizationHeader;
+import static ch.valtech.kubernetes.microservice.cluster.persistence.util.TestSecurityUtils.authorizationHeader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,13 +9,14 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.AbstractIt;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.repository.AuditingRepository;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import java.util.List;
 import lombok.SneakyThrows;
-import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,8 @@ import reactor.core.publisher.Mono;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReactivePersistenceControllerGrpcIt extends AbstractIt {
 
-  @GrpcClient("inProcess")
-  private ReactorPersistenceServiceStub persistenceStub;
+  private ReactorPersistenceServiceStub persistenceStub = ReactorPersistenceServiceGrpc.newReactorStub(
+      ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build());
 
   @Autowired
   private AuditingRepository repository;
@@ -70,9 +71,8 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setFilename("some-file.txt")
         .setLimit(2)
         .build();
-
     List<MessageResponse> list = persistenceStub
-        .withCallCredentials(authorizationHeader("Bearer " + testToken))
+        .withCallCredentials(authorizationHeader(testToken))
         .search(request).collectList().block();
 
     assertEquals(1, list.size());
@@ -97,7 +97,7 @@ class ReactivePersistenceControllerGrpcIt extends AbstractIt {
         .setFilename("some-file.txt")
         .build();
     return persistenceStub
-        .withCallCredentials(authorizationHeader("Bearer " + testToken))
+        .withCallCredentials(authorizationHeader(testToken))
         .audit(request).block();
   }
 

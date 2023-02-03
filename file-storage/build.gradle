@@ -55,7 +55,7 @@ dependencies {
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-undertow'
 	implementation ('org.springframework.boot:spring-boot-starter-webflux') {
-		exclude module: "spring-boot-starter-reactor-netty"
+		exclude group: "org.springframework.boot", module: "spring-boot-starter-reactor-netty"
 	}
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'

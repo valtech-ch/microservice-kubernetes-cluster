@@ -5,8 +5,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import java.net.URI;
 import java.util.List;
-import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
-import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
@@ -24,7 +22,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -139,11 +136,6 @@ public class SecurityConfiguration {
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
     return authConfiguration.getAuthenticationManager();
-  }
-
-  @Bean
-  public GrpcAuthenticationReader grpcAuthenticationReader() {
-    return new BearerAuthenticationReader(BearerTokenAuthenticationToken::new);
   }
 
   @Bean
