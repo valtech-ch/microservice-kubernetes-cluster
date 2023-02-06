@@ -8,11 +8,17 @@ import ch.valtech.kubernetes.microservice.cluster.filestorage.mapper.AuditingMap
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.MessageDto;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
+import io.grpc.Channel;
+import io.grpc.ClientInterceptors;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.lognet.springboot.grpc.security.AuthClientInterceptor;
+import org.lognet.springboot.grpc.security.AuthHeader;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
@@ -21,12 +27,20 @@ import reactor.core.publisher.Flux;
 @Service("auditingServiceGrpc")
 public class AuditingServiceGrpc implements AuditingService {
 
-  @GrpcClient("persistence")
-  private ReactorPersistenceServiceStub persistenceStub;
+  private final ReactorPersistenceServiceStub persistenceStub;
 
   private final AuditingMapper auditingMapper;
 
-  public AuditingServiceGrpc(AuditingMapper auditingMapper) {
+  public AuditingServiceGrpc(AuditingMapper auditingMapper,
+      AuthClientInterceptor authClientInterceptor,
+      @Value("${grpc.client.persistence.host}") String host,
+      @Value("${grpc.client.persistence.port}") Integer port) {
+
+    Channel channel = ClientInterceptors.intercept(ManagedChannelBuilder.forAddress(host, port)
+        .usePlaintext()
+        .build(), authClientInterceptor);
+
+    this.persistenceStub = ReactorPersistenceServiceGrpc.newReactorStub(channel);
     this.auditingMapper = auditingMapper;
   }
 

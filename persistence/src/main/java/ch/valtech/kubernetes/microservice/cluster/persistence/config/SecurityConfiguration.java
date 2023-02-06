@@ -1,25 +1,28 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import java.net.URI;
 import java.util.List;
-import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
-import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
@@ -27,32 +30,40 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Order(0)
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+public class SecurityConfiguration {
 
-  private final List<String> allowedOrigins;
-  private final List<String> allowedMethods;
-  private final String cookieDomain;
+  private static final String ROLE_ACTUATOR = "actuator";
+  private static final String ACTUATOR_REALM = "Actuator";
 
-  public SecurityConfiguration(
-      @Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
-      @Value("${application.cors.allowed.methods}") List<String> allowedMethods,
-      @Value("${application.hostname}") String hostname) {
-    this.allowedOrigins = allowedOrigins;
-    this.allowedMethods = allowedMethods;
-    this.cookieDomain = URI.create(hostname).getHost();
+  @Bean
+  public InMemoryUserDetailsManager userDetailsService(
+      @Value("${management.security.username}") String actuatorUsername,
+      @Value("${management.security.password}") String actuatorPassword) {
+    UserDetails actuatorUser = User
+        .withUsername(actuatorUsername)
+        .password(passwordEncoder().encode(actuatorPassword))
+        .roles(ROLE_ACTUATOR)
+        .build();
+    return new InMemoryUserDetailsManager(actuatorUser);
   }
 
-  @Override
-  public void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  @Order(0)
+  public SecurityFilterChain filterChainApp(HttpSecurity http,
+      @Value("${application.hostname}") String hostname) throws Exception {
     JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
     jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
 
     CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
-    csrfRepo.setCookieDomain(cookieDomain);
+    csrfRepo.setCookieDomain(URI.create(hostname).getHost());
     csrfRepo.setCookiePath("/");
 
     http.csrf()
@@ -69,7 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           }
         })
         .and()
-        .cors(Customizer.withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
+        .cors(withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
         .headers()
         .contentSecurityPolicy("default-src 'self'; "
             + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
@@ -97,26 +108,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .antMatcher("/api/**")
-        .authorizeRequests()
-        .anyRequest().authenticated()
-        .and()
+        .securityMatcher("/api/**")
+        .authorizeHttpRequests(authz -> authz
+            .anyRequest().authenticated()
+        )
         .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
-  }
-
-  @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
+    return http.build();
   }
 
   @Bean
-  public GrpcAuthenticationReader grpcAuthenticationReader() {
-    return new BearerAuthenticationReader(BearerTokenAuthenticationToken::new);
+  @Order(1)
+  public SecurityFilterChain filterChainActuator(HttpSecurity http) throws Exception {
+    http
+        .securityMatcher("/actuator/**")
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers(EndpointRequest.toAnyEndpoint()
+                .excluding(HealthEndpoint.class))
+            .hasRole(ROLE_ACTUATOR)
+            .anyRequest().denyAll()
+        )
+        .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
+    return http.build();
   }
 
   @Bean
-  CorsConfigurationSource corsConfigurationSource() {
+  CorsConfigurationSource corsConfigurationSource(
+      @Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
+      @Value("${application.cors.allowed.methods}") List<String> allowedMethods) {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(allowedOrigins);
     configuration.setAllowedMethods(allowedMethods);

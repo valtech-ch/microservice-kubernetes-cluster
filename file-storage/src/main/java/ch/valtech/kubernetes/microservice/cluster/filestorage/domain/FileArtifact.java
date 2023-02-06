@@ -1,7 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.domain;
 
+import jakarta.validation.constraints.NotBlank;
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;

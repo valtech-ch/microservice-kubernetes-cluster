@@ -17,6 +17,8 @@ import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.lognet.springboot.grpc.security.AuthClientInterceptor;
+import org.lognet.springboot.grpc.security.AuthHeader;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,7 +31,8 @@ class AuditingServiceGrpcTest {
 
   private final AuditingMapper auditingMapper = Mappers.getMapper(AuditingMapper.class);
 
-  private final AuditingService auditingService = new AuditingServiceGrpc(auditingMapper);
+  private final AuditingService auditingService = new AuditingServiceGrpc(auditingMapper, new AuthClientInterceptor(
+      AuthHeader.builder().build()), "localhost", 9090);
 
   private final ReactorPersistenceServiceStub persistenceService = Mockito.mock(ReactorPersistenceServiceStub.class);
 

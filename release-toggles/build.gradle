@@ -10,12 +10,14 @@ project.description = 'Release Toggles Library'
 
 ext {
     lombokVersion = '1.18.26'
+    springBootVersion = '3.0.2'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*/config/*.java"]
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+apply from: "${rootProject.projectDir}/gradle/test.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -37,27 +39,23 @@ sonarqube {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.8'
-    implementation 'org.springframework:spring-web:5.3.25'
-    implementation 'org.springframework.security:spring-security-config:5.8.1'
-    implementation 'org.springframework.security:spring-security-web:5.8.1'
+    implementation "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"
+    implementation 'org.springframework:spring-web:6.0.2'
+    implementation 'org.springframework.security:spring-security-config:6.0.1'
+    implementation 'org.springframework.security:spring-security-web:6.0.1'
     implementation 'org.togglz:togglz-spring-boot-starter:3.3.3'
     implementation 'org.togglz:togglz-spring-security:3.3.3'
     implementation 'org.togglz:togglz-console:3.3.3'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'io.vavr:vavr:0.10.4'
-    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.8'
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.togglz:togglz-junit5:2.8.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-}
-
-test {
-    useJUnitPlatform()
 }

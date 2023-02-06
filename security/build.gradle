@@ -10,13 +10,14 @@ project.description = 'Security Config'
 
 ext {
     lombokVersion = '1.18.26'
-    springBootVersion = '2.7.8'
+    springBootVersion = '3.0.2'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = []
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
 apply from: "${rootProject.projectDir}/gradle/codeStyle.gradle"
+apply from: "${rootProject.projectDir}/gradle/test.gradle"
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -49,8 +50,4 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-}
-
-test {
-    useJUnitPlatform()
 }

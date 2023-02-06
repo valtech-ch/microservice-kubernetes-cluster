@@ -17,6 +17,8 @@ spring:
 springfox:
   documentation:
     enabled: false
+grpc:
+  port: 9090
 management:
   security:
     username: actuator
