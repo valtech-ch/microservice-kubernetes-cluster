@@ -84,7 +84,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.github.lognet:grpc-client-spring-boot-starter:5.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.1'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.9.2'
     testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
     testImplementation 'org.testcontainers:mariadb:1.17.6'
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
