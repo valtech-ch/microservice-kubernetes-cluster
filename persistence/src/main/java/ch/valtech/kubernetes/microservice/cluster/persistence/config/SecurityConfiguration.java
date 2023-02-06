@@ -11,9 +11,7 @@ import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -131,11 +129,6 @@ public class SecurityConfiguration {
         )
         .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
     return http.build();
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
-    return authConfiguration.getAuthenticationManager();
   }
 
   @Bean
