@@ -40,7 +40,7 @@ sonarqube {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"
-    implementation 'org.springframework:spring-web:6.0.4'
+    implementation 'org.springframework:spring-web:6.0.5'
     implementation 'org.springframework.security:spring-security-config:6.0.1'
     implementation 'org.springframework.security:spring-security-web:6.0.1'
     implementation 'org.togglz:togglz-spring-boot-starter:3.3.3'
