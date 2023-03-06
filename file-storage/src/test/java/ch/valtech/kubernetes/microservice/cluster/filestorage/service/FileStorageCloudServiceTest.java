@@ -36,7 +36,7 @@ class FileStorageCloudServiceTest {
 
   @Container
   private static final GenericContainer AZURITE_CONTAINER = new GenericContainer(
-      parse("mcr.microsoft.com/azure-storage/azurite"))
+      parse("mcr.microsoft.com/azure-storage/azurite:latest"))
       .withExposedPorts(10000);
 
   private static FileStorageCloudService service;

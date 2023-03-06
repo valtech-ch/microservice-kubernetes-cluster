@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -44,9 +46,6 @@ class ConsumerServiceIt extends AbstractIt {
   @Value("${application.kafka.stream.topic}")
   private String auditingReverseTopic;
 
-  @Autowired
-  private EmbeddedKafkaBroker embeddedKafkaBroker;
-
   @SpyBean
   private ConsumerService consumer;
 
@@ -55,16 +54,13 @@ class ConsumerServiceIt extends AbstractIt {
 
   private String testToken;
 
-  private Producer<String, AuditingRequestDto> producer;
+  @Autowired
+  private KafkaTemplate<String, AuditingRequestDto> kafkaTemplate;
 
   @BeforeEach
   @SneakyThrows
   void setUpProducer() {
     testToken = IOUtils.toString(getClass().getResourceAsStream("/test-token"));
-    Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
-    producer = new DefaultKafkaProducerFactory<>(configs, new StringSerializer(),
-        new JsonSerializer<>(new TypeReference<AuditingRequestDto>() {
-        })).createProducer();
   }
 
   @Test
@@ -83,7 +79,7 @@ class ConsumerServiceIt extends AbstractIt {
     producerRecord.headers().add("jwt", testToken.getBytes(UTF_8));
 
     //when
-    producer.send(producerRecord);
+    kafkaTemplate.send(producerRecord);
 
     //then
     verify(consumer, timeout(10000).times(1))
@@ -105,7 +101,7 @@ class ConsumerServiceIt extends AbstractIt {
     producerRecord.headers().add("jwt", testToken.getBytes(UTF_8));
 
     //when
-    producer.send(producerRecord);
+    kafkaTemplate.send(producerRecord);
 
     //then
     verify(consumer, timeout(10000).times(1))

@@ -22,7 +22,7 @@ public class ConsumerService {
     this.persistenceService = persistenceService;
   }
 
-  @KafkaListener(topics = "${application.kafka.topic}", groupId = "${application.kafka.groupId}")
+  @KafkaListener(topics = "${application.kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
   public void consumeTopic(@Payload AuditingRequestDto message, @Header("jwt") String token) {
     log.info("Consumed auditing message: {}", message);
     // TODO
@@ -36,7 +36,7 @@ public class ConsumerService {
     persistenceService.saveNewMessage(message, "vtc-keycloakadmin").block();
   }
 
-  @KafkaListener(topics = "${application.kafka.stream.topic}", groupId = "${application.kafka.groupId}")
+  @KafkaListener(topics = "${application.kafka.stream.topic}", groupId = "${spring.kafka.consumer.group-id}")
   public void consumeStreamTopic(@Payload AuditingRequestDto message, @Header("jwt") String token) {
     // TODO
     //if (StringUtils.isNotBlank(token)) {

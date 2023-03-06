@@ -8,6 +8,10 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 1MB
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 springfox:
   documentation:
     enabled: false
@@ -37,7 +41,6 @@ togglz:
 application:
   functions.url: https://vtch-functions.azurewebsites.net/api
   kafka:
-    bootstrapAddress: localhost:9092
     topic: auditing
     stream:
       topic: reverseAuditing
@@ -46,6 +49,8 @@ spring:
   config:
     activate:
       on-profile: dev
+  kafka:
+    bootstrap-servers: localhost:9092
 grpc:
   client:
     persistence:

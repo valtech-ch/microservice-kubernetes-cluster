@@ -21,7 +21,7 @@ public class KafkaStreamConfiguration {
 
   private final String bootstrapAddress;
 
-  public KafkaStreamConfiguration(@Value(value = "${application.kafka.bootstrapAddress}") String bootstrapAddress) {
+  public KafkaStreamConfiguration(@Value(value = "${spring.kafka.bootstrap-servers}") String bootstrapAddress) {
     this.bootstrapAddress = bootstrapAddress;
   }
 

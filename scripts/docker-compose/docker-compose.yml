@@ -1,4 +1,3 @@
-version: '3.8'
 networks:
   services:
     name: cluster
@@ -149,9 +148,11 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     healthcheck:
-      test: ["CMD-SHELL", "echo ruok | nc -w 2 zookeeper 2181 | grep imok"]
-    ports:
-      - 22181:2181
+      test: nc -z localhost 2181 || exit -1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   kafka:
     image: confluentinc/cp-kafka:7.3.2

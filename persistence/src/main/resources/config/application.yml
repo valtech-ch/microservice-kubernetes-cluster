@@ -8,6 +8,15 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
+      group-id: persistenceApp
+      properties:
+        spring.json.trusted.packages: ch.valtech.kubernetes.microservice.cluster.persistence.api.dto
 springfox:
   documentation:
     enabled: false
@@ -32,9 +41,6 @@ application:
    allowed.origins: "*"
    allowed.methods: "*"
   kafka:
-    bootstrapAddress: localhost:9092
-    autoOffsetReset: latest
-    groupId: persistenceApp
     topic: auditing
     stream:
       topic: reverseAuditing

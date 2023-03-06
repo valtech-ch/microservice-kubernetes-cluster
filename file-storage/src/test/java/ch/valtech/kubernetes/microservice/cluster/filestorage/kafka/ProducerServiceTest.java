@@ -38,8 +38,7 @@ import org.springframework.test.annotation.DirtiesContext;
 @Slf4j
 @DirtiesContext
 @SpringBootTest
-@EmbeddedKafka(topics = {"auditing", "reverseAuditing"}, partitions = 1,
-    bootstrapServersProperty = "application.kafka.bootstrapAddress")
+@EmbeddedKafka(topics = {"auditing", "reverseAuditing"}, partitions = 1)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProducerServiceTest {
 

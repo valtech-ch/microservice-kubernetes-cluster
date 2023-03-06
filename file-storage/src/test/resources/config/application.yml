@@ -4,6 +4,11 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 1MB
+  kafka:
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 springfox:
   documentation:
     enabled: false
@@ -47,7 +52,6 @@ application:
       account.key: Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
       connection: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://127.0.0.1:${azuriteContainer.getMappedPort(10000)}/devstoreaccount1;
   kafka:
-    bootstrapAddress: ${spring.embedded.kafka.brokers}
     topic: auditing
     stream:
       topic: reverseAuditing

@@ -7,6 +7,9 @@ metadata:
   namespace: default
 data:
   application-prod.yml: |-
+    spring:
+      kafka:
+        bootstrap-servers: kafka-cluster-kafka-brokers.default.svc.cluster.local:9092
     server:
       servlet:
         context-path: /filestorage
@@ -30,7 +33,6 @@ data:
       token.url: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/token
       functions.key: ${FUNCTIONS_KEY}
       kafka:
-        bootstrapAddress: kafka-cluster-kafka-brokers.default.svc.cluster.local:9092
         topic: auditing
         stream:
           topic: reverse-auditing
