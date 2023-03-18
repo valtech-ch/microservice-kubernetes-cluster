@@ -67,7 +67,7 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'io.vavr:vavr:0.10.4'
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
-	implementation 'com.azure:azure-storage-blob:12.21.0'
+	implementation 'com.azure:azure-storage-blob:12.21.1'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
