@@ -45,7 +45,7 @@
     "jest-sonar-reporter": "2.0.0",
     "sonarqube-scanner": "3.0.1",
     "supertest": "6.3.3",
-    "typescript": "5.0.2",
+    "typescript": "5.0.3",
     "vue-cli-plugin-compression": "2.0.0"
   },
   "eslintConfig": {
