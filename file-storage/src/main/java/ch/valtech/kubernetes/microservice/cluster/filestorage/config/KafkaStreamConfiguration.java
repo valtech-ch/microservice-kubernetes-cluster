@@ -1,9 +1,11 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.annotation.OnProfile;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.dto.AuditingRequestDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -31,6 +34,14 @@ public class KafkaStreamConfiguration {
     config.put(StreamsConfig.APPLICATION_ID_CONFIG, "default");
     setDefaults(config);
     return new StreamsConfig(config);
+  }
+
+  @Bean
+  @OnProfile("dev")
+  public NewTopic auditingTopic() {
+    return TopicBuilder.name("auditing")
+        .compact()
+        .build();
   }
 
   private void setDefaults(Map<String, Object> config) {
