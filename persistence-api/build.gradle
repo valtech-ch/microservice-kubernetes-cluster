@@ -28,12 +28,12 @@ protobuf {
     // Configure the protoc executable
     protoc {
         // Download from repositories
-        artifact = 'com.google.protobuf:protoc:3.22.3'
+        artifact = 'com.google.protobuf:protoc:3.23.3'
     }
     // Locate the codegen plugins
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.54.1'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.56.0'
         }
         reactor {
             artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.3"
