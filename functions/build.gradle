@@ -46,8 +46,8 @@ jar {
 }
 
 dependencies {
-	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure:4.0.3'
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web:4.0.3'
+	implementation 'org.springframework.cloud:spring-cloud-function-adapter-azure:4.0.4'
+	compileOnly 'org.springframework.cloud:spring-cloud-starter-function-web:4.0.4'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
