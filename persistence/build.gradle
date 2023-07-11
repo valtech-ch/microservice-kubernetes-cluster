@@ -69,7 +69,7 @@ dependencies {
     implementation "io.springfox:springfox-boot-starter:3.0.0"
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.11.1'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
     implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.3'
