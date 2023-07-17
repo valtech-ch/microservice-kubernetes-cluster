@@ -154,7 +154,7 @@ services:
       - 22181:2181
 
   kafka:
-    image: confluentinc/cp-kafka:7.4.0
+    image: confluentinc/cp-kafka:7.4.1
     container_name: kafka
     command: "bash -c '/tmp/update_run.sh && /etc/confluent/docker/run'"
     networks:
