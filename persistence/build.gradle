@@ -61,7 +61,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
     implementation 'io.vavr:vavr:0.10.4'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'org.flywaydb:flyway-core:9.21.1'
