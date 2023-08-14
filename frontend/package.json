@@ -16,7 +16,7 @@
     "@opentelemetry/instrumentation-document-load": "0.32.3",
     "@opentelemetry/instrumentation-xml-http-request": "0.41.0",
     "@opentelemetry/resources": "1.15.0",
-    "@opentelemetry/sdk-trace-base": "1.15.0",
+    "@opentelemetry/sdk-trace-base": "1.15.1",
     "@opentelemetry/sdk-trace-web": "1.15.0",
     "@opentelemetry/semantic-conventions": "1.15.0",
     "axios": "1.4.0",
