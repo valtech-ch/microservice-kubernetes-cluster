@@ -12,7 +12,7 @@
   "dependencies": {
     "@opentelemetry/context-zone": "1.15.0",
     "@opentelemetry/core": "1.15.0",
-    "@opentelemetry/exporter-zipkin": "1.15.0",
+    "@opentelemetry/exporter-zipkin": "1.15.1",
     "@opentelemetry/instrumentation-document-load": "0.32.3",
     "@opentelemetry/instrumentation-xml-http-request": "0.41.0",
     "@opentelemetry/resources": "1.15.0",
