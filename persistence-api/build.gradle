@@ -33,7 +33,7 @@ protobuf {
     // Locate the codegen plugins
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.57.1'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.57.2'
         }
         reactor {
             artifact = "com.salesforce.servicelibs:reactor-grpc:1.2.4"
