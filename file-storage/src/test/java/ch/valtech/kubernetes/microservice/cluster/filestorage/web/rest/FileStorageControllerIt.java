@@ -25,12 +25,14 @@ import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
-@EmbeddedKafka
+@EmbeddedKafka(partitions = 1)
+@DirtiesContext
 class FileStorageControllerIt {
 
   public static final String FILENAME = "test.txt";
