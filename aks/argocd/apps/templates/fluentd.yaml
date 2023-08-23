@@ -28,4 +28,4 @@ spec:
         - name: image.tag
           value: v3.4.0
     repoURL: 'https://kokuwaio.github.io/helm-charts'
-    targetRevision: 13.7.0
+    targetRevision: 13.11.0
