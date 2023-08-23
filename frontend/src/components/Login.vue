@@ -20,7 +20,7 @@ const initOptions: KeycloakInitOptions = {
   silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
 }
 
-const keycloak = Keycloak({
+const keycloak = new Keycloak({
   url: 'auth',
   realm: 'cluster',
   clientId: 'login-app'
