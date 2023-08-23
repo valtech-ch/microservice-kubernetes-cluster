@@ -101,7 +101,7 @@ dependencies {
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
 	testImplementation 'io.grpc:grpc-testing:1.57.2'
 	testImplementation 'org.testcontainers:testcontainers:1.19.0'
-	testImplementation 'org.junit.platform:junit-platform-launcher:1.9.3'
+	testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0'
 	testImplementation 'org.testcontainers:junit-jupiter:1.19.0'
 	testImplementation 'io.projectreactor:reactor-test:3.5.9'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
