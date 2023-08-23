@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
+import static org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest.toAnyEndpoint;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
@@ -126,9 +127,9 @@ public class SecurityConfiguration {
     http
         .securityMatcher("/actuator/**")
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers(EndpointRequest.toAnyEndpoint()
-                .excluding(HealthEndpoint.class))
+            .requestMatchers(toAnyEndpoint().excluding(HealthEndpoint.class))
             .hasRole(ROLE_ACTUATOR)
+            .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
             .anyRequest().denyAll()
         )
         .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));

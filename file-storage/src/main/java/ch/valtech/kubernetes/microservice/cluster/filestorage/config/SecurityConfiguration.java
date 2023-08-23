@@ -1,5 +1,6 @@
 package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 
+import static org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest.toAnyEndpoint;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
@@ -8,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -132,9 +134,9 @@ public class SecurityConfiguration {
     http
         .securityMatcher("/actuator/**")
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers(EndpointRequest.toAnyEndpoint()
-                .excluding(HealthEndpoint.class))
+            .requestMatchers(toAnyEndpoint().excluding(HealthEndpoint.class))
             .hasRole(ROLE_ACTUATOR)
+            .requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
             .anyRequest().denyAll()
         )
         .httpBasic(basic -> basic.realmName(ACTUATOR_REALM));
