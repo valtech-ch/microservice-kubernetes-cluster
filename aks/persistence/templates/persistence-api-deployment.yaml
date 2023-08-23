@@ -21,6 +21,10 @@ spec:
         app: persistence-api
         auth: jwt
     spec:
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       nodeSelector:
         type: app
       tolerations:
@@ -32,7 +36,13 @@ spec:
         - name: persistence-api
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
           env:
+            - name: JAVA_OPTS
+              value: "-XX:FlightRecorderOptions=stackdepth=256 -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2"
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
             - name: SPRING_DATASOURCE_USERNAME
@@ -89,12 +99,22 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 100
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           ports:
             - name: grpc
               containerPort: 9090
           volumeMounts:
             - name: application-config
-              mountPath: "/etc/config/"
+              mountPath: /etc/config/
+            - name: ephemeral-microservice
+              mountPath: /tmp
       volumes:
         - name: application-config
           configMap:
@@ -102,6 +122,8 @@ spec:
             items:
               - key: application-prod.yml
                 path: application-prod.yml
+        - name: ephemeral-microservice
+          emptyDir: { }
 ---
 apiVersion: v1
 kind: Service

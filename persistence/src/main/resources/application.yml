@@ -8,11 +8,14 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
 springfox:
   documentation:
     enabled: false
 server:
   port: 8081
+  shutdown: graceful
   http2:
     enabled: true
   ssl:
@@ -27,6 +30,9 @@ management:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: when_authorized
 application:
   cors:
    allowed.origins: "*"
