@@ -1,6 +1,7 @@
 package ch.valtech.kubernetes.microservice.cluster.persistence.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import java.net.URI;
@@ -15,16 +16,19 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.web.HeaderBearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -63,56 +67,56 @@ public class SecurityConfiguration {
     jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
 
     CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
-    csrfRepo.setCookieDomain(URI.create(hostname).getHost());
+    csrfRepo.setCookieCustomizer(cookie -> cookie.domain(URI.create(hostname).getHost()));
     csrfRepo.setCookiePath("/");
 
-    http.csrf()
+    http
+        .securityMatcher("/api/**")
+        .csrf(csrf -> csrf
         .csrfTokenRepository(csrfRepo)
         .withObjectPostProcessor(new ObjectPostProcessor<CsrfFilter>() {
-          /**
-           * Overrides required csrf protection matcher because of OAuth2 registering a wrong ignore matcher.
-           * https://github.com/spring-projects/spring-security/issues/8668
-           */
-          @Override
-          public <O extends CsrfFilter> O postProcess(O object) {
-            object.setRequireCsrfProtectionMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER);
-            return object;
-          }
-        })
-        .and()
-        .cors(withDefaults()) // by default uses a Bean by the name of corsConfigurationSource
-        .headers()
-        .contentSecurityPolicy("default-src 'self'; "
-            + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
-            + "frame-src 'self' data:; "
-            + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
-            + "style-src 'self'; "
-            + "form-action 'self' data:; "
-            + "frame-ancestors 'self'; "
-            + "img-src 'self' data:; "
-            + "font-src 'self' data:")
-        .and()
-        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-        .and()
-        .permissionsPolicy(permissions -> permissions.policy("geolocation=(none); "
-            + "midi=(none); "
-            + "sync-xhr=(none); "
-            + "microphone=(none); "
-            + "camera=(none); "
-            + "magnetometer=(none); "
-            + "gyroscope=(none); "
-            + "fullscreen=(self); "
-            + "payment=(none)"))
-        .and()
-        .frameOptions().deny()
-        .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .securityMatcher("/api/**")
+            /**
+             * Overrides required csrf protection matcher because of OAuth2 registering a wrong ignore matcher.
+             * https://github.com/spring-projects/spring-security/issues/8668
+             */
+            @Override
+            public <O extends CsrfFilter> O postProcess(O object) {
+              object.setRequireCsrfProtectionMatcher(CsrfFilter.DEFAULT_CSRF_MATCHER);
+              return object;
+            }
+          })
+        )
+        .cors(withDefaults())
+        .headers(headers -> headers
+            .contentSecurityPolicy(policy -> policy
+                .policyDirectives("default-src 'self'; "
+                    + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
+                    + "frame-src 'self' data:; "
+                    + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
+                    + "style-src 'self'; "
+                    + "form-action 'self' data:; "
+                    + "frame-ancestors 'self'; "
+                    + "img-src 'self' data:; "
+                    + "font-src 'self' data:"))
+            .referrerPolicy(policy -> policy
+                .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+            .frameOptions(FrameOptionsConfig::deny)
+            .permissionsPolicy(policy -> policy
+                .policy("geolocation=(none); "
+                    + "midi=(none); "
+                    + "sync-xhr=(none); "
+                    + "microphone=(none); "
+                    + "camera=(none); "
+                    + "magnetometer=(none); "
+                    + "gyroscope=(none); "
+                    + "fullscreen=(self); "
+                    + "payment=(none)")))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authz -> authz
             .anyRequest().authenticated()
         )
-        .oauth2ResourceServer().jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter));
+        .oauth2ResourceServer(oauth2 -> oauth2
+            .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
     return http.build();
   }
 

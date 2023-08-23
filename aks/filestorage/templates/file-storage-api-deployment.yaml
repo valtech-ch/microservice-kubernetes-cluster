@@ -21,6 +21,10 @@ spec:
         app: file-storage
         auth: jwt
     spec:
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       nodeSelector:
         type: app
       tolerations:
@@ -32,7 +36,13 @@ spec:
         - name: file-storage
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
           env:
+            - name: JAVA_OPTS
+              value: "-XX:FlightRecorderOptions=stackdepth=256 -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2"
             - name: SPRING_PROFILES_ACTIVE
               value: "cloud{{ if .Values.releaseToggles }},release-toggles{{ end }}"
             {{ if .Values.releaseToggles }}
@@ -93,11 +103,21 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            runAsUser: 100
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
 #            - name: application-config
 #              mountPath: "/etc/config/"
             - name: application-cloud-config
-              mountPath: "/etc/config/cloud/"
+              mountPath: /etc/config/cloud/
+            - name: ephemeral-microservice
+              mountPath: /tmp
 #            - name: file-storage-pv
 #              mountPath: "/etc/file-storage/uploads"
         - name: hazelcast
@@ -154,3 +174,5 @@ spec:
         - name: hazelcast-storage
           configMap:
             name: file-storage-hazelcast-config
+        - name: ephemeral-microservice
+          emptyDir: { }
