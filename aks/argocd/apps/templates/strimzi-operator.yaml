@@ -26,4 +26,4 @@ spec:
             operator: Equal
             value: app
     repoURL: 'https://strimzi.io/charts/'
-    targetRevision: 0.31.1
+    targetRevision: 0.36.1
