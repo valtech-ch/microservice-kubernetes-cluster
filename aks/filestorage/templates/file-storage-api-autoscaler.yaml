@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: file-storage-hpa
@@ -33,11 +33,12 @@ spec:
   metrics:
     - type: Object
       object:
-        metricName: istio-requests-total
-        target:
+        metric:
+          name: istio-requests-total
+        describedObject:
           apiVersion: v1
           kind: Pod
           name: file-storage
-        targetValue: 10
-
-
+        target:
+          type: Value
+          value: "10"
