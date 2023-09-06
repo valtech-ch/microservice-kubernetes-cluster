@@ -24,9 +24,9 @@ data:
         username: ${TOGGLZ_USERNAME}
         password: ${TOGGLZ_PASSWORD}
     application:
-      hostname: https://vtch-aks-demo.duckdns.org
+      hostname: https://aks-demo.vtch.tech
       persistence.url: http://persistence-service.default.svc.cluster.local:8081/persistence/api/v1/messages
-      token.url: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/token
+      token.url: https://aks-demo.vtch.tech/auth/realms/cluster/protocol/openid-connect/token
       functions.key: ${FUNCTIONS_KEY}
       cloud:
         storage:
@@ -40,5 +40,5 @@ data:
         stream:
           topic: reverse-auditing
       cors:
-        allowed.origins: https://vtch-aks-demo.duckdns.org
+        allowed.origins: https://aks-demo.vtch.tech
         allowed.methods: GET, POST, PUT, DELETE

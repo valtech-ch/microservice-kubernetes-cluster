@@ -98,7 +98,7 @@ public class SecurityConfiguration {
         .headers(headers -> headers
             .contentSecurityPolicy(policy -> policy
                 .policyDirectives("default-src 'self'; "
-                    + "connect-src 'self' https://vtch-aks-demo-monitoring.duckdns.org; "
+                    + "connect-src 'self' https://monitoring.aks-demo.vtch.tech; "
                     + "frame-src 'self' data:; "
                     + "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; "
                     + "style-src 'self'; "

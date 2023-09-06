@@ -4,10 +4,10 @@ metadata:
   name: argocd-cm
 data:
   accounts.github: apiKey
-  url: https://vtch-aks-demo-argocd.duckdns.org
+  url: https://aks-demo.vtch.tech
   oidc.config: |
     name: Keycloak
-    issuer: https://vtch-aks-demo.duckdns.org/auth/realms/cluster
+    issuer: https://aks-demo.vtch.tech/auth/realms/cluster
     clientID: argocd
     clientSecret: $oidc.keycloak.clientSecret
     requestedScopes: ["openid", "profile", "email", "groups"]

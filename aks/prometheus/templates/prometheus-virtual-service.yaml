@@ -5,7 +5,7 @@ metadata:
   namespace: prometheus
 spec:
   hosts:
-    - "vtch-aks-demo-prometheus.duckdns.org"
+    - "prometheus.aks-demo.vtch.tech"
   gateways:
     - prometheus-gateway
   http:

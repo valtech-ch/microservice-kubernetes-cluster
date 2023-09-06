@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   hosts:
-    - "vtch-aks-demo-argocd.duckdns.org"
+    - "argocd.aks-demo.vtch.tech"
   gateways:
     - argocd-gateway
   http:

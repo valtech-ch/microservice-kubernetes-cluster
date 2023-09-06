@@ -5,7 +5,7 @@ metadata:
   namespace: logging
 spec:
   hosts:
-    - "vtch-aks-demo-kibana.duckdns.org"
+    - "kibana.aks-demo.vtch.tech"
   gateways:
     - kibana-gateway
   http:

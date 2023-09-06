@@ -8,6 +8,6 @@ spec:
     matchLabels:
       auth: jwt
   jwtRules:
-    - issuer: https://vtch-aks-demo.duckdns.org/auth/realms/cluster
-      jwksUri: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/certs
+    - issuer: https://aks-demo.vtch.tech/auth/realms/cluster
+      jwksUri: https://aks-demo.vtch.tech/auth/realms/cluster/protocol/openid-connect/certs
       forwardOriginalToken: true

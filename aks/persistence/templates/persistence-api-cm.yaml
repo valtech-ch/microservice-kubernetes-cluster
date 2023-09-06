@@ -8,8 +8,8 @@ metadata:
 data:
   application-prod.yml: |-
     application:
-      hostname: https://vtch-aks-demo.duckdns.org
-      token.url: https://vtch-aks-demo.duckdns.org/auth/realms/cluster/protocol/openid-connect/token
+      hostname: https://aks-demo.vtch.tech
+      token.url: https://aks-demo.vtch.tech/auth/realms/cluster/protocol/openid-connect/token
       kafka:
         bootstrapAddress: kafka-cluster-kafka-brokers.default.svc.cluster.local:9092
         groupId: persistenceApp
@@ -17,5 +17,5 @@ data:
         stream:
           topic: reverse-auditing
       cors:
-        allowed.origins: https://vtch-aks-demo.duckdns.org
+        allowed.origins: https://aks-demo.vtch.tech
         allowed.methods: GET, POST, PUT, DELETE

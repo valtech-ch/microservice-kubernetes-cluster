@@ -74,12 +74,12 @@ jobs:
           update-wheel: "false"
       - name: Deploy to ArgoCD
         env:
-          ARGOCD_SERVER: vtch-aks-demo-argocd.duckdns.org:80
+          ARGOCD_SERVER: argocd.aks-demo.vtch.tech:80
           ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
         run: >
           releaseToggles=$(python scripts/release-toggles/findJiraTickets.py ${{ secrets.JIRA_TOKEN }}) &&
           echo "Release Toggles are $releaseToggles" &&
-          curl -sSL -o argocd http://vtch-aks-demo-argocd.duckdns.org:80/download/argocd-linux-amd64 &&
+          curl -sSL -o argocd http://argocd.aks-demo.vtch.tech:80/download/argocd-linux-amd64 &&
           chmod +x argocd &&
           ./argocd app set applications -p image.tag=${GITHUB_SHA} -p releaseToggles=$releaseToggles --plaintext --grpc-web &&
           ./argocd app sync applications --plaintext --grpc-web &&

@@ -5,8 +5,8 @@ metadata:
   namespace: istio-system
 spec:
   secretName: argocd-cert
-  commonName: vtch-aks-demo-argocd.duckdns.org
+  commonName: argocd.aks-demo.vtch.tech
   issuerRef:
     name: letsencrypt
   dnsNames:
-    - vtch-aks-demo-argocd.duckdns.org
+    - argocd.aks-demo.vtch.tech

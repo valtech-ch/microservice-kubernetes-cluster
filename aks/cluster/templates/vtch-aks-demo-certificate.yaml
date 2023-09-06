@@ -5,8 +5,8 @@ metadata:
   namespace: istio-system
 spec:
   secretName: main-cert
-  commonName: vtch-aks-demo.duckdns.org
+  commonName: aks-demo.vtch.tech
   issuerRef:
     name: letsencrypt
   dnsNames:
-    - vtch-aks-demo.duckdns.org
+    - aks-demo.vtch.tech

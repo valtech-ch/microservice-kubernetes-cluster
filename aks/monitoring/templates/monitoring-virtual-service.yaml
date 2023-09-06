@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
-    - "vtch-aks-demo-monitoring.duckdns.org"
+    - "monitoring.aks-demo.vtch.tech"
   gateways:
     - monitoring-gateway
   http:

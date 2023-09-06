@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-    - "vtch-aks-demo.duckdns.org"
+    - "aks-demo.vtch.tech"
   gateways:
     - application-gateway
   http:

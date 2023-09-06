@@ -11,8 +11,8 @@ spec:
   rules:
     - to:
         - operation:
-            hosts: ["vtch-aks-demo-argocd.duckdns.org"]
+            hosts: ["argocd.aks-demo.vtch.tech"]
             paths: ["/gradle/cache/*", "/download/*"]
         - operation:
-            hosts: ["vtch-aks-demo-argocd.duckdns.org:80"]
+            hosts: ["argocd.aks-demo.vtch.tech:80"]
             paths: ["/application*", "/cluster*"]

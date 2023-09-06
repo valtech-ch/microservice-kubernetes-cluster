@@ -5,8 +5,8 @@ metadata:
   namespace: istio-system
 spec:
   secretName: kibana-cert
-  commonName: vtch-aks-demo-kibana.duckdns.org
+  commonName: kibana.aks-demo.vtch.tech
   issuerRef:
     name: letsencrypt
   dnsNames:
-    - vtch-aks-demo-kibana.duckdns.org
+    - kibana.aks-demo.vtch.tech
