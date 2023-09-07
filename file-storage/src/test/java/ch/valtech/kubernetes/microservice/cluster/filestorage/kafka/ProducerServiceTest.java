@@ -34,12 +34,13 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @Slf4j
-@DirtiesContext
 @SpringBootTest
 @EmbeddedKafka(topics = {"auditing", "reverseAuditing"}, partitions = 1,
     bootstrapServersProperty = "application.kafka.bootstrapAddress")
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProducerServiceTest {
 

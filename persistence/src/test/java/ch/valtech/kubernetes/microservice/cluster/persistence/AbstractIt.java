@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.testcontainers.containers.MariaDBContainer;
 
 @SpringBootTest(properties = {
@@ -12,7 +13,7 @@ import org.testcontainers.containers.MariaDBContainer;
     "grpc.client.inProcess.address=in-process:test"
 }, webEnvironment = WebEnvironment.RANDOM_PORT)
 @EmbeddedKafka(partitions = 1, topics = {"auditing", "reverseAuditing"})
-@DirtiesContext
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public abstract class AbstractIt {
 
   static final MariaDBContainer MARIADB_CONTAINER;
