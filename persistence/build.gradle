@@ -77,12 +77,12 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
     implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.4'
-    compileOnly 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
     runtimeOnly 'io.r2dbc:r2dbc-h2:1.0.0.RELEASE'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
     runtimeOnly 'com.h2database:h2:2.2.222'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -94,6 +94,6 @@ dependencies {
     testImplementation 'io.dropwizard.metrics:metrics-core:4.2.19'
     testImplementation 'io.jsonwebtoken:jjwt:0.9.1'
     testImplementation 'io.projectreactor:reactor-test:3.5.10'
-    testCompileOnly 'org.projectlombok:lombok:1.18.28'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
