@@ -24,8 +24,8 @@ apply from: "${rootProject.projectDir}/gradle/swaggerDocs.gradle"
 apply from: "${rootProject.projectDir}/gradle/dockerBuild.gradle"
 apply from: "${rootProject.projectDir}/gradle/test.gradle"
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 configurations {
     compileOnly {
