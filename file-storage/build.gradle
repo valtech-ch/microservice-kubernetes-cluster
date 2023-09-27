@@ -86,7 +86,7 @@ dependencies {
 	implementation 'org.togglz:togglz-spring-security:4.4.0'
 	implementation 'org.togglz:togglz-console:4.4.0'
 	implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.4'
-	implementation 'io.github.lognet:grpc-client-spring-boot-starter:5.1.4'
+	implementation 'io.github.lognet:grpc-client-spring-boot-starter:5.1.5'
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
