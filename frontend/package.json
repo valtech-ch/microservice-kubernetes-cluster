@@ -10,7 +10,7 @@
     "test": "jest --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@opentelemetry/context-zone": "1.17.0",
+    "@opentelemetry/context-zone": "1.17.1",
     "@opentelemetry/core": "1.17.0",
     "@opentelemetry/exporter-zipkin": "1.17.0",
     "@opentelemetry/instrumentation-document-load": "0.33.1",
