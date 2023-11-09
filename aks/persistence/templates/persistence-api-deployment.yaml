@@ -42,7 +42,7 @@ spec:
                 command: [ "sh", "-c", "sleep 10" ]
           env:
             - name: JAVA_OPTS
-              value: "-XX:FlightRecorderOptions=stackdepth=256 -XX:+UseParallelGC -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2"
+              value: "-XX:FlightRecorderOptions=stackdepth=256 -XX:+UseZGC -XX:+ZGenerational -XX:MaxRAMPercentage=75 -XX:ActiveProcessorCount=2"
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
             - name: SPRING_DATASOURCE_USERNAME
