@@ -10,7 +10,7 @@ plugins {
 project.description = 'functions'
 
 ext {
-	azureFunctionsVersion = '3.0.0'
+	azureFunctionsVersion = '3.1.0'
 	minimumCoveragePerFile = 0.6
 	filesExcludedFromCoverage = ["*Handler.java"]
 }
