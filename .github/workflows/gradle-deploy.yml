@@ -22,7 +22,7 @@ jobs:
         env:
           CI_PASSWORD: ${{ secrets.CI_PASSWORD }}
       - name: Upload Functions Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: functions
           path: './functions/build/azure-functions/vtch-functions/'
