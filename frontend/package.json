@@ -19,7 +19,7 @@
     "@opentelemetry/sdk-trace-base": "1.18.1",
     "@opentelemetry/sdk-trace-web": "1.18.1",
     "@opentelemetry/semantic-conventions": "1.18.1",
-    "axios": "1.6.2",
+    "axios": "1.6.5",
     "core-js": "3.33.3",
     "keycloak-js": "22.0.5",
     "postcss": "8.4.32",
