@@ -68,7 +68,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'io.vavr:vavr:0.10.4'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    implementation 'org.flywaydb:flyway-core:10.7.1'
+    implementation 'org.flywaydb:flyway-core:10.7.2'
     implementation 'org.flywaydb:flyway-mysql:10.7.1'
     implementation "io.springfox:springfox-boot-starter:3.0.0"
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
