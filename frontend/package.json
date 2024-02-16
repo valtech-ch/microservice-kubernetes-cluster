@@ -20,7 +20,7 @@
     "@opentelemetry/sdk-trace-web": "1.21.0",
     "@opentelemetry/semantic-conventions": "1.21.0",
     "axios": "1.6.7",
-    "core-js": "3.35.1",
+    "core-js": "3.36.0",
     "keycloak-js": "23.0.6",
     "postcss": "8.4.35",
     "vue": "3.4.19",
