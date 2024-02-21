@@ -126,7 +126,7 @@ services:
       - ./realm-config:/opt/jboss/keycloak/realm-config
 
   mariadb:
-    image: library/mariadb:11.2
+    image: library/mariadb:11.3
     container_name: mariadb
     restart: always
     networks:
