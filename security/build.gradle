@@ -10,7 +10,7 @@ project.description = 'Security Config'
 
 ext {
     lombokVersion = '1.18.30'
-    springBootVersion = '3.1.6'
+    springBootVersion = '3.2.3'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = []
 }
