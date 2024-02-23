@@ -100,8 +100,8 @@ dependencies {
 	testImplementation "org.apache.kafka:kafka_2.13:$kafkaVersion:test"
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
 	testImplementation 'io.grpc:grpc-testing:1.58.0'
-	testImplementation 'org.testcontainers:testcontainers:1.19.5'
-	testImplementation 'org.testcontainers:junit-jupiter:1.19.5'
+	testImplementation 'org.testcontainers:testcontainers:1.19.6'
+	testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
 	testImplementation 'io.projectreactor:reactor-test:3.6.2'
 	testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
 	testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
