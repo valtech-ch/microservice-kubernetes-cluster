@@ -14,7 +14,7 @@
     "@opentelemetry/core": "1.18.1",
     "@opentelemetry/exporter-zipkin": "1.18.1",
     "@opentelemetry/instrumentation-document-load": "0.34.0",
-    "@opentelemetry/instrumentation-xml-http-request": "0.45.1",
+    "@opentelemetry/instrumentation-xml-http-request": "0.48.0",
     "@opentelemetry/resources": "1.18.1",
     "@opentelemetry/sdk-trace-base": "1.18.1",
     "@opentelemetry/sdk-trace-web": "1.18.1",
