@@ -80,7 +80,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.30'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.1.4'
     runtimeOnly 'io.r2dbc:r2dbc-h2:1.0.0.RELEASE'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.3.3'
     runtimeOnly 'com.h2database:h2:2.2.224'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
