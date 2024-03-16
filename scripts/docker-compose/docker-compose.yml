@@ -141,7 +141,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   kafka:
-    image: confluentinc/cp-kafka:7.5.3
+    image: confluentinc/cp-kafka:7.6.0
     container_name: kafka
     networks:
       - services

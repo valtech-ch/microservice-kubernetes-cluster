@@ -62,10 +62,10 @@ sonarqube {
 }
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
     implementation 'io.grpc:grpc-protobuf:1.59.0'
     implementation 'io.grpc:grpc-stub:1.59.0'
-    implementation 'io.projectreactor:reactor-core:3.6.2'
+    implementation 'io.projectreactor:reactor-core:3.6.4'
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.4'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
