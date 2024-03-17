@@ -11,13 +11,12 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingR
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
-import io.grpc.Channel;
-import io.grpc.ClientInterceptors;
+import io.grpc.CallCredentials;
+import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import lombok.extern.slf4j.Slf4j;
-import org.lognet.springboot.grpc.security.AuthClientInterceptor;
-import org.lognet.springboot.grpc.security.AuthHeader;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,15 +31,8 @@ public class AuditingServiceGrpc implements AuditingService {
   private final AuditingMapper auditingMapper;
 
   public AuditingServiceGrpc(AuditingMapper auditingMapper,
-      AuthClientInterceptor authClientInterceptor,
-      @Value("${grpc.client.persistence.host}") String host,
-      @Value("${grpc.client.persistence.port}") Integer port) {
-
-    Channel channel = ClientInterceptors.intercept(ManagedChannelBuilder.forAddress(host, port)
-        .usePlaintext()
-        .build(), authClientInterceptor);
-
-    this.persistenceStub = ReactorPersistenceServiceGrpc.newReactorStub(channel);
+      @GrpcClient("persistence") ReactorPersistenceServiceStub persistenceStub) {
+    this.persistenceStub = persistenceStub;
     this.auditingMapper = auditingMapper;
   }
 

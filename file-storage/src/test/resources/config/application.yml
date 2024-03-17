@@ -8,10 +8,10 @@ springfox:
   documentation:
     enabled: false
 grpc:
+  metricsA66Enabled: false
   client:
     persistence:
-      host: localhost
-      port: 9090
+      address: static://localhost:9090
   enabled: false
   inProcessServerName: testServer
 management:

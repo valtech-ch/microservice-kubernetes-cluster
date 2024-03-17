@@ -3,9 +3,15 @@ package ch.valtech.kubernetes.microservice.cluster.filestorage.config;
 import static org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest.toAnyEndpoint;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import ch.valtech.kubernetes.microservice.cluster.filestorage.util.SecurityUtils;
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
+import io.grpc.CallCredentials;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import net.devh.boot.grpc.client.security.CallCredentialsHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
@@ -153,6 +159,11 @@ public class SecurityConfiguration {
         )
         .httpBasic(basic -> basic.realmName(TOGGLZ_REALM));
     return http.build();
+  }
+
+  @Bean
+  public CallCredentials bearerAuthForwardingCredentials() {
+    return CallCredentialsHelper.bearerAuth(() -> SecurityUtils.getJwt().orElse(UUID.randomUUID().toString()));
   }
 
   @Bean

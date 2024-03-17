@@ -21,6 +21,7 @@ import io.grpc.StatusRuntimeException;
 import java.util.Iterator;
 import java.util.List;
 import lombok.SneakyThrows;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -31,8 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PersistenceControllerGrpcIt extends AbstractIt {
 
-  private PersistenceServiceBlockingStub persistenceStub = PersistenceServiceGrpc.newBlockingStub(
-      ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build());
+  @GrpcClient("inProcess")
+  private PersistenceServiceBlockingStub persistenceStub;
 
   @Autowired
   private AuditingRepository repository;

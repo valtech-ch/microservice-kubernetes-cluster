@@ -85,8 +85,8 @@ dependencies {
 	implementation 'org.togglz:togglz-spring-boot-starter:4.4.0'
 	implementation 'org.togglz:togglz-spring-security:4.4.0'
 	implementation 'org.togglz:togglz-console:4.4.0'
-	implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.5'
-	implementation 'io.github.lognet:grpc-client-spring-boot-starter:5.1.5'
+	implementation 'net.devh:grpc-spring-boot-starter:3.0.0.RELEASE'
+	implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
@@ -99,7 +99,7 @@ dependencies {
 	testImplementation "org.apache.kafka:kafka-metadata:$kafkaVersion:test"
 	testImplementation "org.apache.kafka:kafka_2.13:$kafkaVersion:test"
 	testImplementation 'org.togglz:togglz-junit5:2.8.0'
-	testImplementation 'io.grpc:grpc-testing:1.58.0'
+	testImplementation 'io.grpc:grpc-testing:1.62.2'
 	testImplementation 'org.testcontainers:testcontainers:1.19.7'
 	testImplementation 'org.testcontainers:junit-jupiter:1.19.7'
 	testImplementation 'io.projectreactor:reactor-test:3.6.4'

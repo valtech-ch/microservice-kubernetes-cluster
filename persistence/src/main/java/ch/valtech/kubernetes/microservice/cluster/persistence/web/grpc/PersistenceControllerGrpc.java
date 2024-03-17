@@ -12,10 +12,12 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.Persistence
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
+// @GrpcService using ReactivePersistenceControllerGrpc
 public class PersistenceControllerGrpc extends PersistenceServiceGrpc.PersistenceServiceImplBase {
 
   private final PersistenceService persistenceService;

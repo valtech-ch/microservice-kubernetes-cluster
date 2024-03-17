@@ -53,10 +53,10 @@ spring:
     activate:
       on-profile: dev
 grpc:
+  metricsA66Enabled: false
   client:
     persistence:
-      host: localhost
-      port: 9090
+      address: static://localhost:9090
 logging:
   level:
     root: INFO

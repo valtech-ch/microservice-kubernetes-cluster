@@ -9,6 +9,7 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.AbstractIt;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.AuditingRequest.Action;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.MessageResponse;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc.PersistenceServiceBlockingStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc.ReactorPersistenceServiceStub;
 import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchRequest;
@@ -17,6 +18,7 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import java.util.List;
 import lombok.SneakyThrows;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +29,8 @@ import reactor.core.publisher.Mono;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ReactivePersistenceControllerGrpcIt extends AbstractIt {
 
-  private ReactorPersistenceServiceStub persistenceStub = ReactorPersistenceServiceGrpc.newReactorStub(
-      ManagedChannelBuilder.forAddress("localhost", 9090).usePlaintext().build());
+  @GrpcClient("inProcess")
+  private ReactorPersistenceServiceStub persistenceStub;
 
   @Autowired
   private AuditingRepository repository;

@@ -10,14 +10,14 @@ import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.SearchReq
 import ch.valtech.kubernetes.microservice.cluster.persistence.mapper.PersistenceMapper;
 import ch.valtech.kubernetes.microservice.cluster.persistence.service.PersistenceService;
 import lombok.extern.slf4j.Slf4j;
-import org.lognet.springboot.grpc.GRpcService;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@GRpcService
+@GrpcService
 public class ReactivePersistenceControllerGrpc extends ReactorPersistenceServiceGrpc.PersistenceServiceImplBase {
 
   private final PersistenceService persistenceService;

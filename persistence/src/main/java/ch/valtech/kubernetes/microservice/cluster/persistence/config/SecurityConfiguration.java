@@ -4,17 +4,34 @@ import static org.springframework.boot.actuate.autoconfigure.security.servlet.En
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.PersistenceServiceGrpc;
+import ch.valtech.kubernetes.microservice.cluster.persistence.api.grpc.ReactorPersistenceServiceGrpc;
+import ch.valtech.kubernetes.microservice.cluster.security.config.IstioJwtDecoder;
 import ch.valtech.kubernetes.microservice.cluster.security.config.KeycloakRealmRoleConverter;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
+import net.devh.boot.grpc.server.security.check.AccessPredicate;
+import net.devh.boot.grpc.server.security.check.AccessPredicateVoter;
+import net.devh.boot.grpc.server.security.check.GrpcSecurityMetadataSource;
+import net.devh.boot.grpc.server.security.check.ManualGrpcSecurityMetadataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.UnanimousBased;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
@@ -23,7 +40,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.web.HeaderBearerTokenResolver;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -137,7 +156,39 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  CorsConfigurationSource corsConfigurationSource(
+  public GrpcAuthenticationReader grpcAuthenticationReader() {
+    return new BearerAuthenticationReader(token -> new BearerTokenAuthenticationToken(token));
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(IstioJwtDecoder jwtDecoder) {
+    JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
+    authenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRealmRoleConverter());
+    final List<AuthenticationProvider> providers = new ArrayList<>();
+    JwtAuthenticationProvider authenticationProvider = new JwtAuthenticationProvider(jwtDecoder);
+    authenticationProvider.setJwtAuthenticationConverter(authenticationConverter);
+    providers.add(authenticationProvider);
+    return new ProviderManager(providers);
+  }
+
+  @Bean
+  public GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
+    final ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
+    source.set(PersistenceServiceGrpc.getAuditMethod(), AccessPredicate.hasAnyRole("ROLE_admin", "ROLE_user"));
+    source.set(PersistenceServiceGrpc.getSearchMethod(), AccessPredicate.hasRole("ROLE_admin"));
+    source.setDefault(AccessPredicate.authenticated());
+    return source;
+  }
+
+  @Bean
+  public AccessDecisionManager accessDecisionManager() {
+    final List<AccessDecisionVoter<?>> voters = new ArrayList<>();
+    voters.add(new AccessPredicateVoter());
+    return new UnanimousBased(voters);
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource(
       @Value("${application.cors.allowed.origins}") List<String> allowedOrigins,
       @Value("${application.cors.allowed.methods}") List<String> allowedMethods) {
     CorsConfiguration configuration = new CorsConfiguration();

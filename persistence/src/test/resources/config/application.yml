@@ -18,6 +18,7 @@ springfox:
   documentation:
     enabled: false
 grpc:
+  metricsA66Enabled: false
   port: 9090
 management:
   security:

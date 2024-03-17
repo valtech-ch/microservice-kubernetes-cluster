@@ -76,7 +76,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.12.4'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation "org.springframework.kafka:spring-kafka:$springKafkaVersion"
-    implementation 'io.github.lognet:grpc-spring-boot-starter:5.1.5'
+    implementation 'net.devh:grpc-spring-boot-starter:3.0.0.RELEASE'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     runtimeOnly 'org.mariadb:r2dbc-mariadb:1.2.0'
     runtimeOnly 'io.r2dbc:r2dbc-h2:1.0.0.RELEASE'
@@ -86,7 +86,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'io.github.lognet:grpc-client-spring-boot-starter:5.1.5'
+    testImplementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.7'
     testImplementation 'org.testcontainers:mariadb:1.19.7'
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'

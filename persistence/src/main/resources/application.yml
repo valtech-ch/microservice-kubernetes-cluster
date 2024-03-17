@@ -24,6 +24,7 @@ server:
     enabled: true
     mime-types: text/html,text/plain,text/css,application/javascript,application/json
 grpc:
+  metricsA66Enabled: false
   port: 9090
 management:
   endpoints:
