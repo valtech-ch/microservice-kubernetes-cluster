@@ -27,7 +27,7 @@ public class ReleaseToggleAspect {
     return checkToggle(joinPoint, releaseToggle);
   }
 
-  public Object checkToggle(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
+  private Object checkToggle(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
     String toggleName = releaseToggle.value();
     boolean isActive = FeatureContext.getFeatureManager().isActive(new NamedFeature(toggleName));
     if (isActive) {
