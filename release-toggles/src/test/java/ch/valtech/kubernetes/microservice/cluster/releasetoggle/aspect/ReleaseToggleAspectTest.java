@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -30,7 +29,7 @@ import org.togglz.spring.boot.actuate.autoconfigure.TogglzAutoConfiguration;
     ReleaseToggleAspectTest.class,
     ReleaseToggleConfiguration.class})
 @ActiveProfiles("release-toggles")
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@DirtiesContext
 public class ReleaseToggleAspectTest {
 
   @Autowired

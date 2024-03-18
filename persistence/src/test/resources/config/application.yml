@@ -14,6 +14,9 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     locations: classpath:db/migration/mariadb
+  threads:
+    virtual:
+      enabled: true
 springfox:
   documentation:
     enabled: false

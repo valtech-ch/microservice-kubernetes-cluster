@@ -32,8 +32,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest
-@EmbeddedKafka(partitions = 1)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@EmbeddedKafka(topics = {"auditing", "reverseAuditing"}, partitions = 1,
+    bootstrapServersProperty = "application.kafka.bootstrapAddress")
+@DirtiesContext
 class FileStorageControllerIt {
 
   public static final String FILENAME = "test.txt";

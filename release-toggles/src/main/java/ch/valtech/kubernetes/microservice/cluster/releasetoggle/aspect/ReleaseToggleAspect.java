@@ -17,8 +17,17 @@ public class ReleaseToggleAspect {
     log.info("Enabling ReleaseToggleAspect");
   }
 
-  @Around(value = "@within(releaseToggle) || @annotation(releaseToggle)")
-  public Object checkReleaseToggle(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
+  @Around(value = "@within(releaseToggle)")
+  public Object checkReleaseToggleWithin(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
+    return checkToggle(joinPoint, releaseToggle);
+  }
+
+  @Around(value = "@annotation(releaseToggle)")
+  public Object checkReleaseToggleAnnotation(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
+    return checkToggle(joinPoint, releaseToggle);
+  }
+
+  public Object checkToggle(ProceedingJoinPoint joinPoint, ReleaseToggle releaseToggle) throws Throwable {
     String toggleName = releaseToggle.value();
     boolean isActive = FeatureContext.getFeatureManager().isActive(new NamedFeature(toggleName));
     if (isActive) {

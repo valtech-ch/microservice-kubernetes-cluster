@@ -40,7 +40,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 @SpringBootTest
 @EmbeddedKafka(topics = {"auditing", "reverseAuditing"}, partitions = 1,
     bootstrapServersProperty = "application.kafka.bootstrapAddress")
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProducerServiceTest {
 

@@ -4,6 +4,9 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 1MB
+  threads:
+    virtual:
+      enabled: true
 springfox:
   documentation:
     enabled: false
