@@ -10,7 +10,7 @@ project.description = 'Release Toggles Library'
 
 ext {
     lombokVersion = '1.18.32'
-    springBootVersion = '3.2.3'
+    springBootVersion = '3.2.4'
     minimumCoveragePerFile = 0.6
     filesExcludedFromCoverage = ["*/config/*.java"]
 }
