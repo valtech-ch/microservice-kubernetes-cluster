@@ -65,7 +65,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'com.hazelcast:hazelcast-all:4.2.8'
-	implementation 'commons-io:commons-io:2.15.1'
+	implementation 'commons-io:commons-io:2.16.0'
 	implementation 'io.vavr:vavr:0.10.4'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	implementation 'com.azure:azure-storage-blob:12.25.3'
