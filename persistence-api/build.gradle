@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.salesforce.servicelibs:reactor-grpc-stub:1.2.4'
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:3.0.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
