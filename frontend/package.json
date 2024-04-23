@@ -27,7 +27,7 @@
     "vue-axios": "3.5.2",
     "vue-class-component": "8.0.0-rc.1",
     "vue-cookie-next": "1.3.0",
-    "vue-router": "4.3.0"
+    "vue-router": "4.3.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "7.5.0",
