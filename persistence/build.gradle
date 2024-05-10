@@ -81,7 +81,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
+    testImplementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.8'
     testImplementation 'org.testcontainers:mariadb:1.19.8'
     testImplementation 'io.springfox:springfox-staticdocs:2.6.1'
