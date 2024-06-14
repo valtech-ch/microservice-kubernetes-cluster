@@ -13,7 +13,7 @@
     "@opentelemetry/context-zone": "1.25.0",
     "@opentelemetry/core": "1.25.0",
     "@opentelemetry/exporter-zipkin": "1.25.0",
-    "@opentelemetry/instrumentation-document-load": "0.37.0",
+    "@opentelemetry/instrumentation-document-load": "0.39.0",
     "@opentelemetry/instrumentation-xml-http-request": "0.52.0",
     "@opentelemetry/resources": "1.25.0",
     "@opentelemetry/sdk-trace-base": "1.25.0",
