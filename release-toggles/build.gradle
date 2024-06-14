@@ -48,7 +48,7 @@ dependencies {
     implementation 'org.togglz:togglz-console:4.4.0'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'io.vavr:vavr:0.10.4'
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
