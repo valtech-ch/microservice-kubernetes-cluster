@@ -88,7 +88,7 @@ dependencies {
     testImplementation "org.springframework.kafka:spring-kafka-test:$springKafkaVersion"
     testImplementation 'io.dropwizard.metrics:metrics-core:4.2.26'
     testImplementation 'io.jsonwebtoken:jjwt:0.12.6'
-    testImplementation 'io.projectreactor:reactor-test:3.6.8'
+    testImplementation 'io.projectreactor:reactor-test:3.6.9'
     testCompileOnly 'org.projectlombok:lombok:1.18.34'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
